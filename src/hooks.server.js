@@ -1,11 +1,11 @@
 import PocketBase from 'pocketbase';
 
 export const handle = async ({ event, resolve }) => {
-	console.log('handle', event);
+	// console.log('handle', event);
 
 	// Conectamos con la base de datos
 	event.locals.pb = new PocketBase('http://127.0.0.1:8090');
-	console.log('pb', event.locals.pb);
+	// console.log('pb', event.locals.pb);
 
 	// Cargamos la cookie de autenticación
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');

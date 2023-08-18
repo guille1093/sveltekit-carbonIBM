@@ -29,7 +29,7 @@
 	let isSideNavOpen = false;
 	let isOpen1 = false;
 	let isOpen2 = false;
-	let theme = 'g90';
+	let theme = 'g10';
 </script>
 
 <Theme bind:theme />

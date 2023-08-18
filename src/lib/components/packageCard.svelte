@@ -57,7 +57,7 @@
 <div
 	class=" bg-white shadow-lg shadow-gray-950 dark:bg-gray-800 dark:border-gray-700 hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out min-w-[270px]"
 >
-	<ClickableTile href="/projects/{project.id}" on:click >
+	<ClickableTile on:click={() => (open = true)}>
 		<div class=" p-5 bg-white">
 			<a href="/projects/{project.id}">
 				<h3 class="mb-2 text-gray-900 dark:text-white">
@@ -90,6 +90,30 @@
 </div>
 
 <ComposedModal bind:open>
-	<ModalHeader>hola</ModalHeader>
-	<ModalBody>que tal</ModalBody>
+	<ModalHeader>
+		<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+			{project.nombre}
+		</h2>
+		<p class="text-gray-500 dark:text-gray-400">
+			{precio}
+		</p>
+	</ModalHeader>
+
+	<ModalBody>
+		<ul>
+			<li>
+				<a href="/projects/{project.id}">
+					<h3 class="mb-2 text-gray-900 dark:text-white">
+						{project.nombre}
+					</h3>
+				</a>
+			</li>
+			<li>
+				<div class="flex items-baseline text-gray-900 dark:text-white">
+					<span class="text-3xl font-semibold" />
+					<h4>{precio}</h4>
+				</div>
+			</li>
+		</ul>
+	</ModalBody>
 </ComposedModal>
