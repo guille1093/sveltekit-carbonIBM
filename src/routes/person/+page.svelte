@@ -14,6 +14,7 @@
 	$: isValid = true;
 	$: validationMessage = '';
 	$: isFormValid = isValid && userName.length > 0;
+	$: postButton = false;
 
 	const validateUserName = () => {
 		if (userName.length < 3) {
@@ -49,15 +50,26 @@
 				<DatePickerInput name="nacimiento" placeholder="dd/mm/yyyy" />
 			</DatePicker>
 		</FormGroup>
-		<Button type="submit" disabled={!isFormValid} icon={Add}>Crear</Button>
+		<Button type="submit" disabled={!isFormValid} icon={Add} on:click={() => (postButton = true)}
+			>Crear</Button
+		>
 	</Form>
 </Tile>
 
-<ToastNotification
-	class="fixed hidden"
-	lowContrast
-	kind="success"
-	title="Operación exitosa."
-	subtitle="Cliente guardado."
-	caption={new Date().toLocaleString()}
-/>
+{#if isFormValid && postButton}
+	<script>
+		setTimeout(() => {
+			window.location.href = '/';
+		}, 15000);
+	</script>
+
+	<div class="absolute top-0 flex items-center min-w-screen min-h-screen bg-green-600/25">
+		<ToastNotification
+			kind="success"
+			title="Operación exitosa."
+			subtitle="Cliente guardado."
+			timeout={5000}
+			caption={new Date().toLocaleString()}
+		/>
+	</div>
+{/if}
