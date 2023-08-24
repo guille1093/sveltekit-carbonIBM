@@ -1,6 +1,7 @@
 <script>
 	import '../app.postcss';
 	import 'carbon-components-svelte/css/all.css';
+	import { page } from '$app/stores';
 	import {
 		Header,
 		HeaderUtilities,
@@ -26,10 +27,33 @@
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
 	import { FlightInternational } from 'carbon-icons-svelte';
 	import { Currency } from 'carbon-icons-svelte';
+	import { Home } from 'carbon-icons-svelte';
 	let isSideNavOpen = false;
 	let isOpen1 = false;
 	let isOpen2 = false;
 	let theme = 'g10';
+
+	//Variables
+	const navigation = [
+		{
+			title: 'Clientes',
+			href: '/clientes',
+			icon: Group
+		},
+		{
+			title: 'Paquetes',
+			href: '/paquetes',
+			icon: FlightInternational
+		},
+
+		{
+			title: 'Ventas',
+			href: '/ventas',
+			icon: Currency
+		}
+	];
+
+	$: activeUrl = $page.url.pathname;
 </script>
 
 <Theme bind:theme />
@@ -39,9 +63,9 @@
 	</svelte:fragment>
 
 	<HeaderUtilities>
-		<HeaderGlobalAction aria-label="Settings" icon={SettingsAdjust} />
 		<HeaderAction bind:isOpen={isOpen1} icon={UserAvatarFilledAlt} closeIcon={UserAvatarFilledAlt}>
 			<HeaderPanelLinks>
+				<HeaderPanelDivider>Cuenta</HeaderPanelDivider>
 				<HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>
 				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
 				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>
@@ -54,31 +78,25 @@
 				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
 			</HeaderPanelLinks>
 		</HeaderAction>
-		<HeaderAction bind:isOpen={isOpen2}>
-			<HeaderPanelLinks>
-				<HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>
-				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
-				<HeaderPanelDivider>Switcher subject 2</HeaderPanelDivider>
-				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 3</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 4</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 5</HeaderPanelLink>
-			</HeaderPanelLinks>
-		</HeaderAction>
 	</HeaderUtilities>
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen} rail>
 	<SideNavItems>
-		<SideNavLink text="Clientes" icon={Group} />
-		<SideNavLink text="Paquetes" icon={FlightInternational} />
-		<SideNavLink text="Ventas" icon={Currency} />
-		<SideNavMenu text="Menu" icon={Group}>
-			<SideNavMenuItem href="/" text="Link 1" />
-			<SideNavMenuItem href="/" text="Link 2" />
-			<SideNavMenuItem href="/" text="Link 3" />
-		</SideNavMenu>
+		<SideNavLink
+			href="/"
+			text="Inicio"
+			icon={Home}
+			isSelected={$page.url.pathname === '/' ? true : false}
+		/>
+		{#each navigation as navItem}
+			<SideNavLink
+				text={navItem.title}
+				href={navItem.href}
+				isSelected={$page.url.pathname.includes(navItem.href.replace(/^\//, '')) ? true : false}
+				icon={navItem.icon}
+			/>
+		{/each}
 	</SideNavItems>
 </SideNav>
 
