@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageServerLoad} */
-
+import { error, redirect } from '@sveltejs/kit';
 
 
 export async function load({ locals, params }) {
@@ -97,12 +97,7 @@ export const actions = {
         const clienteId = params.clienteID;
         try {
             await locals.pb.collection('clientes').delete(clienteId);
-            return {
-                status: 200,
-                body: {
-                    message: 'Cliente eliminado correctamente'
-                }
-            };
+            throw redirect(307, '/clientes');
         }
         catch (err) {
             console.log('Error: ', err);

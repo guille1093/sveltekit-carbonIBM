@@ -1,0 +1,45 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="AngularAmbiguousComponentTag" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularCliAddDependency" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInaccessibleComponentMemberInAotMode" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularIncorrectTemplateDefinition" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInsecureBindingToEvent" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInvalidAnimationTriggerAssignment" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInvalidEntryComponent" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInvalidI18nAttribute" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInvalidImportedOrDeclaredSymbol" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInvalidSelector" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularInvalidTemplateReferenceVariable" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularMissingEventHandler" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularMissingOrInvalidDeclarationInModule" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularMultipleStructuralDirectives" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularNgOptimizedImage" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularNonEmptyNgContent" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularRecursiveModuleImportExport" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularUndefinedBinding" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularUndefinedModuleExport" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="AngularUndefinedTag" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="Annotator" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="EmptyDirectory" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="GrazieInspection" enabled="false" level="GRAMMAR_ERROR" enabled_by_default="false" />
+    <inspection_tool class="InconsistentLineSeparators" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="IncorrectFormatting" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="InjectedReferences" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LongLine" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="ProblematicWhitespace" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="QodanaServiceMessage" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="ReassignedToPlainText" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="RedundantSuppression" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
+      <option name="processCode" value="true" />
+      <option name="processLiterals" value="true" />
+      <option name="processComments" value="true" />
+    </inspection_tool>
+    <inspection_tool class="TodoComment" enabled="false" level="TYPO" enabled_by_default="false" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+  </profile>
+</component>

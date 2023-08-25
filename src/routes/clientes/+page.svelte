@@ -2,23 +2,16 @@
 	/** @type {import('./$types').PageData} */
 
 	//IMPORTS
-	import { gridStyle } from '$lib/utils';
 	import { fly } from 'svelte/transition';
 	import { slide } from 'svelte/transition';
 	import { Spanish } from 'flatpickr/dist/l10n/es.js';
-	import Grid from 'gridjs-svelte';
-	import { esES } from 'gridjs/l10n';
-	import { html } from 'gridjs';
 	import {
 		Button,
-		Modal,
 		TextInput,
 		NumberInput,
-		Form,
 		FormGroup,
 		DatePickerInput,
 		DatePicker,
-		ButtonSet,
 		ComposedModal,
 		ModalHeader,
 		ModalBody,
@@ -26,13 +19,11 @@
 		Select,
 		SelectItem,
 		InlineLoading,
-		Tile,
 		ToastNotification,
 		DataTable,
 		Toolbar,
 		ToolbarContent,
 		ToolbarMenu,
-		ToolbarMenuItem,
 		ToolbarSearch,
 		Pagination
 	} from 'carbon-components-svelte';
@@ -52,7 +43,6 @@
 	$: email = '';
 	$: telefono = '';
 	$: dni = null;
-	$: fechanacimiento = '';
 	$: nacionalidad = '';
 	$: ocupacion = '';
 
@@ -63,7 +53,6 @@
 	$: isValidEmail = true;
 	$: isValidTelefono = true;
 	$: isValidFechaNacimiento = true;
-	$: isValidNacionalidad = true;
 	$: isValidOcupacion = true;
 
 	//VALIDACIONES
@@ -73,9 +62,6 @@
 	$: validartionMessageEmail = '';
 	$: validartionMessageTelefono = '';
 	$: validartionMessageOcupacion = '';
-
-	$: isValid = true;
-	$: validationMessage = '';
 	$: isFormValid =
 		isValidApellido && isValidNombre && isValidDNI && nombre.length > 0 && apellido.length > 0
 			? true
