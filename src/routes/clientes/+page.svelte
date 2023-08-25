@@ -232,7 +232,7 @@
 		<Button icon={Add} on:click={() => (open = true)}>Registrar cliente</Button>
 	</div>
 
-	<ComposedModal class="w-screen" bind:open>
+	<ComposedModal class="" bind:open>
 		<ModalHeader label="" title="Registrar cliente" />
 		<ModalBody hasForm hasScrollingContent class="bg-white">
 			{#if creating}
@@ -348,7 +348,7 @@
 									dateFormat="d/m/Y"
 									locale="es"
 									maxDate={new Date()}
-									flatpickrProps={{ locale: es, position: 'above' }}
+									flatpickrProps={{ position: 'above' }}
 									on:change
 								>
 									<DatePickerInput

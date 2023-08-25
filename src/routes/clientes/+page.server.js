@@ -29,7 +29,7 @@ export async function load({ locals }) {
 
 export const actions = {
     create: async ({ request, locals }) => {
-        await new Promise((fulfil) => setTimeout(fulfil, 2000));
+        await new Promise((fulfil) => setTimeout(fulfil, 1500));
         const form = await request.formData();
         console.log('form: ', form);
         const nombre = form.get('nombre') ?? '';
