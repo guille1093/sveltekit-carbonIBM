@@ -55,10 +55,10 @@
 </script>
 
 <div
-	class=" bg-white shadow-lg shadow-gray-950 dark:bg-gray-800 dark:border-gray-700 hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out min-w-[270px]"
+	class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out min-w-[270px]"
 >
 	<ClickableTile on:click={() => (open = true)}>
-		<div class=" p-5 bg-white">
+		<div class=" p-5">
 			<a href="/projects/{project.id}">
 				<h3 class="mb-2 text-gray-900 dark:text-white">
 					{project.nombre}

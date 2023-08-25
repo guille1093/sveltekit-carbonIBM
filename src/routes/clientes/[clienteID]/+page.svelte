@@ -22,11 +22,13 @@
 		DatePicker,
 		DatePickerInput,
 		InlineLoading,
-		ToastNotification
+		ToastNotification,
+		Modal
 	} from 'carbon-components-svelte';
 	import { enhance } from '$app/forms';
 	import { fly, slide } from 'svelte/transition';
 	export let data;
+	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 	// nombre apellido email telefono dni fechanacimiento nacionalidad ocupacion
 	let nombre = data.cliente.nombre;
@@ -46,7 +48,6 @@
 	$: isValidEmail = true;
 	$: isValidTelefono = true;
 	$: isValidFechaNacimiento = true;
-	$: isValidNacionalidad = true;
 	$: isValidOcupacion = true;
 
 	//VALIDACIONES
@@ -56,7 +57,6 @@
 	$: validartionMessageEmail = '';
 	$: validartionMessageTelefono = '';
 	$: validartionMessageOcupacion = '';
-
 	$: isFormValid =
 		isValidApellido && isValidNombre && isValidDNI && nombre.length > 0 && apellido.length > 0
 			? true
@@ -69,6 +69,12 @@
 	 * @type {HTMLFormElement}
 	 */
 	let form;
+
+	/**
+	 * @type {HTMLFormElement}
+	 */
+	let deleteForm;
+
 	//FUNCIONES
 
 	const validateNombre = () => {
@@ -136,6 +142,7 @@
 
 	//VARIABLES Y CONSTANTES
 	let open = false;
+	let open2 = false;
 
 	const tableitems = [
 		{
@@ -203,10 +210,10 @@
 
 <main>
 	<Tile>
-		<div class="flex flex-row justify-between">
+		<div class="flex flex-row justify-between mb-4">
 			<h1>Cliente: {data.cliente.nombre} {data.cliente.apellido}</h1>
 			<ButtonSet class="mr-36">
-				<Button href="/clientes" icon={TrashCan} kind="danger">Eliminar</Button>
+				<Button on:click={() => (open2 = true)} icon={TrashCan} kind="danger">Eliminar</Button>
 				<Button icon={Edit} on:click={() => (open = true)}>Editar</Button>
 			</ButtonSet>
 		</div>
@@ -223,9 +230,31 @@
 	</Tile>
 </main>
 
+<form id="deleteForm" bind:this={deleteForm} action="?/delete" method="post" class="hidden">
+	<input type="hidden" name="dni" value={data.cliente.id} />
+</form>
+
+<Modal
+	danger
+	bind:open={open2}
+	modalHeading="Eliminar cliente"
+	primaryButtonText="Eliminar"
+	secondaryButtonText="Cancelar"
+	on:click:button--secondary={() => (open2 = false)}
+	on:click:button--primary={() => deleteForm.requestSubmit()}
+	on:open
+	on:close
+	on:submit
+>
+	<h5>¿Está seguro que desea eliminar el cliente {data.cliente.nombre} {data.cliente.apellido}?</h5>
+	<p class="mt-4">
+		Esta es una accion permanente y los registros asociados al cliente tambien seran eliminados
+	</p>
+</Modal>
+
 <ComposedModal class="" bind:open>
 	<ModalHeader label="" title="Editar cliente" />
-	<ModalBody hasForm hasScrollingContent class="bg-white">
+	<ModalBody hasForm hasScrollingContent>
 		{#if creating}
 			<div in:fly={{ y: 100 }} out:slide>
 				<InlineLoading description="Guardando cliente..." />
@@ -298,25 +327,25 @@
 								id="telefono"
 								bind:value={telefono}
 								name="telefono"
-								on:keyup={validateTelefono}
+								on:keyup={() => {
+									const regex = /^[0-9-()+]{5,18}$/;
+									const isValid = regex.test(telefono);
+									isValidTelefono = isValid;
+									validartionMessageTelefono = isValid ? '' : 'El número de teléfono no es válido.';
+								}}
 								invalid={!isValidTelefono}
 								invalidText={validartionMessageTelefono}
 								labelText=""
-								placeholder="Ingrese el telefono"
+								placeholder="Ingrese el teléfono"
 							/>
 						</FormGroup>
 
+						<FormGroup legendText="Lugar Ascenso">
+							<TextInput name="lugarascenso" placeholder="Ingrese el lugar de ascenso" />
+						</FormGroup>
+
 						<FormGroup legendText="Ocupacion">
-							<TextInput
-								id="ocupacion"
-								bind:value={ocupacion}
-								name="ocupacion"
-								on:keyup={validateOcupacion}
-								invalid={!isValidOcupacion}
-								invalidText={validartionMessageOcupacion}
-								labelText=""
-								placeholder="Ingrese la ocupacion"
-							/>
+							<TextInput name="ocupacion" placeholder="Ingrese la ocupacion" />
 						</FormGroup>
 					</div>
 					<div class="w-[50%] flex-grow p-4">
@@ -327,7 +356,7 @@
 								value={fechanacimiento}
 								datePickerType="single"
 								dateFormat="d/m/Y"
-								locale="es"
+								locale={Spanish}
 								maxDate={new Date()}
 								flatpickrProps={{ position: 'above' }}
 								on:change
@@ -389,6 +418,7 @@
 					</div>
 				</div>
 				<TextArea
+					class="p-4"
 					name="observaciones"
 					labelText="Observaciones"
 					placeholder="Puede ingresar observaciones si lo desea..."
@@ -397,10 +427,10 @@
 			</form>
 		{/if}
 	</ModalBody>
+
 	<ModalFooter>
 		<Button kind="secondary" size="lg" on:click={() => (open = false)}>Cancelar</Button>
 		<Button
-			id="modalSubmitButton"
 			icon={Save}
 			size="lg"
 			type="submit"

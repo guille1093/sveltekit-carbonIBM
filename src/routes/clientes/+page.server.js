@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageServerLoad} */
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 
 export async function load({ locals }) {
@@ -70,10 +70,6 @@ export const actions = {
         try {
             // @ts-ignore
             await locals.pb.collection('clientes').create(data);
-            return {
-                success: true,
-                message: "Cliente creado con éxito"
-            };
         } catch (err) {
             console.log('Error: ', err);
             // @ts-ignore

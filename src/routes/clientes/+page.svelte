@@ -5,7 +5,7 @@
 	import { gridStyle } from '$lib/utils';
 	import { fly } from 'svelte/transition';
 	import { slide } from 'svelte/transition';
-	import es from 'flatpickr/dist/l10n/es.js';
+	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 	import Grid from 'gridjs-svelte';
 	import { esES } from 'gridjs/l10n';
 	import { html } from 'gridjs';
@@ -27,11 +27,19 @@
 		SelectItem,
 		InlineLoading,
 		Tile,
-		ToastNotification
+		ToastNotification,
+		DataTable,
+		Toolbar,
+		ToolbarContent,
+		ToolbarMenu,
+		ToolbarMenuItem,
+		ToolbarSearch,
+		Pagination
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import { redirect } from '@sveltejs/kit';
 
 	//EXPORTS
 	export let data;
@@ -157,84 +165,23 @@
 
 	//VARIABLES Y CONSTANTES
 	let open = false;
-	const columns = [
-		{
-			id: 'id',
-			hidden: true
-		},
-		{
-			id: 'dni',
-			name: html(`<div class="flex"><i class="bx bx-id-card mr-2 mt-0.5"></i>DNI </div>`),
-			sort: true,
-			formatter: (cell, row) =>
-				html(`<a class="text-sm text-black" href="/clientes/${row.cells[0].data}">${cell}</a>`)
-		},
-		{
-			id: 'nombre',
-			name: html('<div class="flex"><i class="bx bx-user mr-2 mt-0.5"></i>Nombre </div>'),
-			sort: true,
-			formatter: (cell) =>
-				html(`<a class="text-sm text-black" href="/clientes/${cell}">${cell}</a>`)
-		},
-		{
-			name: 'Apellido',
-			sort: true,
-			formatter: (cell) => {
-				return cell;
-			}
-		},
-		{
-			id: 'email',
-			name: html('<div class="flex"><i class="bx bx-at mr-2 mt-0.5"></i>Email </div>'),
-			sort: true,
-			formatter: (cell) => {
-				return cell;
-			}
-		},
-		{
-			id: 'telefono',
-			name: html('<div class="flex"><i class="bx bx-phone mr-2 mt-0.5"></i>Telefono </div>'),
-			sort: true,
-			formatter: (cell) => {
-				return cell;
-			}
-		},
-		{
-			id: 'fechanacimiento',
-			name: html('<div class="flex"><i class="bx bx-calendar mr-2 mt-0.5"></i>Nacimiento </div>'),
-			sort: true,
-			formatter: (cell) => {
-				return new Date(cell).toLocaleDateString('es-ES', {
-					day: '2-digit',
-					month: 'short',
-					year: 'numeric'
-				});
-			}
-		},
-		{
-			id: 'created',
-			name: html('<div class="flex"><i class="bx bx-calendar mr-2 mt-0.5"></i>Creado</div>'),
-			sort: true,
-			formatter: (cell) => {
-				return new Date(cell).toLocaleDateString('es-ES', {
-					day: '2-digit',
-					month: 'short',
-					year: 'numeric'
-				});
-			}
-		}
-	];
+
+	//DataTables
+	let rows = data.clientes;
+	let pageSize = 10;
+	let page = 1;
+	/**
+	 * @type {never[]}
+	 */
+	let filteredRowIds = [];
+
+	$: console.log('filteredRowIds', filteredRowIds);
 </script>
 
 <main>
-	<div class="flex flex-row justify-between">
-		<h1>Clientes</h1>
-		<Button icon={Add} on:click={() => (open = true)}>Registrar cliente</Button>
-	</div>
-
-	<ComposedModal class="" bind:open>
+	<ComposedModal class="" bind:open on:close={() => (open = false)}>
 		<ModalHeader label="" title="Registrar cliente" />
-		<ModalBody hasForm hasScrollingContent class="bg-white">
+		<ModalBody hasForm hasScrollingContent>
 			{#if creating}
 				<div in:fly={{ y: 100 }} out:slide>
 					<InlineLoading description="Guardando cliente..." />
@@ -280,6 +227,7 @@
 							isValidApellido = true;
 							isValidDNI = true;
 							invalidateAll();
+							throw redirect(303, '/clientes');
 						};
 					}}
 				>
@@ -289,7 +237,6 @@
 							<FormGroup legendText="DNI">
 								<NumberInput
 									id="dni"
-									{$$props}
 									bind:value={dni}
 									name="dni"
 									on:input={validateDNI}
@@ -346,7 +293,7 @@
 									value={new Date()}
 									datePickerType="single"
 									dateFormat="d/m/Y"
-									locale="es"
+									locale={Spanish}
 									maxDate={new Date()}
 									flatpickrProps={{ position: 'above' }}
 									on:change
@@ -413,15 +360,92 @@
 		</ModalFooter>
 	</ComposedModal>
 
-	<div class="">
-		<Grid
-			data={data.clientes}
-			{columns}
-			sort
-			search="nombre, apellido, email, telefono, dni, fechanacimiento, nacionalidad, domicilio"
-			pagination={{ enabled: true, limit: 10 }}
-			language={esES}
-			className={gridStyle}
-		/>
+	<h1>Clientes</h1>
+	<p>Aqui puede ver, buscar y filtrar todos los clientes registrados en el sistema.</p>
+	<DataTable
+		zebra
+		sortable
+		headers={[
+			{ key: 'dni', value: 'DNI' },
+			{ key: 'nombre', value: 'Nombre' },
+			{ key: 'apellido', value: 'Apellido' },
+			{ key: 'fechanacimiento', value: 'Nacimiento' },
+			{ key: 'created', value: 'Creado' },
+			{ key: 'updated', value: 'Actualizado' },
+			{ key: 'email', value: 'Email' },
+			{ key: 'telefono', value: 'Telefono' },
+			{ key: 'nacionalidad', value: 'Nacionalidad' }
+		]}
+		{rows}
+		{pageSize}
+		{page}
+	>
+		<svelte:fragment slot="cell-header" let:header>
+			{#if header.key === 'dni'}
+				<div class="flex"><i class="bx bx-id-card mr-2 text-blue-600" />DNI</div>
+			{:else if header.key === 'nombre'}
+				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Nombre</div>
+			{:else if header.key === 'apellido'}
+				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Apellido</div>
+			{:else if header.key === 'email'}
+				<div class="flex"><i class="bx bx-at mr-2 text-blue-600" />Email</div>
+			{:else if header.key === 'telefono'}
+				<div class="flex"><i class="bx bx-phone mr-2 text-blue-600" />Telefono</div>
+			{:else if header.key === 'fechanacimiento'}
+				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Nacimiento</div>
+			{:else if header.key === 'created'}
+				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Creado</div>
+			{:else}
+				{header.value}
+			{/if}
+		</svelte:fragment>
+
+		<svelte:fragment slot="cell" let:row let:cell>
+			{#if cell.key === 'fechanacimiento'}
+				{new Date(cell.value).toLocaleDateString('es-ES', {
+					day: '2-digit',
+					month: 'short',
+					year: 'numeric'
+				})}
+			{:else if cell.key === 'created'}
+				{new Date(cell.value).toLocaleDateString('es-ES', {
+					day: '2-digit',
+					month: 'short',
+					year: 'numeric'
+				})}
+			{:else if cell.key === 'updated'}
+				{new Date(cell.value).toLocaleDateString('es-ES', {
+					day: '2-digit',
+					month: 'short',
+					year: 'numeric'
+				})}
+			{:else if cell.key === 'dni'}
+				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+			{:else if cell.key === 'nombre'}
+				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+			{:else if cell.key === 'apellido'}
+				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+			{:else if cell.key === 'email'}
+				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+			{:else if cell.key === 'telefono'}
+				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+			{:else}
+				{cell.value}
+			{/if}
+		</svelte:fragment>
+
+		<Toolbar>
+			<ToolbarContent>
+				<ToolbarSearch persistent shouldFilterRows placeholder="Buscar..." bind:filteredRowIds />
+				<ToolbarMenu>
+					<NumberInput min={1} max={100} label="Numero de filas por pagina" bind:value={pageSize} />
+				</ToolbarMenu>
+				<Button icon={Add} on:click={() => (open = true)}>Registrar cliente</Button>
+			</ToolbarContent>
+		</Toolbar>
+	</DataTable>
+
+	<div class="fixed bottom-0 w-2/3">
+		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />
 	</div>
 </main>

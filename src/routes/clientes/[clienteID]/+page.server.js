@@ -90,5 +90,23 @@ export const actions = {
             console.log('Error: ', err);
             throw err;
         }
+    },
+
+
+    delete: async ({ params, locals }) => {
+        const clienteId = params.clienteID;
+        try {
+            await locals.pb.collection('clientes').delete(clienteId);
+            return {
+                status: 200,
+                body: {
+                    message: 'Cliente eliminado correctamente'
+                }
+            };
+        }
+        catch (err) {
+            console.log('Error: ', err);
+            throw err;
+        }
     }
 };
