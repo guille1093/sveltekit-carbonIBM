@@ -123,12 +123,12 @@
 			isValidDNI = false;
 			validartionMessageDNI = 'El DNI solo puede contener numeros.';
 		} else if (
-			data.clientes.findIndex(
-				(/** @type {{ dni: any; }} */ cliente) => cliente.dni === dni.toString()
+			data.paquetes.findIndex(
+				(/** @type {{ dni: any; }} */ paquete) => paquete.dni === dni.toString()
 			) > -1
 		) {
 			isValidDNI = false;
-			validartionMessageDNI = 'Ya existe un cliente con este DNI.';
+			validartionMessageDNI = 'Ya existe un paquete con este DNI.';
 		} else {
 			isValidDNI = true;
 			validartionMessageDNI = '';
@@ -143,7 +143,7 @@
 	let open = false;
 
 	//DataTables
-	let rows = data.clientes;
+	let rows = data.paquetes;
 	let pageSize = 10;
 	let page = 1;
 	/**
@@ -156,11 +156,11 @@
 
 <main>
 	<ComposedModal class="" bind:open on:close={() => (open = false)}>
-		<ModalHeader label="" title="Registrar cliente" />
+		<ModalHeader label="" title="Registrar paquete" />
 		<ModalBody hasForm hasScrollingContent>
 			{#if creating}
 				<div in:fly={{ y: 100 }} out:slide>
-					<InlineLoading description="Guardando cliente..." />
+					<InlineLoading description="Guardando paquete..." />
 				</div>
 			{:else if toast}
 				<div in:fly={{ y: 100 }} out:slide>
@@ -169,7 +169,7 @@
 						kind="success"
 						title="Operación exitosa"
 						subtitle={new Date().toLocaleString()}
-						caption="El cliente se ha creado correctamente."
+						caption="El paquete se ha creado correctamente."
 						fullWidth
 						on:close={() => (toast = false)}
 					/>
@@ -333,20 +333,16 @@
 		</ModalFooter>
 	</ComposedModal>
 
-	<h1>Clientes</h1>
-	<p>Aqui puede ver, buscar y filtrar todos los clientes registrados en el sistema.</p>
+	<h1>paquetes</h1>
+	<p>Aqui puede ver, buscar y filtrar todos los paquetes registrados en el sistema.</p>
 	<DataTable
 		zebra
 		sortable
 		headers={[
-			{ key: 'dni', value: 'DNI' },
-			{ key: 'nombre', value: 'Nombre' },
-			{ key: 'apellido', value: 'Apellido' },
-			{ key: 'fechanacimiento', value: 'Nacimiento' },
+			{ key: 'nombre', value: 'Destino' },
+			{ key: 'precio', value: 'Precio' },
 			{ key: 'created', value: 'Creado' },
-			{ key: 'updated', value: 'Actualizado' },
-			{ key: 'telefono', value: 'Telefono' },
-			{ key: 'nacionalidad', value: 'Nacionalidad' }
+			{ key: 'updated', value: 'Actualizado' }
 		]}
 		{rows}
 		{pageSize}
@@ -356,7 +352,7 @@
 			{#if header.key === 'dni'}
 				<div class="flex"><i class="bx bx-id-card mr-2 text-blue-600" />DNI</div>
 			{:else if header.key === 'nombre'}
-				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Nombre</div>
+				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Destino</div>
 			{:else if header.key === 'apellido'}
 				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Apellido</div>
 			{:else if header.key === 'telefono'}
@@ -394,15 +390,15 @@
 					year: 'numeric'
 				})}
 			{:else if cell.key === 'dni'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'nombre'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'apellido'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'email'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'telefono'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
 			{:else}
 				{cell.value}
 			{/if}
@@ -414,7 +410,7 @@
 				<ToolbarMenu>
 					<NumberInput min={1} max={100} label="Numero de filas por pagina" bind:value={pageSize} />
 				</ToolbarMenu>
-				<Button icon={Add} on:click={() => (open = true)}>Registrar cliente</Button>
+				<Button icon={Add} on:click={() => (open = true)}>Registrar paquete</Button>
 			</ToolbarContent>
 		</Toolbar>
 	</DataTable>

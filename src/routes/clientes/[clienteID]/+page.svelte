@@ -1,7 +1,5 @@
 <script>
 	import { Edit, TrashCan, Save } from 'carbon-icons-svelte';
-	import { goto } from '$app/navigation';
-
 	import {
 		StructuredList,
 		TextArea,
@@ -406,7 +404,7 @@
 						</FormGroup>
 
 						<FormGroup legendText="Nacionalidad">
-							<Select hideLabel selected={nacionalidad} value={nacionalidad} name="nacionalidad">
+							<Select hideLabel selected={nacionalidad} name="nacionalidad">
 								<SelectItem disabled hidden value="Argentina" text="Seleccione la nacionalidad" />
 								{#each data.nacionalidades as nacionalidad}
 									<SelectItem
@@ -431,7 +429,7 @@
 						</FormGroup>
 
 						<FormGroup legendText="Sexo">
-							<Select id="select-1" hideLabel value={sexo} selected={sexo} name="sexo">
+							<Select id="select-1" hideLabel selected={sexo} name="sexo" on:change={validateForm}>
 								<SelectItem value="MASCULINO" text="Masculino" />
 								<SelectItem value="FEMENINO" text="Femenino" />
 								<SelectItem value="OTRO" text="Otro" />

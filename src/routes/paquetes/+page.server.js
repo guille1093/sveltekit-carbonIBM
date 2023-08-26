@@ -3,9 +3,9 @@
 
 export async function load({ locals }) {
     try {
-        const getClientes = async () => {
+        const getpaquetes = async () => {
             // @ts-ignore
-            return structuredClone(await locals.pb.collection('clientes').getFullList(5000, {}));
+            return structuredClone(await locals.pb.collection('projects').getFullList(5000, {}));
         };
 
         const getNacionalidades = async () => {
@@ -13,10 +13,10 @@ export async function load({ locals }) {
             return structuredClone(await locals.pb.collection('nacionalidades').getFullList(undefined, {}));
         };
 
-        const [clientes, nacionalidades] = await Promise.all([getClientes(), getNacionalidades()]);
-        console.log('clientes y nacionalidades cargados');
+        const [paquetes, nacionalidades] = await Promise.all([getpaquetes(), getNacionalidades()]);
+        console.log('paquetes y nacionalidades cargados');
         return {
-            clientes,
+            paquetes,
             nacionalidades
         };
     } catch (err) {
@@ -64,7 +64,7 @@ export const actions = {
 
         try {
             // @ts-ignore
-            await locals.pb.collection('clientes').create(data);
+            await locals.pb.collection('paquetes').create(data);
         } catch (err) {
             console.log('Error: ', err);
         }
