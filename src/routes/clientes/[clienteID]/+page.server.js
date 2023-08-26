@@ -1,7 +1,12 @@
 /** @type {import('./$types').PageServerLoad} */
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
 
+/**
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export async function load({ locals, params }) {
     const clienteId = params.clienteID;
 
@@ -91,7 +96,6 @@ export const actions = {
             throw err;
         }
     },
-
 
     delete: async ({ params, locals }) => {
         const clienteId = params.clienteID;

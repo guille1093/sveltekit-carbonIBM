@@ -1,6 +1,7 @@
 <script>
-	import { OrderedList, ListItem, Link } from 'carbon-components-svelte';
-	import { UserProfile, Edit, TrashCan, Save } from 'carbon-icons-svelte';
+	import { Edit, TrashCan, Save } from 'carbon-icons-svelte';
+	import { goto } from '$app/navigation';
+
 	import {
 		StructuredList,
 		TextArea,
@@ -127,13 +128,25 @@
 		} else if (!/^[0-9]+$/.test(dni)) {
 			isValidDNI = false;
 			validartionMessageDNI = 'El DNI solo puede contener numeros.';
-		} else if (data.clientes.findIndex((cliente) => cliente.dni === dni.toString()) > -1) {
+		} else if (
+			data.clientes.findIndex(
+				(/** @type {{ dni: any; }} */ cliente) => cliente.dni === dni.toString()
+			) > -1
+		) {
 			isValidDNI = false;
 			validartionMessageDNI = 'Ya existe un cliente con este DNI.';
 		} else {
 			isValidDNI = true;
 			validartionMessageDNI = '';
 		}
+	};
+
+	const validateForm = () => {
+		validateNombre();
+		validateApellido();
+		validateEmail();
+		validateTelefono();
+		validateOcupacion();
 	};
 
 	const validateEmail = () => {};
@@ -143,69 +156,6 @@
 	//VARIABLES Y CONSTANTES
 	let open = false;
 	let open2 = false;
-
-	const tableitems = [
-		{
-			title: 'Nombres',
-			value: data.cliente.nombre
-		},
-		{
-			title: 'Apellido',
-			value: data.cliente.apellido
-		},
-		{
-			title: 'DNI',
-			value: data.cliente.dni
-		},
-		{
-			title: 'Sexo',
-			value: data.cliente.sexo
-		},
-		{
-			title: 'Fecha nacimiento',
-			value: new Date(data.cliente.fechanacimiento).toLocaleDateString('es-AR', {
-				year: 'numeric',
-				month: 'long',
-				day: 'numeric'
-			})
-		},
-		{
-			title: 'Domicilio',
-			value: data.cliente.domicilio
-		},
-		{
-			title: 'Teléfono',
-			value: data.cliente.telefono
-		},
-		{
-			title: 'Email',
-			value: data.cliente.email
-		},
-		{
-			title: 'Ocupación',
-			value: data.cliente.ocupacion
-		},
-		{
-			title: 'Nacionalidad',
-			value: data.cliente.nacionalidad
-		},
-		{
-			title: 'Lugar ascenso',
-			value: data.cliente.lugarascenso
-		},
-		{
-			title: 'Nombre madre',
-			value: data.cliente.nombremadre
-		},
-		{
-			title: 'Apellido madre',
-			value: data.cliente.apellidomadre
-		},
-		{
-			title: 'Observaciones',
-			value: data.cliente.observaciones
-		}
-	];
 </script>
 
 <main>
@@ -219,20 +169,91 @@
 		</div>
 		<StructuredList condensed>
 			<StructuredListBody>
-				{#each tableitems as items}
-					<StructuredListRow>
-						<StructuredListCell noWrap><strong>{items.title}:</strong></StructuredListCell>
-						<StructuredListCell>{items.value}</StructuredListCell>
-					</StructuredListRow>
-				{/each}
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Nombre:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.nombre}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Apellido:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.apellido}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>DNI:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.dni}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Sexo:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.sexo}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Fecha nacimiento:</strong></StructuredListCell>
+					<StructuredListCell
+						>{new Date(data.cliente.fechanacimiento).toLocaleDateString('es-AR', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						})}</StructuredListCell
+					>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Domicilio:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.domicilio}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Teléfono:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.telefono}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Email:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.email}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Ocupación:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.ocupacion}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Nacionalidad:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.nacionalidad}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Lugar ascenso:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.lugarascenso}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Nombre madre:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.nombremadre}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Apellido madre:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.apellidomadre}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Observaciones:</strong></StructuredListCell>
+					<StructuredListCell>{data.cliente.observaciones}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Fecha creación:</strong></StructuredListCell>
+					<StructuredListCell
+						>{new Date(data.cliente.created).toLocaleDateString('es-AR', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						})}</StructuredListCell
+					>
+				</StructuredListRow>
 			</StructuredListBody>
 		</StructuredList>
 	</Tile>
 </main>
 
-<form id="deleteForm" bind:this={deleteForm} action="?/delete" method="post" class="hidden">
-	<input type="hidden" name="dni" value={data.cliente.id} />
-</form>
+<form
+	id="deleteForm"
+	bind:this={deleteForm}
+	action="?/delete"
+	method="post"
+	class="hidden"
+	use:enhance
+/>
 
 <Modal
 	danger
@@ -306,6 +327,7 @@
 								invalid={!isValidDNI}
 								invalidText={validartionMessageDNI}
 								placeholder="Ingrese el DNI"
+								readonly
 							/>
 						</FormGroup>
 
@@ -359,7 +381,7 @@
 								locale={Spanish}
 								maxDate={new Date()}
 								flatpickrProps={{ position: 'above' }}
-								on:change
+								on:change={validateForm}
 							>
 								<DatePickerInput
 									value={fechanacimiento}

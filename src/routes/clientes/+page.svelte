@@ -29,7 +29,7 @@
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { redirect } from '@sveltejs/kit';
 
 	//EXPORTS
@@ -125,7 +125,11 @@
 		} else if (!/^[0-9]+$/.test(dni)) {
 			isValidDNI = false;
 			validartionMessageDNI = 'El DNI solo puede contener numeros.';
-		} else if (data.clientes.findIndex((cliente) => cliente.dni === dni.toString()) > -1) {
+		} else if (
+			data.clientes.findIndex(
+				(/** @type {{ dni: any; }} */ cliente) => cliente.dni === dni.toString()
+			) > -1
+		) {
 			isValidDNI = false;
 			validartionMessageDNI = 'Ya existe un cliente con este DNI.';
 		} else {
@@ -134,18 +138,7 @@
 		}
 	};
 
-	const validateEmail = () => {
-		if (email.length < 3) {
-			isValid = false;
-			validationMessage = 'El email debe contener al menos 3 letras.';
-		} else if (!/^[a-zA-Z]+$/.test(userName)) {
-			isValid = false;
-			validationMessage = 'El email solo puede contener letras.';
-		} else {
-			isValid = true;
-			validationMessage = '';
-		}
-	};
+	const validateEmail = () => {};
 
 	const validateTelefono = () => {};
 
@@ -206,14 +199,11 @@
 							email = '';
 							telefono = '';
 							dni = null;
-							fechanacimiento = '';
 							nacionalidad = '';
 							ocupacion = '';
 							isValidNombre = true;
 							isValidApellido = true;
 							isValidDNI = true;
-							invalidateAll();
-							throw redirect(303, '/clientes');
 						};
 					}}
 				>
