@@ -342,13 +342,7 @@
 							</FormGroup>
 
 							<FormGroup legendText="Sexo">
-								<Select
-									id="select-1"
-									hideLabel
-									selected={sexo}
-									name="sexo"
-									on:change={validateForm}
-								>
+								<Select id="select-1" hideLabel selected="MASCULINO" name="sexo" on:change>
 									<SelectItem value="MASCULINO" text="Masculino" />
 									<SelectItem value="FEMENINO" text="Femenino" />
 									<SelectItem value="OTRO" text="Otro" />
