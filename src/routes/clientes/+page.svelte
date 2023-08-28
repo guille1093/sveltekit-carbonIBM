@@ -152,10 +152,16 @@
 	let filteredRowIds = [];
 
 	$: console.log('filteredRowIds', filteredRowIds);
+
+	const closeModals = () => {
+		open = false;
+		toast = false;
+		window.location.reload();
+	};
 </script>
 
 <main>
-	<ComposedModal class="" bind:open on:close={() => (open = false)}>
+	<ComposedModal class="" bind:open on:close={() => closeModals()}>
 		<ModalHeader label="" title="Registrar cliente" />
 		<ModalBody hasForm hasScrollingContent>
 			{#if creating}
@@ -394,15 +400,15 @@
 					year: 'numeric'
 				})}
 			{:else if cell.key === 'dni'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'nombre'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'apellido'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'email'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'telefono'}
-				<a class="text-sm text-black dark:text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
 			{:else}
 				{cell.value}
 			{/if}

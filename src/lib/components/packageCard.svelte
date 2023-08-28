@@ -4,7 +4,11 @@
 		ComposedModal,
 		ModalHeader,
 		ModalBody,
-		ClickableTile
+		ClickableTile,
+		StructuredList,
+		StructuredListBody,
+		StructuredListRow,
+		StructuredListCell
 	} from 'carbon-components-svelte';
 	import { ChooseItem, IbmTelehealth } from 'carbon-icons-svelte';
 	/**
@@ -39,16 +43,6 @@
 			name: 'Llegada',
 			icon: 'bx-calendar-check',
 			value: fechaRetorno
-		},
-		{
-			name: 'Dias',
-			icon: 'bx-sun',
-			value: project.cant_dias
-		},
-		{
-			name: 'Noches',
-			icon: 'bx-moon',
-			value: project.cant_noches
 		}
 	];
 	let open = false;
@@ -59,13 +53,11 @@
 >
 	<ClickableTile on:click={() => (open = true)}>
 		<div class=" p-5">
-			<a href="/projects/{project.id}">
-				<h3 class="mb-2 text-gray-900 dark:text-white">
-					{project.nombre}
-				</h3>
-			</a>
+			<h3 class="mb-2">
+				{project.nombre}
+			</h3>
 
-			<div class="flex items-baseline text-gray-900 dark:text-white">
+			<div class="flex items-baseline">
 				<span class="text-3xl font-semibold" />
 				<h4>{precio}</h4>
 			</div>
@@ -77,11 +69,11 @@
 							<!-- Icon -->
 							<i class="bx text-blue-600 {item.icon}" />
 							<!-- Name -->
-							<span class="text-gray-500 dark:text-gray-400">{item.name}:</span>
+							<span>{item.name}:</span>
 						</div>
 
 						<!-- Text -->
-						<span class="text-gray-900 dark:text-white">{item.value}</span>
+						<span>{item.value}</span>
 					</li>
 				{/each}
 			</ul>
@@ -91,29 +83,56 @@
 
 <ComposedModal bind:open>
 	<ModalHeader>
-		<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+		<h2 class="text-2xl font-semibold">
 			{project.nombre}
 		</h2>
-		<p class="text-gray-500 dark:text-gray-400">
+		<p>
 			{precio}
 		</p>
 	</ModalHeader>
 
 	<ModalBody>
-		<ul>
-			<li>
-				<a href="/projects/{project.id}">
-					<h3 class="mb-2 text-gray-900 dark:text-white">
-						{project.nombre}
-					</h3>
-				</a>
-			</li>
-			<li>
-				<div class="flex items-baseline text-gray-900 dark:text-white">
-					<span class="text-3xl font-semibold" />
-					<h4>{precio}</h4>
-				</div>
-			</li>
-		</ul>
+		<StructuredList condensed>
+			<StructuredListBody>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Nombre del paquete:</strong></StructuredListCell>
+					<StructuredListCell>{project.nombre}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Pais destino:</strong></StructuredListCell>
+					<StructuredListCell>{project.pais_destino}</StructuredListCell>
+				</StructuredListRow>
+
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Regimen:</strong></StructuredListCell>
+					<StructuredListCell>{project.regimen}</StructuredListCell>
+				</StructuredListRow>
+
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Salida:</strong></StructuredListCell>
+					<StructuredListCell>{fechaSalida}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Llegada:</strong></StructuredListCell>
+					<StructuredListCell>{fechaRetorno}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Dias:</strong></StructuredListCell>
+					<StructuredListCell>{project.cant_dias}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Noches:</strong></StructuredListCell>
+					<StructuredListCell>{project.cant_noches}</StructuredListCell>
+				</StructuredListRow>
+				<StructuredListRow>
+					<StructuredListCell noWrap><strong>Descripción:</strong></StructuredListCell>
+					<StructuredListCell>{project.descripcion}</StructuredListCell>
+				</StructuredListRow>
+			</StructuredListBody>
+		</StructuredList>
+		<div class="flex justify-end">
+			<Button kind="primary" href="/paquetes/{project.id}">Ver más</Button>
+			<Button kind="secondary" on:click={() => (open = false)}>Cerrar</Button>
+		</div>
 	</ModalBody>
 </ComposedModal>

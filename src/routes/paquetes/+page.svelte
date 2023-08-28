@@ -25,7 +25,9 @@
 		ToolbarContent,
 		ToolbarMenu,
 		ToolbarSearch,
-		Pagination
+		Pagination,
+		TextArea,
+		ClickableTile
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { enhance } from '$app/forms';
@@ -35,34 +37,17 @@
 
 	//VARIABLES REACTIVAS
 
-	$: nombre = '';
-	$: apellido = '';
-	$: email = '';
-	$: telefono = '';
-	$: dni = null;
-	$: nacionalidad = '';
-	$: ocupacion = '';
+	let nombre = '';
+	let precio = 1;
+	let cant_dias = 1;
+	let cant_noches = 1;
 
 	//AUXILIARES
-	$: isValidNombre = true;
-	$: isValidApellido = true;
-	$: isValidDNI = true;
-	$: isValidEmail = true;
-	$: isValidTelefono = true;
-	$: isValidFechaNacimiento = true;
-	$: isValidOcupacion = true;
+	$: isValidNombre = false;
 
 	//VALIDACIONES
 	$: validartionMessageNombre = '';
-	$: validartionMessageApellido = '';
-	$: validartionMessageDNI = '';
-	$: validartionMessageEmail = '';
-	$: validartionMessageTelefono = '';
-	$: validartionMessageOcupacion = '';
-	$: isFormValid =
-		isValidApellido && isValidNombre && dni && nombre.length > 0 && apellido.length > 0
-			? true
-			: false;
+	$: isFormValid = isValidNombre ? true : false;
 	$: creating = false;
 
 	let toast = false;
@@ -76,68 +61,12 @@
 	const validateNombre = () => {
 		if (nombre.length < 3) {
 			isValidNombre = false;
-			validartionMessageNombre = 'El nombre debe contener al menos 3 letras.';
-		} else if (!/^[a-zA-Z]+$/.test(nombre)) {
-			isValidNombre = false;
-			validartionMessageNombre = 'El nombre solo puede contener letras.';
+			validartionMessageNombre = 'El destino debe contener al menos 3 letras.';
 		} else {
 			isValidNombre = true;
 			validartionMessageNombre = '';
 		}
 	};
-
-	const validateApellido = () => {
-		if (apellido.length < 3) {
-			isValidApellido = false;
-			validartionMessageApellido = 'El apellido debe contener al menos 3 letras.';
-		} else if (!/^[a-zA-Z]+$/.test(apellido)) {
-			isValidApellido = false;
-			validartionMessageApellido = 'El apellido solo puede contener letras.';
-		} else {
-			isValidApellido = true;
-			validartionMessageApellido = '';
-		}
-	};
-
-	const validateOcupacion = () => {
-		if (ocupacion.length < 3) {
-			isValidOcupacion = false;
-			validartionMessageOcupacion = 'La ocupacion debe contener al menos 3 letras.';
-		} else if (!/^[a-zA-Z]+$/.test(ocupacion)) {
-			isValidOcupacion = false;
-			validartionMessageOcupacion = 'La ocupacion solo puede contener letras.';
-		} else {
-			isValidOcupacion = true;
-			validartionMessageOcupacion = '';
-		}
-	};
-
-	const validateDNI = () => {
-		if (dni == null) {
-			isValidDNI = false;
-			validartionMessageDNI = 'El DNI no puede estar vacio.';
-		} else if (!/^.{7,8}$/.test(dni)) {
-			isValidDNI = false;
-			validartionMessageDNI = 'El DNI debe tener entre 7 y 8 caracteres.';
-		} else if (!/^[0-9]+$/.test(dni)) {
-			isValidDNI = false;
-			validartionMessageDNI = 'El DNI solo puede contener numeros.';
-		} else if (
-			data.paquetes.findIndex(
-				(/** @type {{ dni: any; }} */ paquete) => paquete.dni === dni.toString()
-			) > -1
-		) {
-			isValidDNI = false;
-			validartionMessageDNI = 'Ya existe un paquete con este DNI.';
-		} else {
-			isValidDNI = true;
-			validartionMessageDNI = '';
-		}
-	};
-
-	const validateEmail = () => {};
-
-	const validateTelefono = () => {};
 
 	//VARIABLES Y CONSTANTES
 	let open = false;
@@ -152,10 +81,16 @@
 	let filteredRowIds = [];
 
 	$: console.log('filteredRowIds', filteredRowIds);
+
+	const closeModals = () => {
+		open = false;
+		toast = false;
+		window.location.reload();
+	};
 </script>
 
 <main>
-	<ComposedModal class="" bind:open on:close={() => (open = false)}>
+	<ComposedModal class="" bind:open on:close={() => closeModals()}>
 		<ModalHeader label="" title="Registrar paquete" />
 		<ModalBody hasForm hasScrollingContent>
 			{#if creating}
@@ -192,34 +127,14 @@
 							creating = false;
 							toast = true;
 							nombre = '';
-							apellido = '';
-							email = '';
-							telefono = '';
-							dni = null;
-							nacionalidad = '';
-							ocupacion = '';
 							isValidNombre = true;
-							isValidApellido = true;
-							isValidDNI = true;
 						};
 					}}
 				>
 					<div class="flex">
 						<div class="w-[50%] flex-grow p-4">
 							<!-- Contenido de la primera columna -->
-							<FormGroup legendText="DNI">
-								<NumberInput
-									id="dni"
-									bind:value={dni}
-									name="dni"
-									on:input={validateDNI}
-									invalid={!isValidDNI}
-									invalidText={validartionMessageDNI}
-									placeholder="Ingrese el DNI"
-								/>
-							</FormGroup>
-
-							<FormGroup legendText="Nombre">
+							<FormGroup legendText="Destino">
 								<TextInput
 									id="nombre"
 									bind:value={nombre}
@@ -228,73 +143,63 @@
 									invalid={!isValidNombre}
 									invalidText={validartionMessageNombre}
 									labelText=""
-									placeholder="Ingrese el nombre"
+									placeholder="Ingrese el destino"
 								/>
 							</FormGroup>
 
-							<FormGroup legendText="Telefono">
-								<TextInput
-									id="telefono"
-									bind:value={telefono}
-									name="telefono"
-									on:keyup={validateTelefono}
-									invalid={!isValidTelefono}
-									invalidText={validartionMessageTelefono}
-									labelText=""
-									placeholder="Ingrese el telefono"
+							<FormGroup legendText="Precio">
+								<NumberInput
+									id="precio"
+									min={1}
+									name="precio"
+									invalid={precio < 0}
+									invalidText="El precio debe ser mayor a 0"
+									placeholder="Ingrese el precio"
+									bind:value={precio}
 								/>
 							</FormGroup>
 
-							<FormGroup legendText="Ocupacion">
-								<TextInput
-									id="ocupacion"
-									bind:value={ocupacion}
-									name="ocupacion"
-									on:keyup={validateOcupacion}
-									invalid={!isValidOcupacion}
-									invalidText={validartionMessageOcupacion}
-									labelText=""
-									placeholder="Ingrese la ocupacion"
+							<FormGroup legendText="Cantidad de días">
+								<NumberInput
+									id="cant_dias"
+									min={1}
+									name="cant_dias"
+									placeholder="Ingrese la cantidad de días"
+									bind:value={cant_dias}
+									invalidText="La cantidad de días debe ser mayor a 0"
+								/>
+							</FormGroup>
+
+							<FormGroup legendText="Cantidad de noches">
+								<NumberInput
+									id="cant_noches"
+									min={1}
+									name="cant_noches"
+									placeholder="Ingrese la cantidad de noches"
+									bind:value={cant_noches}
+									invalidText="La cantidad de noches debe ser mayor a 0"
 								/>
 							</FormGroup>
 						</div>
 						<div class="w-[50%] flex-grow p-4">
 							<!-- Contenido de la segunda columna -->
 
-							<FormGroup legendText="Fecha Nacimiento">
+							<FormGroup legendText="Fechas salida y retorno">
 								<DatePicker
-									value={new Date().toISOString()}
-									datePickerType="single"
+									datePickerType="range"
 									dateFormat="d/m/Y"
 									locale={Spanish}
-									maxDate={new Date()}
-									flatpickrProps={{ position: 'above' }}
+									value={new Date().toISOString()}
 									on:change
 								>
-									<DatePickerInput
-										invalid={!isValidFechaNacimiento}
-										name="nacimiento"
-										placeholder="dd/mm/yyyy"
-									/>
+									<DatePickerInput placeholder="dd/mm/aaa" name="fechasalida" />
+									<DatePickerInput placeholder="dd/mm/aaa" name="fecharetorno" />
 								</DatePicker>
 							</FormGroup>
 
-							<FormGroup legendText="Apellido">
-								<TextInput
-									id="apellido"
-									bind:value={apellido}
-									name="apellido"
-									on:keyup={validateApellido}
-									invalid={!isValidApellido}
-									invalidText={validartionMessageApellido}
-									labelText=""
-									placeholder="Ingrese el apellido"
-								/>
-							</FormGroup>
-
-							<FormGroup legendText="Nacionalidad">
-								<Select id="select-1" hideLabel name="nacionalidad">
-									<SelectItem disabled hidden value="Argentina" text="Seleccione la nacionalidad" />
+							<FormGroup legendText="Pais de destino">
+								<Select id="select-1" hideLabel name="pais_destino" selected="ARGENTINA">
+									<SelectItem disabled hidden value="Argentina" text="Seleccione un país" />
 									{#each data.nacionalidades as nacionalidad}
 										<SelectItem
 											value={nacionalidad.destpais}
@@ -304,20 +209,42 @@
 								</Select>
 							</FormGroup>
 
-							<FormGroup legendText="Email">
-								<TextInput
-									id="email"
-									bind:value={email}
-									name="email"
-									on:keyup={validateEmail}
-									invalid={!isValidEmail}
-									invalidText={validartionMessageEmail}
-									labelText=""
-									placeholder="Ingrese el email"
-								/>
+							<FormGroup legendText="Regimen">
+								<Select id="select-1" hideLabel name="regimen" selected="PENSION COMPLETA">
+									<SelectItem
+										disabled
+										hidden
+										value="PENSION COMPLETA"
+										text="Seleccione un regimen"
+									/>
+
+									<SelectItem value="PENSION COMPLETA" text="PENSION COMPLETA" />
+									<SelectItem value="MEDIA PENSION" text="MEDIA PENSION" />
+								</Select>
+							</FormGroup>
+
+							<FormGroup legendText="Estado">
+								<Select id="select-1" hideLabel name="estado" selected="DISPONIBLE">
+									<SelectItem disabled hidden value="DISPONIBLE" text="Seleccione un estado" />
+									<SelectItem value="NO DISPONIBLE" text="NO DISPONIBLE" />
+									<SelectItem value="DISPONIBLE" text="DISPONIBLE" />
+								</Select>
 							</FormGroup>
 						</div>
 					</div>
+
+					<!-- hotel -->
+					<FormGroup legendText="Hotel">
+						<TextInput id="hotel" name="hotel" placeholder="Ingrese el hotel" />
+					</FormGroup>
+
+					<TextArea
+						class="p-4"
+						name="observaciones"
+						labelText="Observaciones"
+						placeholder="Puede ingresar observaciones si lo desea..."
+						maxCount={300}
+					/>
 				</form>
 			{/if}
 		</ModalBody>
@@ -333,7 +260,7 @@
 		</ModalFooter>
 	</ComposedModal>
 
-	<h1>paquetes</h1>
+	<h1>Paquetes</h1>
 	<p>Aqui puede ver, buscar y filtrar todos los paquetes registrados en el sistema.</p>
 	<DataTable
 		zebra
@@ -341,37 +268,79 @@
 		headers={[
 			{ key: 'nombre', value: 'Destino' },
 			{ key: 'precio', value: 'Precio' },
+			{ key: 'fechasalida', value: 'Salida' },
+			{ key: 'fecharetorno', value: 'Llegada' },
+			{ key: 'cant_dias', value: 'Dias' },
+			{ key: 'cant_noches', value: 'Noches' },
+			{ key: 'regimen', value: 'Regimen' },
 			{ key: 'created', value: 'Creado' },
-			{ key: 'updated', value: 'Actualizado' }
+			{ key: 'estado', value: 'Estado' }
 		]}
 		{rows}
 		{pageSize}
 		{page}
 	>
+		<!-- {Intl.NumberFormat('es-AR').format(header.value)} -->
 		<svelte:fragment slot="cell-header" let:header>
-			{#if header.key === 'dni'}
-				<div class="flex"><i class="bx bx-id-card mr-2 text-blue-600" />DNI</div>
-			{:else if header.key === 'nombre'}
-				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Destino</div>
-			{:else if header.key === 'apellido'}
-				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Apellido</div>
-			{:else if header.key === 'telefono'}
-				<div class="flex"><i class="bx bx-phone mr-2 text-blue-600" />Telefono</div>
-			{:else if header.key === 'fechanacimiento'}
-				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Nacimiento</div>
+			{#if header.key === 'precio'}
+				<div class="flex items-center">
+					<i class="bx bx-dollar-circle text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+					<span class="text-xs">ARS</span>
+				</div>
+			{:else if header.key === 'fechasalida'}
+				<div class="flex items-center">
+					<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
+			{:else if header.key === 'fecharetorno'}
+				<div class="flex items-center">
+					<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
 			{:else if header.key === 'created'}
-				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Creado</div>
+				<div class="flex items-center">
+					<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
 			{:else if header.key === 'updated'}
-				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Actualizado</div>
-			{:else if header.key === 'nacionalidad'}
-				<div class="flex"><i class="bx bx-globe mr-2 text-blue-600" />Nacionalidad</div>
+				<div class="flex items-center">
+					<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
+			{:else if header.key === 'estado'}
+				<div class="flex items-center">
+					<i class="bx bx-check-circle text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
+			{:else if header.key === 'nombre'}
+				<div class="flex items-center">
+					<i class="bx bx-map text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
+			{:else if header.key === 'cant_dias'}
+				<div class="flex items-center">
+					<i class="bx bx-sun text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
+			{:else if header.key === 'cant_noches'}
+				<div class="flex items-center">
+					<i class="bx bx-moon text-xl mr-2 text-blue-600" />
+					<span class="mr-2">{header.value}</span>
+				</div>
 			{:else}
 				{header.value}
 			{/if}
 		</svelte:fragment>
 
 		<svelte:fragment slot="cell" let:row let:cell>
-			{#if cell.key === 'fechanacimiento'}
+			{#if cell.key === 'fechasalida'}
+				{new Date(cell.value).toLocaleDateString('es-ES', {
+					day: '2-digit',
+					month: 'short',
+					year: 'numeric'
+				})}
+			{:else if cell.key === 'fecharetorno'}
 				{new Date(cell.value).toLocaleDateString('es-ES', {
 					day: '2-digit',
 					month: 'short',
@@ -389,16 +358,50 @@
 					month: 'short',
 					year: 'numeric'
 				})}
-			{:else if cell.key === 'dni'}
-				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
+			{:else if cell.key === 'precio'}
+				<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+					$ {Intl.NumberFormat('es-AR').format(cell.value)}
+				</a>
 			{:else if cell.key === 'nombre'}
-				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
-			{:else if cell.key === 'apellido'}
-				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
-			{:else if cell.key === 'email'}
-				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
-			{:else if cell.key === 'telefono'}
-				<a class="text-sm text-black dark:text-gray-300" href="/paquetes/{row.id}">{cell.value}</a>
+				<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+					{cell.value}
+				</a>
+			{:else if cell.key === 'estado'}
+				{#if cell.value === 'activo'}
+					<div class="flex justify-end">
+						<span
+							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+						>
+							{cell.value}
+						</span>
+					</div>
+				{:else if cell.value === 'NO DISPONIBLE'}
+					<div class="flex justify-end">
+						<span
+							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+						>
+							{cell.value}
+						</span>
+					</div>
+				{:else if cell.value === 'DISPONIBLE'}
+					<div class="flex justify-end">
+						<span
+							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+						>
+							{cell.value}
+						</span>
+					</div>
+				{:else if cell.value === 'finalizado'}
+					<div class="flex justify-end">
+						<span
+							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+						>
+							{cell.value}
+						</span>
+					</div>
+				{:else}
+					{cell.value}
+				{/if}
 			{:else}
 				{cell.value}
 			{/if}
