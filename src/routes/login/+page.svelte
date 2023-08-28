@@ -4,6 +4,9 @@
 	import { Login } from 'carbon-icons-svelte';
 	export let form;
 	let loading = false;
+	import {Modal } from 'carbon-components-svelte';
+
+	let open = false;
 
 	const submitLogin = () => {
 		loading = true;
@@ -13,11 +16,11 @@
 					await update();
 					break;
 				case 'invalid':
-					toast.error('Credenciales invalidas');
+					open = true;
 					await update();
 					break;
 				case 'error':
-					toast.error('Credenciales invalidas');
+					open = true;
 					break;
 				default:
 					await update();
@@ -25,12 +28,30 @@
 			loading = false;
 		};
 	};
+
+	/**
+	 * @type {HTMLFormElement}
+	 */
+	let form;
 </script>
 
 <div
 	class="bg-cover z-0"
 	style="background-image: url('https://images.unsplash.com/photo-1672661164570-d5e7e0890a69?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80');"
 >
+	<Modal
+		alert
+		bind:open
+		modalHeading="Error"
+		primaryButtonText="Aceptar"
+		secondaryButtonText="Cancel"
+		on:click:button--secondary={() => (open = false)}
+		on:open
+		on:close
+		on:submit
+	>
+		<p>Credenciales invalidas.</p>
+	</Modal>
 	<div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center items-center">
 		<div class="bg-gray-200 p-12">
 			<a href="/" class="text-2xl font-semibold flex justify-center items-center p-3">
@@ -43,7 +64,7 @@
 
 			<div />
 			<div class="w-full mt-4">
-				<FluidForm action="?/login" method="POST" class="">
+				<form bind:this={form} action="?/login" method="POST" use:enhance class="">
 					<TextInput
 						id="email"
 						labelText="Nombre de usuario"
@@ -85,7 +106,7 @@
 							</div>
 						</div>
 					{/if}
-				</FluidForm>
+				</form>
 			</div>
 		</div>
 	</div>

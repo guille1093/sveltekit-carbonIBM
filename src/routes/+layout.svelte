@@ -62,16 +62,6 @@
 		<HeaderAction bind:isOpen={isOpen1} icon={UserAvatarFilledAlt} closeIcon={UserAvatarFilledAlt}>
 			<HeaderPanelLinks>
 				<HeaderPanelDivider>Cuenta</HeaderPanelDivider>
-				<HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>
-				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 3</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 4</HeaderPanelLink>
-				<HeaderPanelDivider>Switcher subject 2</HeaderPanelDivider>
-				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
-				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>
-				<HeaderPanelDivider>Switcher subject 3</HeaderPanelDivider>
-				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
 			</HeaderPanelLinks>
 		</HeaderAction>
 	</HeaderUtilities>
