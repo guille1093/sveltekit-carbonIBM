@@ -39,6 +39,10 @@
 	let nacionalidad = data.cliente.nacionalidad;
 	let ocupacion = data.cliente.ocupacion;
 	let sexo = data.cliente.sexo;
+	let observaciones = data.cliente.observaciones;
+	let lugarascenso = data.cliente.lugarascenso;
+	let nombremadre = data.cliente.nombremadre;
+	let apellidomadre = data.cliente.apellidomadre;
 
 	//AUXILIARES
 	$: isValidNombre = true;
@@ -366,11 +370,27 @@
 						</FormGroup>
 
 						<FormGroup legendText="Lugar Ascenso">
-							<TextInput name="lugarascenso" placeholder="Ingrese el lugar de ascenso" />
+							<TextInput
+								bind:value={lugarascenso}
+								name="lugarascenso"
+								placeholder="Ingrese el lugar de ascenso"
+							/>
 						</FormGroup>
 
 						<FormGroup legendText="Ocupacion">
-							<TextInput name="ocupacion" placeholder="Ingrese la ocupacion" />
+							<TextInput
+								bind:value={ocupacion}
+								name="ocupacion"
+								placeholder="Ingrese la ocupacion"
+							/>
+						</FormGroup>
+
+						<FormGroup legendText="Nombre Madre">
+							<TextInput
+								bind:value={nombremadre}
+								name="nombremadre"
+								placeholder="Ingrese el nombre de la madre"
+							/>
 						</FormGroup>
 					</div>
 					<div class="w-[50%] flex-grow p-4">
@@ -440,9 +460,18 @@
 								<SelectItem value="OTRO" text="Otro" />
 							</Select>
 						</FormGroup>
+
+						<FormGroup legendText="Apellido Madre">
+							<TextInput
+								bind:value={apellidomadre}
+								name="apellidomadre"
+								placeholder="Ingrese el apellido de la madre"
+							/>
+						</FormGroup>
 					</div>
 				</div>
 				<TextArea
+					bind:value={observaciones}
 					class="p-4"
 					name="observaciones"
 					labelText="Observaciones"

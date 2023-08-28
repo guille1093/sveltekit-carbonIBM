@@ -60,7 +60,12 @@
 	$: validartionMessageTelefono = '';
 	$: validartionMessageOcupacion = '';
 	$: isFormValid =
-		isValidApellido && isValidNombre && dni && nombre.length > 0 && apellido.length > 0
+		isValidApellido &&
+		isValidNombre &&
+		dni &&
+		isValidEmail &&
+		nombre.length > 0 &&
+		apellido.length > 0
 			? true
 			: false;
 	$: creating = false;
@@ -74,9 +79,9 @@
 	//FUNCIONES
 
 	const validateNombre = () => {
-		if (nombre.length < 3) {
+		if (nombre.length < 2) {
 			isValidNombre = false;
-			validartionMessageNombre = 'El nombre debe contener al menos 3 letras.';
+			validartionMessageNombre = 'El nombre debe contener al menos 2 letras.';
 		} else if (!/^[a-zA-Z]+$/.test(nombre)) {
 			isValidNombre = false;
 			validartionMessageNombre = 'El nombre solo puede contener letras.';
@@ -87,9 +92,9 @@
 	};
 
 	const validateApellido = () => {
-		if (apellido.length < 3) {
+		if (apellido.length < 2) {
 			isValidApellido = false;
-			validartionMessageApellido = 'El apellido debe contener al menos 3 letras.';
+			validartionMessageApellido = 'El apellido debe contener al menos 2 letras.';
 		} else if (!/^[a-zA-Z]+$/.test(apellido)) {
 			isValidApellido = false;
 			validartionMessageApellido = 'El apellido solo puede contener letras.';
@@ -100,9 +105,9 @@
 	};
 
 	const validateOcupacion = () => {
-		if (ocupacion.length < 3) {
+		if (ocupacion.length < 2) {
 			isValidOcupacion = false;
-			validartionMessageOcupacion = 'La ocupacion debe contener al menos 3 letras.';
+			validartionMessageOcupacion = 'La ocupacion debe contener al menos 2 letras.';
 		} else if (!/^[a-zA-Z]+$/.test(ocupacion)) {
 			isValidOcupacion = false;
 			validartionMessageOcupacion = 'La ocupacion solo puede contener letras.';
@@ -135,7 +140,12 @@
 		}
 	};
 
-	const validateEmail = () => {};
+	const validateEmail = () => {
+		const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		const isValid = regex.test(email);
+		isValidEmail = isValid;
+		validartionMessageEmail = isValid ? '' : 'El email no es válido.';
+	};
 
 	const validateTelefono = () => {};
 
@@ -251,6 +261,10 @@
 								/>
 							</FormGroup>
 
+							<FormGroup legendText="Lugar Ascenso">
+								<TextInput name="lugarascenso" placeholder="Ingrese el lugar de ascenso" />
+							</FormGroup>
+
 							<FormGroup legendText="Ocupacion">
 								<TextInput
 									id="ocupacion"
@@ -262,6 +276,10 @@
 									labelText=""
 									placeholder="Ingrese la ocupacion"
 								/>
+							</FormGroup>
+
+							<FormGroup legendText="Nombre Madre">
+								<TextInput name="nombremadre" placeholder="Ingrese el nombre de la madre" />
 							</FormGroup>
 						</div>
 						<div class="w-[50%] flex-grow p-4">
@@ -321,6 +339,24 @@
 									labelText=""
 									placeholder="Ingrese el email"
 								/>
+							</FormGroup>
+
+							<FormGroup legendText="Sexo">
+								<Select
+									id="select-1"
+									hideLabel
+									selected={sexo}
+									name="sexo"
+									on:change={validateForm}
+								>
+									<SelectItem value="MASCULINO" text="Masculino" />
+									<SelectItem value="FEMENINO" text="Femenino" />
+									<SelectItem value="OTRO" text="Otro" />
+								</Select>
+							</FormGroup>
+
+							<FormGroup legendText="Apellido Madre">
+								<TextInput name="apellidomadre" placeholder="Ingrese el apellido de la madre" />
 							</FormGroup>
 						</div>
 					</div>
