@@ -82,7 +82,7 @@
 		if (nombre.length < 2) {
 			isValidNombre = false;
 			validartionMessageNombre = 'El nombre debe contener al menos 2 letras.';
-		} else if (!/^[a-zA-Z]+$/.test(nombre)) {
+		} else if (!/^[a-zA-Z\s\u00C0-\u00FF]+$/.test(nombre)) {
 			isValidNombre = false;
 			validartionMessageNombre = 'El nombre solo puede contener letras.';
 		} else {
@@ -95,7 +95,7 @@
 		if (apellido.length < 2) {
 			isValidApellido = false;
 			validartionMessageApellido = 'El apellido debe contener al menos 2 letras.';
-		} else if (!/^[a-zA-Z]+$/.test(apellido)) {
+		} else if (!/^[a-zA-Z\s\u00C0-\u00FF]+$/.test(apellido)) {
 			isValidApellido = false;
 			validartionMessageApellido = 'El apellido solo puede contener letras.';
 		} else {
