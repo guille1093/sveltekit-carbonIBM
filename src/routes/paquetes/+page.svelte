@@ -220,6 +220,7 @@
 
 									<SelectItem value="PENSION COMPLETA" text="PENSION COMPLETA" />
 									<SelectItem value="MEDIA PENSION" text="MEDIA PENSION" />
+									<SelectItem value="DESAYUNO" text="DESAYUNO" />
 								</Select>
 							</FormGroup>
 
