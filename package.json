@@ -36,9 +36,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"zod": "^3.21.4",
+		"pdfmake": "^0.2.7",
 		"pocketbase": "^0.16.0",
-		"gridjs": "^6.0.6",
-		"gridjs-svelte": "^2.1.1"
+		"zod": "^3.21.4"
 	}
 }
