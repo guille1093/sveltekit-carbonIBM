@@ -4,7 +4,7 @@
 	import { Login } from 'carbon-icons-svelte';
 	export let form;
 	let loading = false;
-	import {Modal } from 'carbon-components-svelte';
+	import { Modal } from 'carbon-components-svelte';
 
 	let open = false;
 
@@ -32,7 +32,7 @@
 	/**
 	 * @type {HTMLFormElement}
 	 */
-	let form;
+	let loginform;
 </script>
 
 <div
@@ -64,7 +64,7 @@
 
 			<div />
 			<div class="w-full mt-4">
-				<form bind:this={form} action="?/login" method="POST" use:enhance class="">
+				<form bind:this={loginform} action="?/login" method="POST" use:enhance class="">
 					<TextInput
 						id="email"
 						labelText="Nombre de usuario"

@@ -110,7 +110,7 @@
 		if (ocupacion.length < 3) {
 			isValidOcupacion = false;
 			validartionMessageOcupacion = 'La ocupacion debe contener al menos 3 letras.';
-			} else if (!/^[a-zA-Z\s\u00C0-\u00FF]+$/.test(ocupacion)) {
+		} else if (!/^[a-zA-Z\s\u00C0-\u00FF]+$/.test(ocupacion)) {
 			isValidOcupacion = false;
 			validartionMessageOcupacion = 'La ocupacion solo puede contener letras.';
 		} else {
