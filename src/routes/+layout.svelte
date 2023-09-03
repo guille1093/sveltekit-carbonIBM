@@ -8,7 +8,6 @@
 		HeaderAction,
 		HeaderPanelLinks,
 		HeaderPanelDivider,
-		HeaderPanelLink,
 		SideNav,
 		SideNavItems,
 		SideNavLink,
@@ -47,8 +46,6 @@
 			icon: Currency
 		}
 	];
-
-	$: activeUrl = $page.url.pathname;
 </script>
 
 <Theme bind:theme persist persistKey="__carbon-theme" />

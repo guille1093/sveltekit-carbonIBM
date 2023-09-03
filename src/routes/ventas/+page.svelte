@@ -5,20 +5,15 @@
 	//IMPORTS
 	import { fly } from 'svelte/transition';
 	import { slide } from 'svelte/transition';
-	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 	import {
 		Button,
 		TextInput,
 		NumberInput,
 		FormGroup,
-		DatePickerInput,
-		DatePicker,
 		ComposedModal,
 		ModalHeader,
 		ModalBody,
 		ModalFooter,
-		Select,
-		SelectItem,
 		InlineLoading,
 		ToastNotification,
 		DataTable,
@@ -28,7 +23,11 @@
 		ToolbarSearch,
 		Pagination,
 		TextArea,
-		ClickableTile
+		Select,
+		SelectItem,
+		Dropdown,
+		Search,
+		Tag
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import Close from 'carbon-icons-svelte/lib/Close.svelte';
@@ -44,38 +43,38 @@
 	import { Printer } from 'carbon-icons-svelte';
 	import { Tile } from 'carbon-components-svelte';
 	import { Grid, Row, Column } from 'carbon-components-svelte';
-	// import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-const pdfFonts = {
-  // download default Roboto font from cdnjs.com
-  Roboto: {
-    normal:
-      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf",
-    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf",
-    italics:
-      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Italic.ttf",
-    bolditalics:
-      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf",
-  },
-};
+	const pdfFonts = {
+		// download default Roboto font from cdnjs.com
+		Roboto: {
+			normal:
+				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf',
+			bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf',
+			italics:
+				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Italic.ttf',
+			bolditalics:
+				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf'
+		}
+	};
 
 	import pdfMake from 'pdfmake/build/pdfmake';
-	
 
-
-
+	let selectedID = 0;
 	/**
 	 * @type {never[]}
 	 */
 	let selected = [];
 	let items = data.clientes.map((/** @type {{ id: any; nombre: any; }} */ cliente) => ({
 		id: cliente.id,
-		text: cliente.nombre
+		text: `${cliente.nombre} ${cliente.apellido}`,
+		dni: cliente.dni
 	}));
 	/**
 	 * @type {HTMLFormElement}
 	 */
 	let form;
+
+	let paqueteDropdownOpen = false;
 
 	var docDefinition = {
 		pageMargins: [40, 40], // Márgenes de la página
@@ -167,6 +166,26 @@ const pdfFonts = {
 	 */
 	let filteredRowIds = [];
 
+	let paquetesItems = data.paquetes.map((/** @type {{ id: any; nombre: any; }} */ paquete) => ({
+		id: paquete.id,
+		text: paquete.nombre,
+		fecha: paquete.fechasalida
+	}));
+
+	let paqueteSearch = ''; // Inicializa la variable de búsqueda
+	let paquetesFiltered = [...paquetesItems]; // Mantén una copia de los paquetes originales
+
+	let clienteSearch = ''; // Inicializa la variable de búsqueda
+	let clientesItems = data.clientes.map((/** @type {{ id: any; nombre: any; }} */ cliente) => ({
+		id: cliente.id,
+		text: `${cliente.nombre} ${cliente.apellido}`,
+		fecha: cliente.fechanacimiento,
+		dni: cliente.dni
+	}));
+	let clientesFiltered = [...clientesItems]; // Mantén una copia de los clientes originales
+
+	let clienteDropdownOpen = false;
+
 	$: console.log('filteredRowIds', filteredRowIds);
 
 	const closeModals = () => {
@@ -174,6 +193,8 @@ const pdfFonts = {
 		toast = false;
 		window.location.reload();
 	};
+
+	let titular = clientesFiltered.length > 0 ? clientesFiltered[0].id : '';
 </script>
 
 <main>
@@ -216,27 +237,180 @@ const pdfFonts = {
 						};
 					}}
 				>
-					<div class="flex">
-						<div class="w-[50%] flex-grow p-4">
-							<!-- Contenido de la primera columna -->
-						</div>
-						<div class="w-[50%] flex-grow p-4">
-							<!-- Contenido de la segunda columna -->
-						</div>
-					</div>
+					<Grid>
+						<Row>
+							<Column>
+								<FormGroup legendText="Titular">
+									<input type="hidden" name="cliente" value={titular} />
+									<Search
+										size="sm"
+										placeholder="Buscar cliente"
+										on:input={() => {
+											clienteDropdownOpen = true;
+											clientesFiltered = clientesItems.filter(
+												(/** @type {{ text: string; }} */ cliente) =>
+													cliente.text.toLowerCase().includes(clienteSearch.toLowerCase())
+											);
 
-					<!-- hotel -->
-					<FormGroup legendText="Hotel">
-						<TextInput id="hotel" name="hotel" placeholder="Ingrese el hotel" />
-					</FormGroup>
+											if (!clientesFiltered.length) {
+												clientesFiltered = [clientesItems[0]];
+											}
+										}}
+										on:clear={() => {
+											clienteDropdownOpen = false;
+											clientesFiltered = [...clientesItems];
+										}}
+										bind:value={clienteSearch}
+									/>
+									<Dropdown
+										let:item
+										itemToString={(item) => {
+											return item.text;
+										}}
+										selectedId={clientesFiltered.length > 0
+											? clientesFiltered[0].id
+											: clientesItems[0].id}
+										bind:open={clienteDropdownOpen}
+										items={clientesFiltered}
+										on:select={() => {
+											clienteDropdownOpen = false;
+											clienteSearch = '';
+										}}
+									>
+										<div>
+											<strong>{item.text}</strong>
+										</div>
+										<div>
+											DNI: {item.dni}
+										</div>
+									</Dropdown>
+								</FormGroup>
+							</Column>
+							<Column>
+								<FormGroup legendText="Paquete">
+									<input
+										type="hidden"
+										name="paquete"
+										value={paquetesFiltered.length > 0 ? paquetesFiltered[0].id : ''}
+									/>
+									<Search
+										size="sm"
+										placeholder="Buscar paquete"
+										on:input={() => {
+											paqueteDropdownOpen = true;
+											paquetesFiltered = paquetesItems.filter(
+												(/** @type {{ text: string; }} */ paquete) =>
+													paquete.text.toLowerCase().includes(paqueteSearch.toLowerCase())
+											);
 
-					<TextArea
-						class="p-4"
-						name="observaciones"
-						labelText="Observaciones"
-						placeholder="Puede ingresar observaciones si lo desea..."
-						maxCount={300}
-					/>
+											if (!paquetesFiltered.length) {
+												paquetesFiltered = [paquetesItems[0]];
+											}
+										}}
+										on:clear={() => {
+											paqueteDropdownOpen = false;
+											paquetesFiltered = [...paquetesItems];
+										}}
+										bind:value={paqueteSearch}
+									/>
+									<Dropdown
+										itemToString={(item) => {
+											return (
+												item.text +
+												' - ' +
+												new Date(item.fecha).toLocaleDateString('es-ES', {
+													day: '2-digit',
+													month: 'short',
+													year: 'numeric'
+												})
+											);
+										}}
+										selectedId={paquetesFiltered.length > 0
+											? paquetesFiltered[0].id
+											: paquetesItems[0].id}
+										bind:open={paqueteDropdownOpen}
+										items={paquetesFiltered}
+										on:select={() => {
+											paqueteDropdownOpen = false;
+											paqueteSearch = '';
+										}}
+									/>
+								</FormGroup>
+							</Column>
+						</Row>
+						<Row>
+							<Column>
+								<FormGroup legendText="Acompañantes">
+									<input type="hidden" name="pasajeros" value={selected} />
+
+									<MultiSelect
+										selectionFeedback="top-after-reopen"
+										filterable
+										bind:selectedIds={selected}
+										label="Seleccione los acompañantes"
+										{items}
+										let:item
+									>
+										<div>
+											<strong>{item.text}</strong>
+										</div>
+										<div>
+											DNI: {item.dni}
+										</div>
+									</MultiSelect>
+
+									{#each selected as id}
+										{#each data.clientes as cliente}
+											{#if cliente.id === id}
+												<Tag
+													size="sm"
+													filter
+													type="blue"
+													on:close={() => {
+														selected = selected.filter(
+															(/** @type {any} */ id) => id !== cliente.id
+														);
+													}}>{cliente.nombre} {cliente.apellido}</Tag
+												>
+											{/if}
+										{/each}
+									{/each}
+								</FormGroup>
+							</Column>
+						</Row>
+						<Row>
+							<Column>
+								<FormGroup legendText="Precio">
+									<NumberInput
+										name="precio"
+										label="Precio"
+										min={1}
+										max={100000000}
+										step={1}
+										value={0}
+										hideLabel
+									/>
+								</FormGroup>
+							</Column>
+							<Column>
+								<FormGroup legendText="Estado">
+									<Select name="estado" hideLabel>
+										<SelectItem text="EN CURSO" value="EN CURSO" />
+										<SelectItem text="NO DISPONIBLE" value="NO DISPONIBLE" />
+										<SelectItem text="DISPONIBLE" value="DISPONIBLE" />
+										<SelectItem text="FINALIZADO" value="FINALIZADO" />
+									</Select>
+								</FormGroup>
+							</Column>
+						</Row>
+						<Row>
+							<Column>
+								<FormGroup legendText="Observaciones">
+									<TextArea name="observaciones" placeholder="Observaciones" />
+								</FormGroup>
+							</Column>
+						</Row>
+					</Grid>
 				</form>
 			{/if}
 		</ModalBody>
@@ -254,20 +428,6 @@ const pdfFonts = {
 
 	<h1>Ventas</h1>
 	<p>Aqui puede ver y crear ventas.</p>
-
-	<!--   "created": "2022-01-01 01:00:00.123Z",
-  "updated": "2022-01-01 23:59:59.456Z",
-  "cliente": "RELATION_RECORD_ID",
-  "paquete": "RELATION_RECORD_ID",
-  "pagado": "test",
-  "observaciones": "test",
-  "estado": "test",
-  "cant_personas": 123,
-  "pasajeros": [
-    "RELATION_RECORD_ID"
-  ],
-  "valor": 123 -->
-
 	<DataTable
 		zebra
 		sortable
@@ -401,7 +561,7 @@ const pdfFonts = {
 				<ToolbarMenu>
 					<NumberInput min={1} max={100} label="Numero de filas por pagina" bind:value={pageSize} />
 				</ToolbarMenu>
-				<Button icon={Add} on:click={() => (open = true)}>Registrar paquete</Button>
+				<Button icon={Add} on:click={() => (open = true)}>Nueva venta</Button>
 			</ToolbarContent>
 		</Toolbar>
 	</DataTable>
@@ -422,235 +582,12 @@ const pdfFonts = {
 	}}
 />
 
-<h1>Ventas</h1>
+<style>
+	:global(.bx--list-box__menu-item, .bx--list-box__menu-item__option) {
+		height: auto;
+	}
 
-<Grid>
-	<Row>
-		<Column>
-			<h2>Crear venta</h2>
-			<Tile>
-				<form method="post" action="?/createVenta" bind:this={form}>
-					<input type="hidden" name="pasajeros" value={selected} />
-
-					<MultiSelect
-						selectionFeedback="top-after-reopen"
-						filterable
-						bind:selectedIds={selected}
-						titleText="Acompañantes"
-						label="Seleccione los acompañantes"
-						{items}
-					/>
-					<button type="submit">Enviar</button>
-				</form>
-			</Tile>
-		</Column>
-		{#if selected.length > 0}
-			<Column>
-				<Tile>
-					<h2>Seleccionados</h2>
-					<StructuredList>
-						<StructuredListHead>
-							<StructuredListRow>
-								<StructuredListCell head>Nombre</StructuredListCell>
-								<StructuredListCell head>Apellido</StructuredListCell>
-								<StructuredListCell head>DNI</StructuredListCell>
-								<StructuredListCell head>Seleccionar</StructuredListCell>
-							</StructuredListRow>
-						</StructuredListHead>
-						<StructuredListBody>
-							{#each selected as id}
-								{#each data.clientes as cliente}
-									{#if cliente.id === id}
-										<StructuredListRow>
-											<StructuredListCell>{cliente.nombre}</StructuredListCell>
-											<StructuredListCell>{cliente.apellido}</StructuredListCell>
-											<StructuredListCell>{cliente.dni}</StructuredListCell>
-											<StructuredListCell>
-												<Button
-													size="small"
-													tooltipPosition="right"
-													tooltipAlignment="end"
-													iconDescription="Eliminar"
-													icon={Close}
-													on:click={() => {
-														selected = selected.filter(
-															(/** @type {any} */ id) => id !== cliente.id
-														);
-													}}
-												/>
-											</StructuredListCell>
-										</StructuredListRow>
-									{/if}
-								{/each}
-							{/each}
-						</StructuredListBody>
-					</StructuredList>
-				</Tile>
-			</Column>
-		{/if}
-	</Row>
-</Grid>
-
-<section class="page">
-	<div class="max-w-5xl mx-auto py-8 bg-white">
-		<article class="overflow-hidden">
-			<div class="bg-[white] rounded-b-md">
-				<div class="px-9 flex flex-col">
-					<div class="text-slate-700 top-0">
-						<div class="flex flex-row justify-between">
-							<div>
-								<img src="/images/logo.png" class="h-24 mr-3 justify-end" alt="Del Valle Logo" />
-								<span class="text-xl font-extrabold tracking-tight uppercase font-body">
-									Del Valle Turismo.
-								</span>
-								<p class="text-sm">Empresa de viajes y turismo.</p>
-								<p class="mt-2">
-									<i class="bx bx-id-card text-slate-700" /> <strong> Legajo número: </strong> 18376
-								</p>
-								<p class="">
-									<i class="bx bx-map text-slate-700" />
-									<strong> Dirección: </strong>
-									La Rioja 2203 - Posadas (3360) - Misiones.
-								</p>
-								<p class="">
-									<i class="bx bx-phone-call text-slate-700" /> <strong> Teléfonos: </strong> +54 (3764)
-									222333 / +54 (3764) 424450
-								</p>
-							</div>
-
-							<div class="justify-end">
-								<p class="uppercase"><strong>CONTRATO NRO. </strong>VAR</p>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="flex flex-row justify-center px-9 py-9">
-					<h1 class="underline text-3xl font-bold text-black">CONTRATO DE EXCURSIÓN</h1>
-				</div>
-
-				<p class="px-9 tracking-widest text-justify text-black">
-					En la ciudad de <strong class="uppercase tracking-tight"
-						>Posadas, Provincia de Misiones,</strong
-					>
-					a los <strong class="uppercase tracking-tight">VAR</strong>
-					días del mes de <strong class="uppercase tracking-tight">VAR</strong> del año
-					<strong class="uppercase tracking-tight">VAR</strong>, entre la empresa de viajes y
-					turismo <strong class="">DEL VALLE TURISMO</strong>, con domicilio en la calle
-					<strong class="uppercase tracking-tight">La Rioja 2203</strong> de la ciudad de
-					<strong class="uppercase tracking-tight">Posadas, Provincia de Misiones,</strong>
-					y la parte contratante el Sr/a
-					<strong class="uppercase tracking-tight"> VAR </strong>, con DNI N°
-					<strong class="uppercase tracking-tight"> VAR </strong>. <br />
-					Contrata una excursión para
-					<strong class="uppercase tracking-tight"> VAR </strong> persona/s
-					<strong class="uppercase tracking-tight"> VAR </strong>
-					El precio es por persona en habitaciones dobles, triples o cuádruples, de
-					<strong class="uppercase tracking-tight"> VAR </strong>
-					con el regimen de
-					<strong class="uppercase tracking-tight">VAR</strong>. <br />
-					Estando la salida prevista para el día
-					<strong class="uppercase tracking-tight"> VAR</strong> y el regreso para el día
-					<strong class="uppercase tracking-tight"> VAR</strong>
-					por <strong class="uppercase tracking-tight"> VAR </strong>
-					noches y
-					<strong class="uppercase tracking-tight"> VAR</strong>
-					días. El precio total de la excursión es de
-					<strong class="uppercase tracking-tight"> VAR </strong>. <br />
-				</p>
-
-				<div class="px-9 py-4">
-					<div class="border-t border-slate-500">
-						<div class="text-xs mt-2 font-light text-slate-700">
-							<p class="text-justify">
-								<strong class="uppercase font-bold">Incluye:</strong> Todos los servicios que estén
-								expresamente detallados en el programa elegido.
-								<br />
-								No Incluye: Extras en los hoteles, lavado, planchado, llamadas telefónicas, entradas
-								a los parques y complejos turísticos, así como cualquier otro gasto de carácter personal.
-								El organizador no se hace responsable por problemas de salud en general que padezca el
-								viajero en el transcurso de la excursión, pudiendo este contratar, como servicio adicional,
-								una asistencia de salud a su exclusivo cargo.
-								<br />
-								<strong class="uppercase font-bold">Traslado:</strong> Desde La Empresa Turismo
-								Valle Hermoso al destino elegido y viceversa, en ómnibus o minibús acondicionado
-								para viajes especiales de larga distancia, provisto con Aire Acondicionado, TV,
-								Video, butacas reclinables y/o semi cama, y coordinación permanente.
-								<br />
-								<strong class="uppercase font-bold">Alojamiento:</strong> De acuerdo a la categoría
-								del hotel según el programa elegido por el/los pasajeros.
-								<br />
-								<strong class="uppercase font-bold">Responsabilidad:</strong> El pasajero cuenta con
-								seguro de responsabilidad civil durante el viaje a cargo de la Empresa
-								transportadora. El operador Turismo Valle Hermoso declina toda responsabilidad por
-								cualquier daño o inconveniente que el/los pasajeros o sus pertenencias pudieran
-								sufrir por huelgas, accidentes y sus consecuencias, enfermedades, robos o pérdidas o
-								daños de equipajes u objetos personales, sean cuales fueren sus causas durante los
-								días de la excursión contratada.
-								<br />
-								<strong class="uppercase font-bold">Documentación:</strong> El operador Turismo
-								Valle Hermoso declina toda responsabilidad en caso de ser rechazado por las
-								autoridades Policiales, Migratorias y Aduaneras. Cualquier gasto que se origine
-								correrá por cuenta del pasajero. En este caso, se aplicarán las condiciones
-								establecidas para anulaciones o desistimiento voluntario sin derecho a ninguna
-								indemnización.
-								<br />
-								El pasajero deberá ir provisto de: DNI, Cédula de la Policía Federal o Pasaporte, según
-								corresponda. ARGENTINOS CON DOBLE CIUDADANÍA deberán tener pasaporte argentino válido.
-								EXTRANJEROS RESIDENTES EN EL PAÍS deben presentar el pasaporte del país de origen, cédula
-								de identidad y visado si fuese necesario.
-								<br />
-								<strong class="uppercase font-bold">DERECHO DE PERMANENCIA:</strong> El operador
-								Turismo Valle Hermoso se reserva el derecho de hacer abandonar el tour en cualquier
-								circunstancia o lugar a toda aquella persona que, por su conducta o modo de obrar,
-								cause malestar al grupo y ponga en peligro el normal desarrollo de la excursión.
-								Esta persona no tendrá derecho alguno a exigir indemnización por los servicios no
-								utilizados.
-								<br />
-								<strong class="uppercase font-bold">Cantidad Mínima:</strong> El operador Turismo
-								Valle Hermoso se reserva el derecho de cancelar algunas salidas establecidas cuando
-								no se complete la cantidad mínima de (35) treinta y cinco personas en ómnibus o en
-								minibús (17) pasajeros inscritos. En este caso, se les reintegrará la totalidad del
-								dinero abonado hasta la fecha, sin ningún tipo de interés u otro tipo de ajuste. La
-								empresa comunicará 5 (cinco) días antes de la salida la suspensión del viaje.
-								<br />
-								<strong class="uppercase font-bold">Cancelaciones:</strong> Una vez confirmados los
-								servicios, la cancelación de los mismos sufrirá una retención del 10% del total de
-								la excursión si esta se produce con una anticipación de 20 días o más a la fecha de
-								salida. Si la cancelación se realiza entre 20 días y 10 días antes, la retención
-								será del 20%. En caso de cancelación con menos de 10 días de anticipación, la
-								retención será del 50% del valor total de la excursión. Si se produce una
-								cancelación en menos de 5 (cinco) días, la retención será del 100%. Como
-								alternativa, se podrá ceder o transferir a otra persona, con la condición de que no
-								esté inscrita, o la Empresa otorgará una nota de crédito para otra excursión futura.
-								<br />
-								<strong class="uppercase font-bold">COSTO DE LA EXCURSIÓN:</strong> El precio está
-								expresado en dólares estadounidenses y está sujeto a modificación según la
-								cotización del día. El costo no sufrirá variación una vez abonada la totalidad de la
-								excursión.
-								<br />
-								<strong class="uppercase font-bold">DE CONOCIMIENTO DEL PASAJERO:</strong> El simple
-								hecho de inscribirse para tomar parte en los viajes detallados en el presente
-								folleto implica la total conformidad, aceptación y conocimiento de todas y cada una
-								de las condiciones generales mencionadas anteriormente. La Empresa Turismo Valle
-								Hermoso.
-								<br />
-								<strong class="uppercase font-bold">observaciones:</strong>
-								VAR
-								<br />
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="px-9 mt-20 flex col-span-2 justify-evenly bottom-0">
-				<div class="h-px w-44 bg-gray-400 bottom-0" />
-				<div class="h-px w-44 bg-gray-400 bottom-0" />
-				<div class="bottom-0 right-0">
-					<p class="text-xs text-gray-400">Página 1/1</p>
-				</div>
-			</div>
-		</article>
-	</div>
-</section>
+	:global(.bx--checkbox-label-text) {
+		display: block;
+	}
+</style>

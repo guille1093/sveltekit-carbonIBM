@@ -1,7 +1,6 @@
 <script>
 	export let data;
 	import PackageCard from '$lib/components/packageCard.svelte';
-	import { Button } from 'carbon-components-svelte';
 </script>
 
 <main>

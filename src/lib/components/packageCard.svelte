@@ -10,7 +10,6 @@
 		StructuredListRow,
 		StructuredListCell
 	} from 'carbon-components-svelte';
-	import { ChooseItem, IbmTelehealth } from 'carbon-icons-svelte';
 	/**
 	 * @type {{ precio: number | bigint; fechasalida: string | number | Date; fecharetorno: string | number | Date; cant_dias: any; cant_noches: any; id: any; nombre: any; }}
 	 */

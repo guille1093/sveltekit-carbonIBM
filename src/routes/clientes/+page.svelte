@@ -40,7 +40,6 @@
 	$: email = '';
 	$: telefono = '';
 	$: dni = null;
-	$: nacionalidad = '';
 	$: ocupacion = '';
 
 	//AUXILIARES
@@ -212,7 +211,6 @@
 							email = '';
 							telefono = '';
 							dni = null;
-							nacionalidad = '';
 							ocupacion = '';
 							isValidNombre = true;
 							isValidApellido = true;

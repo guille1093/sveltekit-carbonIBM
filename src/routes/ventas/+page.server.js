@@ -24,27 +24,44 @@ export async function load({ locals }) {
 
 		const ventas = await getVentas();
 
-		// Agregar los campos `nombre`, `apellido` y `dni` del titular
-		const ventasinf = ventas.map((venta) => {
+		const ventasinf = ventas.map((/** @type {{ cliente: any; paquete: any; }} */ venta) => {
 			const cliente = clientes.find((c) => c.id === venta.cliente);
 			const paquete = paquetes.find((p) => p.id === venta.paquete);
 
-			const nombre = cliente.nombre;
-			const apellido = cliente.apellido;
-			const dni = cliente.dni;
+			if (cliente && paquete) {
+				const nombre = cliente.nombre;
+				const apellido = cliente.apellido;
+				const dni = cliente.dni;
 
-			const nombrePaquete = paquete.nombre;
-			const estadoPaquete = paquete.estado;
+				const nombrePaquete = paquete.nombre;
+				const estadoPaquete = paquete.estado;
+				const precioPaquete = paquete.precio;
 
-			return {
-				...venta,
-				nombre,
-				apellido,
-				dni,
-				nombrePaquete,
-				estadoPaquete
-			};
+				return {
+					...venta,
+					nombre,
+					apellido,
+					dni,
+					nombrePaquete,
+					estadoPaquete,
+					precioPaquete,
+				};
+			} else {
+				// Puedes manejar el caso donde no se encuentra el cliente o el paquete aquí.
+				// Por ejemplo, puedes retornar un objeto con valores predeterminados o manejarlo de otra manera.
+				console.log('Cliente o paquete no encontrado para venta:', venta);
+				return {
+					...venta,
+					nombre: 'No encontrado',
+					apellido: 'No encontrado',
+					dni: 'No encontrado',
+					nombrePaquete: 'No encontrado',
+					estadoPaquete: 'No encontrado',
+					precioPaquete: 'No encontrado',
+				};
+			}
 		});
+
 
 		console.log('ventas cargadas');
 		console.log('ventasinf: ', ventasinf);
@@ -60,19 +77,6 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-	// example create data
-
-	//     "cliente": "RELATION_RECORD_ID",
-	//     "paquete": "RELATION_RECORD_ID",
-	//     "pagado": "test",
-	//     "observaciones": "test",
-	//     "estado": "test",
-	//     "cant_personas": 123,
-	//     "pasajeros": [
-	//         "ID",
-	//         "ID",
-	//     ]
-
 	createVenta: async ({ request, locals }) => {
 		await new Promise((fulfil) => setTimeout(fulfil, 1500));
 		const form = await request.formData();

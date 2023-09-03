@@ -12,6 +12,5 @@ export async function load({ locals }) {
 		};
 	} catch (err) {
 		console.log('Error: ', err);
-		throw error(err.status, err.message);
 	}
 }
