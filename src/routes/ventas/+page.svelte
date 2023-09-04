@@ -169,7 +169,8 @@
 	let paquetesItems = data.paquetes.map((/** @type {{ id: any; nombre: any; }} */ paquete) => ({
 		id: paquete.id,
 		text: paquete.nombre,
-		fecha: paquete.fechasalida
+		fecha: paquete.fechasalida,
+		precio: paquete.precio
 	}));
 
 	let paqueteSearch = ''; // Inicializa la variable de búsqueda
@@ -194,7 +195,18 @@
 		window.location.reload();
 	};
 
-	let titular = clientesFiltered.length > 0 ? clientesFiltered[0].id : '';
+	let titular = clientesItems[0].id;
+
+	$: precio = paquetesItems[0].precio;
+
+	let paquete = paquetesItems[0].id;
+
+	let paquetePrecio = paquetesItems[0].precio;
+
+	console.log('precio', precio);
+	console.log('selected', selected);
+	console.log('paquetesFiltered', paquetesFiltered);
+	console.log('paquetesFiltered[0]', paquetesFiltered[0]);
 </script>
 
 <main>
@@ -255,6 +267,14 @@
 											if (!clientesFiltered.length) {
 												clientesFiltered = [clientesItems[0]];
 											}
+											if (clientesFiltered && clientesFiltered.length > 0) {
+												titular = clientesFiltered[0].id;
+											} else if (clientesItems && clientesItems.length > 0) {
+												titular = clientesItems[0].id;
+											} else {
+												// Asigna un valor predeterminado si ambos arreglos están vacíos o indefinidos
+												titular = clientesItems[0].id; // O cualquier otro valor predeterminado que desees
+											}
 										}}
 										on:clear={() => {
 											clienteDropdownOpen = false;
@@ -267,14 +287,17 @@
 										itemToString={(item) => {
 											return item.text;
 										}}
-										selectedId={clientesFiltered.length > 0
-											? clientesFiltered[0].id
-											: clientesItems[0].id}
+										bind:selectedId={titular}
 										bind:open={clienteDropdownOpen}
 										items={clientesFiltered}
 										on:select={() => {
 											clienteDropdownOpen = false;
 											clienteSearch = '';
+											clientesFiltered = [...clientesItems];
+											//elminar de la lista de acompañantes al titular
+											items = items.filter((/** @type {{ id: any; }} */ item) => {
+												return item.id !== titular;
+											});
 										}}
 									>
 										<div>
@@ -288,15 +311,12 @@
 							</Column>
 							<Column>
 								<FormGroup legendText="Paquete">
-									<input
-										type="hidden"
-										name="paquete"
-										value={paquetesFiltered.length > 0 ? paquetesFiltered[0].id : ''}
-									/>
+									<input type="hidden" name="paquete" value={paquete} />
 									<Search
 										size="sm"
 										placeholder="Buscar paquete"
 										on:input={() => {
+											console.log('paquete', paquete);
 											paqueteDropdownOpen = true;
 											paquetesFiltered = paquetesItems.filter(
 												(/** @type {{ text: string; }} */ paquete) =>
@@ -306,6 +326,32 @@
 											if (!paquetesFiltered.length) {
 												paquetesFiltered = [paquetesItems[0]];
 											}
+
+											if (paquetesFiltered && paquetesFiltered.length > 0) {
+												paquete = paquetesFiltered[0].id;
+												precio =
+													selected.length > 0
+														? selected.length * paquetesFiltered[0].precio
+														: paquetesFiltered[0].precio;
+												paquetePrecio = paquetesFiltered[0].precio;
+											} else if (paquetesItems && paquetesItems.length > 0) {
+												paquete = paquetesItems[0].id;
+												precio =
+													selected.length > 0
+														? selected.length * paquetesItems[0].precio
+														: paquetesItems[0].precio;
+												paquetePrecio = paquetesItems[0].precio;
+											} else {
+												// Asigna un valor predeterminado si ambos arreglos están vacíos o indefinidos
+												paquete = paquetesItems[0].id;
+												precio =
+													selected.length > 0
+														? selected.length * paquetesItems[0].precio
+														: paquetesItems[0].precio;
+												paquetePrecio = paquetesItems[0].precio;
+											}
+
+											console.log('precio', precio);
 										}}
 										on:clear={() => {
 											paqueteDropdownOpen = false;
@@ -325,14 +371,15 @@
 												})
 											);
 										}}
-										selectedId={paquetesFiltered.length > 0
-											? paquetesFiltered[0].id
-											: paquetesItems[0].id}
+										bind:selectedId={paquete}
 										bind:open={paqueteDropdownOpen}
 										items={paquetesFiltered}
 										on:select={() => {
 											paqueteDropdownOpen = false;
 											paqueteSearch = '';
+											paquetesFiltered = [...paquetesItems];
+											console.log('paquete', paquete);
+											console.log('precio', precio);
 										}}
 									/>
 								</FormGroup>
@@ -387,18 +434,17 @@
 										min={1}
 										max={100000000}
 										step={1}
-										value={0}
+										bind:value={precio}
 										hideLabel
 									/>
 								</FormGroup>
 							</Column>
 							<Column>
 								<FormGroup legendText="Estado">
-									<Select name="estado" hideLabel>
+									<Select name="estado" hideLabel disabled>
 										<SelectItem text="EN CURSO" value="EN CURSO" />
-										<SelectItem text="NO DISPONIBLE" value="NO DISPONIBLE" />
-										<SelectItem text="DISPONIBLE" value="DISPONIBLE" />
-										<SelectItem text="FINALIZADO" value="FINALIZADO" />
+										<SelectItem text="FINALIZADA" value="FINALIZADA" />
+										<SelectItem text="CANCELADA" value="CANCELADA" />
 									</Select>
 								</FormGroup>
 							</Column>
@@ -502,16 +548,16 @@
 					year: 'numeric'
 				})}
 			{:else if cell.key === 'precio'}
-				<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+				<a class="text-sm text-gray-300" href="/ventas/{row.id}">
 					$ {Intl.NumberFormat('es-AR').format(cell.value)}
 				</a>
 			{:else if cell.key === 'nombre'}
-				<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+				<a class="text-sm text-gray-300" href="/ventas/{row.id}">
 					{row.nombre}
 					{row.apellido}
 				</a>
 			{:else if cell.key === 'nombrePaquete'}
-				<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+				<a class="text-sm text-gray-300" href="/ventas/{row.id}">
 					{cell.value}
 				</a>
 			{:else if cell.key === 'estado'}
@@ -523,26 +569,18 @@
 							{cell.value}
 						</span>
 					</div>
-				{:else if cell.value === 'NO DISPONIBLE'}
-					<div class="flex justify-end">
+				{:else if cell.value === 'CANCELADA'}
+					<div class="flex">
 						<span
 							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
 						>
 							{cell.value}
 						</span>
 					</div>
-				{:else if cell.value === 'DISPONIBLE'}
-					<div class="flex justify-end">
+				{:else if cell.value === 'FINALIZADA'}
+					<div class="flex">
 						<span
 							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-						>
-							{cell.value}
-						</span>
-					</div>
-				{:else if cell.value === 'finalizado'}
-					<div class="flex justify-end">
-						<span
-							class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
 						>
 							{cell.value}
 						</span>

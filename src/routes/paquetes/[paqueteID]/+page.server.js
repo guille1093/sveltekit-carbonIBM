@@ -38,13 +38,14 @@ export const load = ({ locals, params }) => {
 					await Promise.all(
 						venta.pasajeros.map(
 							async (/** @type {string} */ pasajero, /** @type {string | number} */ index) => {
-								console.log('pasajero: ' + pasajero);
 								venta.pasajeros[index] = await getNombrePasajero(pasajero);
 							}
 						)
 					);
 				})
 			);
+
+			
 
 			return ventas;
 		} catch (err) {

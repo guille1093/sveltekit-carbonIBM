@@ -246,13 +246,11 @@
 						>
 
 						<StructuredList>
-							<StructuredListHead>
-								<StructuredListRow head>
-									<StructuredListCell head>DNI</StructuredListCell>
-									<StructuredListCell head>Nombre</StructuredListCell>
-								</StructuredListRow>
-							</StructuredListHead>
 							<StructuredListBody>
+								<StructuredListRow>
+									<StructuredListCell>Titular {venta.cliente}{venta.cliente.dni}</StructuredListCell
+									>
+								</StructuredListRow>
 								{#each venta.pasajeros as pasajero}
 									<StructuredListRow>
 										<StructuredListCell>{pasajero.dni}</StructuredListCell>

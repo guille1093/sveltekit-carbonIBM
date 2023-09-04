@@ -88,6 +88,7 @@ export const actions = {
 		const estado = form.get('estado') ?? '';
 		const cant_personas = form.get('cant_personas') ?? '';
 		const pasajeros = form.get('pasajeros') ?? '';
+		const valor = form.get('precio') ?? '1';
 		console.log('pasajeros: ', pasajeros);
 		const data = {
 			cliente,
@@ -96,7 +97,8 @@ export const actions = {
 			observaciones,
 			estado,
 			cant_personas,
-			pasajeros: pasajeros.toString().split(',')
+			pasajeros: pasajeros.toString().split(','),
+			valor
 		};
 		console.log('data: ', data);
 		const { id } = await locals.pb.collection('ventas').create(data);
