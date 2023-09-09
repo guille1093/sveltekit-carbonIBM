@@ -4,7 +4,7 @@ export async function load({ locals }) {
 	try {
 		const getClientes = async () => {
 			// @ts-ignore
-			return structuredClone(await locals.pb.collection('clientes').getFullList(5000, {}));
+			return structuredClone(await locals.pb.collection('clientes').getFullList(undefined, {}));
 		};
 
 		const getNacionalidades = async () => {

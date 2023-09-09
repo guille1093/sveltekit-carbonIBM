@@ -25,7 +25,6 @@
 	import { Home } from 'carbon-icons-svelte';
 	let isSideNavOpen = false;
 	let isOpen1 = false;
-	let theme = 'g100';
 
 	//Variables
 	const navigation = [
@@ -48,7 +47,7 @@
 	];
 </script>
 
-<Theme bind:theme persist persistKey="__carbon-theme" />
+<Theme theme="g100" />
 
 <Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">

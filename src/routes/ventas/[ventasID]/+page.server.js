@@ -6,7 +6,7 @@ export async function load({ locals, params }) {
      * @param ventaId
      * @returns {Promise<*>}
      */
-    const getventa = async (ventaId) => {
+    const getventa = async (/** @type {string} */ ventaId) => {
         try {
             const [ventaRaw, clientesRaw, paquetesRaw] = await Promise.all([
                 locals.pb.collection('ventas').getOne(ventaId),
@@ -18,11 +18,12 @@ export async function load({ locals, params }) {
 
 
 
-            const clientes = clientesRaw.reduce((map, cliente) => {
+            const clientes = clientesRaw.reduce((/** @type {{ [x: string]: any; }} */ map, /** @type {{ id: string | number; }} */ cliente) => {
                 map[cliente.id] = cliente;
                 return map;
             }, {});
-            const paquetes = paquetesRaw.reduce((map, paquete) => {
+
+            const paquetes = paquetesRaw.reduce((/** @type {{ [x: string]: any; }} */ map, /** @type {{ id: string | number; }} */ paquete) => {
                 map[paquete.id] = paquete;
                 return map;
             }, {});

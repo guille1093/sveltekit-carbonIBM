@@ -428,7 +428,14 @@
 					year: 'numeric'
 				})}
 			{:else if cell.key === 'dni'}
-				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				<div
+					role="button"
+					tabindex="0"
+					on:click={() => (window.location.href = `/clientes/${row.id}`)}
+					on:keydown={() => (window.location.href = `/clientes/${row.id}`)}
+				>
+					{cell.value}
+				</div>
 			{:else if cell.key === 'nombre'}
 				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
 			{:else if cell.key === 'apellido'}
