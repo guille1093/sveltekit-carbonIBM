@@ -74,6 +74,8 @@
 	 */
 	let form;
 
+	$: selectCantidad = (selected.length + 1).toString();
+
 	let paqueteDropdownOpen = false;
 
 	var docDefinition = {
@@ -472,7 +474,7 @@
 		</ModalFooter>
 	</ComposedModal>
 
-	<h1>Ventas</h1>
+	<h1>Ventas {selectCantidad}</h1>
 	<p>Aqui puede ver y crear ventas.</p>
 	<DataTable
 		zebra

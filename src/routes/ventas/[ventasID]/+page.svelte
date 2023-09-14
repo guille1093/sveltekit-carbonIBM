@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 	import { Button } from 'carbon-components-svelte';
 	import { Printer } from 'carbon-icons-svelte';
 	export let data;
@@ -79,15 +81,89 @@
 		pageSize: 'A4',
 		content: [
 			{
+				columns: [
+					[
+						{
+							image: `data:image/jpeg;base64,${data.logo}`,
+							width: 72, // Ajusta el ancho de la imagen según tus necesidades
+							alignment: 'left',
+							margin: [0, 0]
+						},
+						{
+							text: [
+								{ text: 'Del Valle Turismo.\n', fontSize: 14, bold: true },
+								{ text: 'Empresa de viajes y turismo \n', fontSize: 10, bold: true },
+								{ text: 'Legajo número: ', bold: true },
+								'18376. \n',
+								{ text: 'Dirección: ', bold: true },
+								'La Rioja 2203 - Posadas (3360) - Misiones. \n',
+								{ text: 'Teléfonos: ', bold: true },
+								'+54 (3764) 222333 / +54 (3764) 424450'
+							],
+							fontSize: 10,
+							alignment: 'left',
+							width: 320,
+							margin: [0, 0]
+						}
+					],
+					{
+						text: `ID CONTRATO: ${data.venta.id.toString().padStart(4, '0').toUpperCase()}`,
+						fontSize: 10,
+						alignment: 'right',
+						margin: [0, 10]
+					}
+				]
+			},
+
+			{
 				text: 'CONTRATO DE EXCURSIÓN',
 				style: 'header'
 			},
+			
 			{
-				text: `En la ciudad de Posadas, Provincia de Misiones, a los ${createdDia} días del mes de ${createdMes} del año ${createdAnio}, entre la empresa de viajes y turismo DEL VALLE TURISMO, con domicilio en la calle La Rioja 2203 de la ciudad de Posadas, Provincia de Misiones, y la parte contratante el Sr/a ${data.venta.cliente.nombre} ${data.venta.cliente.apellido}, con DNI N° ${data.venta.cliente.dni}.`,
+				text: [
+					'En la ciudad de ',
+					{ text: 'POSADAS, PROVINCIA DE MISIONES', fontSize: 10, bold: true },
+					`, a los `,
+					{ text: `${createdDia.toString().toUpperCase()} DÍAS DEL MES DE `, bold: true },
+					{ text: `${createdMes.toString().toUpperCase()}`, bold: true },
+					` del año `,
+					{ text: `${createdAnio.toString().toUpperCase()}`, bold: true },
+					`, entre la empresa de viajes y turismo `,
+					{ text: 'DEL VALLE TURISMO', bold: true },
+					', con domicilio en la calle ',
+					{ text: 'LA RIOJA 2203', bold: true },
+					' de la ciudad de Posadas, Provincia de Misiones, y la parte contratante el Sr/a ',
+					{
+						text: `${data.venta.cliente.nombre
+							.toString()
+							.toUpperCase()} ${data.venta.cliente.apellido.toString().toUpperCase()}`,
+						bold: true
+					},
+					`, con DNI N° ${data.venta.cliente.dni.toString().toUpperCase()}.`
+				],
 				style: 'paragraph'
 			},
 			{
-				text: `Contrata una excursión para ${data.venta.cant_personas} persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples, de ${precio} con el régimen de ${data.venta.paquete.regimen}. Estando la salida prevista para el día ${fechasalida} y el regreso para el día ${fecharetorno} por ${data.venta.paquete.cant_noches} noches y ${data.venta.paquete.cant_dias} días. El precio total de la excursión es de ${precio_total}.`,
+				text: [
+					`Contrata una excursión para ${data.venta.cant_personas
+						.toString()
+						.toUpperCase()} persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples, de `,
+					{ text: `${precio.toString().toUpperCase()}`, bold: true },
+					` con el régimen de `,
+					{ text: `${data.venta.paquete.regimen.toString().toUpperCase()}`, bold: true },
+					'. Estando la salida prevista para el día ',
+					{ text: `${fechasalida.toString().toUpperCase()}`, bold: true },
+					' y el regreso para el día ',
+					{ text: `${fecharetorno.toString().toUpperCase()}`, bold: true },
+					` por ${data.venta.paquete.cant_noches
+						.toString()
+						.toUpperCase()} noches y ${data.venta.paquete.cant_dias
+						.toString()
+						.toUpperCase()} días. El precio total de la excursión es de `,
+					{ text: `${precio_total.toString().toUpperCase()}`, bold: true },
+					'.'
+				],
 				style: 'paragraph'
 			},
 			{
@@ -128,19 +204,20 @@
 			header: {
 				fontSize: 14,
 				bold: true,
-				alignment: 'center'
+				alignment: 'center',
+				margin: [0, 15, 0, 5]
 			},
 			paragraph: {
 				fontSize: 10,
 				alignment: 'justify',
-				margin: [0, 5, 0, 5]
+				margin: [0, 2, 0, 2]
 			},
 			bold: {
 				bold: true,
 				margin: [0, 5, 0, 5]
 			},
 			list: {
-				fontSize: 10,
+				fontSize: 8,
 				margin: [0, 5, 0, 5]
 			},
 			page: {
@@ -149,13 +226,9 @@
 			}
 		}
 	};
-
-	// Ahora puedes usar este objeto docDefinition para generar el PDF con las variables insertadas.
 </script>
 
-<!-- Section: Design Block -->
 
-<!-- Section: Design Block -->
 
 <Button
 	size="small"
@@ -217,26 +290,6 @@
 					<div class="px-9 flex flex-col">
 						<div class="text-slate-700 top-0">
 							<div class="flex flex-row justify-between">
-								<div>
-									<img src="/images/logo.png" class="h-24 mr-3 justify-end" alt="Del Valle Logo" />
-									<span class="text-xl font-extrabold tracking-tight uppercase font-body">
-										Del Valle Turismo.
-									</span>
-									<p class="text-sm">Empresa de viajes y turismo.</p>
-									<p class="mt-2">
-										<i class="bx bx-id-card text-slate-700" /> <strong> Legajo número: </strong> 18376
-									</p>
-									<p class="">
-										<i class="bx bx-map text-slate-700" />
-										<strong> Dirección: </strong>
-										La Rioja 2203 - Posadas (3360) - Misiones.
-									</p>
-									<p class="">
-										<i class="bx bx-phone-call text-slate-700" /> <strong> Teléfonos: </strong> +54 (3764)
-										222333 / +54 (3764) 424450
-									</p>
-								</div>
-
 								<div class="justify-end">
 									<p class="uppercase"><strong>CONTRATO NRO. </strong>{data.venta.id}</p>
 								</div>
@@ -279,101 +332,10 @@
 						<strong class="uppercase tracking-tight"> {data.venta.paquete.cant_dias} </strong>
 						días. El precio total de la excursión es de
 						<strong class="uppercase tracking-tight"> {precio_total} </strong>. <br />
+						<strong class="uppercase font-bold">observaciones:</strong>
+						{data.venta.observaciones}
+						<br />
 					</p>
-
-					<div class="px-9 py-4">
-						<div class="border-t border-slate-500">
-							<div class="text-xs mt-2 font-light text-slate-700">
-								<p class="text-justify">
-									<strong class="uppercase font-bold">Incluye:</strong> Todos los servicios que
-									estén expresamente detallados en el programa elegido.
-									<br />
-									No Incluye: Extras en los hoteles, lavado, planchado, llamadas telefónicas, entradas
-									a los parques y complejos turísticos, así como cualquier otro gasto de carácter personal.
-									El organizador no se hace responsable por problemas de salud en general que padezca
-									el viajero en el transcurso de la excursión, pudiendo este contratar, como servicio
-									adicional, una asistencia de salud a su exclusivo cargo.
-									<br />
-									<strong class="uppercase font-bold">Traslado:</strong> Desde La Empresa Turismo
-									Valle Hermoso al destino elegido y viceversa, en ómnibus o minibús acondicionado
-									para viajes especiales de larga distancia, provisto con Aire Acondicionado, TV,
-									Video, butacas reclinables y/o semi cama, y coordinación permanente.
-									<br />
-									<strong class="uppercase font-bold">Alojamiento:</strong> De acuerdo a la
-									categoría del hotel según el programa elegido por el/los pasajeros.
-									<br />
-									<strong class="uppercase font-bold">Responsabilidad:</strong> El pasajero cuenta
-									con seguro de responsabilidad civil durante el viaje a cargo de la Empresa
-									transportadora. El operador Turismo Valle Hermoso declina toda responsabilidad por
-									cualquier daño o inconveniente que el/los pasajeros o sus pertenencias pudieran
-									sufrir por huelgas, accidentes y sus consecuencias, enfermedades, robos o pérdidas
-									o daños de equipajes u objetos personales, sean cuales fueren sus causas durante
-									los días de la excursión contratada.
-									<br />
-									<strong class="uppercase font-bold">Documentación:</strong> El operador Turismo
-									Valle Hermoso declina toda responsabilidad en caso de ser rechazado por las
-									autoridades Policiales, Migratorias y Aduaneras. Cualquier gasto que se origine
-									correrá por cuenta del pasajero. En este caso, se aplicarán las condiciones
-									establecidas para anulaciones o desistimiento voluntario sin derecho a ninguna
-									indemnización.
-									<br />
-									El pasajero deberá ir provisto de: DNI, Cédula de la Policía Federal o Pasaporte, según
-									corresponda. ARGENTINOS CON DOBLE CIUDADANÍA deberán tener pasaporte argentino válido.
-									EXTRANJEROS RESIDENTES EN EL PAÍS deben presentar el pasaporte del país de origen,
-									cédula de identidad y visado si fuese necesario.
-									<br />
-									<strong class="uppercase font-bold">DERECHO DE PERMANENCIA:</strong> El operador
-									Turismo Valle Hermoso se reserva el derecho de hacer abandonar el tour en
-									cualquier circunstancia o lugar a toda aquella persona que, por su conducta o modo
-									de obrar, cause malestar al grupo y ponga en peligro el normal desarrollo de la
-									excursión. Esta persona no tendrá derecho alguno a exigir indemnización por los
-									servicios no utilizados.
-									<br />
-									<strong class="uppercase font-bold">Cantidad Mínima:</strong> El operador Turismo
-									Valle Hermoso se reserva el derecho de cancelar algunas salidas establecidas
-									cuando no se complete la cantidad mínima de (35) treinta y cinco personas en
-									ómnibus o en minibús (17) pasajeros inscritos. En este caso, se les reintegrará la
-									totalidad del dinero abonado hasta la fecha, sin ningún tipo de interés u otro
-									tipo de ajuste. La empresa comunicará 5 (cinco) días antes de la salida la
-									suspensión del viaje.
-									<br />
-									<strong class="uppercase font-bold">Cancelaciones:</strong> Una vez confirmados
-									los servicios, la cancelación de los mismos sufrirá una retención del 10% del
-									total de la excursión si esta se produce con una anticipación de 20 días o más a
-									la fecha de salida. Si la cancelación se realiza entre 20 días y 10 días antes, la
-									retención será del 20%. En caso de cancelación con menos de 10 días de
-									anticipación, la retención será del 50% del valor total de la excursión. Si se
-									produce una cancelación en menos de 5 (cinco) días, la retención será del 100%.
-									Como alternativa, se podrá ceder o transferir a otra persona, con la condición de
-									que no esté inscrita, o la Empresa otorgará una nota de crédito para otra
-									excursión futura.
-									<br />
-									<strong class="uppercase font-bold">COSTO DE LA EXCURSIÓN:</strong> El precio está
-									expresado en dólares estadounidenses y está sujeto a modificación según la
-									cotización del día. El costo no sufrirá variación una vez abonada la totalidad de
-									la excursión.
-									<br />
-									<strong class="uppercase font-bold">DE CONOCIMIENTO DEL PASAJERO:</strong> El
-									simple hecho de inscribirse para tomar parte en los viajes detallados en el
-									presente folleto implica la total conformidad, aceptación y conocimiento de todas
-									y cada una de las condiciones generales mencionadas anteriormente. La Empresa
-									Turismo Valle Hermoso.
-									<br />
-									<strong class="uppercase font-bold">observaciones:</strong>
-									{data.venta.observaciones}
-									<br />
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="px-9 mt-20 flex col-span-2 justify-evenly bottom-0">
-					<div class="h-px w-44 bg-gray-400 bottom-0" />
-					<div class="h-px w-44 bg-gray-400 bottom-0" />
-					<div class="bottom-0 right-0">
-						<p class="text-xs text-gray-400">Página 1/1</p>
-					</div>
 				</div>
 			</article>
 		</div>

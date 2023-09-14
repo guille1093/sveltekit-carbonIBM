@@ -369,98 +369,106 @@
 
 	<h1>Clientes</h1>
 	<p>Aqui puede ver, buscar y filtrar todos los clientes registrados en el sistema.</p>
-	<DataTable
-		zebra
-		sortable
-		headers={[
-			{ key: 'dni', value: 'DNI' },
-			{ key: 'nombre', value: 'Nombre' },
-			{ key: 'apellido', value: 'Apellido' },
-			{ key: 'fechanacimiento', value: 'Nacimiento' },
-			{ key: 'created', value: 'Creado' },
-			{ key: 'updated', value: 'Actualizado' },
-			{ key: 'telefono', value: 'Telefono' },
-			{ key: 'nacionalidad', value: 'Nacionalidad' }
-		]}
-		{rows}
-		{pageSize}
-		{page}
-	>
-		<svelte:fragment slot="cell-header" let:header>
-			{#if header.key === 'dni'}
-				<div class="flex"><i class="bx bx-id-card mr-2 text-blue-600" />DNI</div>
-			{:else if header.key === 'nombre'}
-				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Nombre</div>
-			{:else if header.key === 'apellido'}
-				<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Apellido</div>
-			{:else if header.key === 'telefono'}
-				<div class="flex"><i class="bx bx-phone mr-2 text-blue-600" />Telefono</div>
-			{:else if header.key === 'fechanacimiento'}
-				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Nacimiento</div>
-			{:else if header.key === 'created'}
-				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Creado</div>
-			{:else if header.key === 'updated'}
-				<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Actualizado</div>
-			{:else if header.key === 'nacionalidad'}
-				<div class="flex"><i class="bx bx-globe mr-2 text-blue-600" />Nacionalidad</div>
-			{:else}
-				{header.value}
-			{/if}
-		</svelte:fragment>
+	<div class="overflow-scroll">
+		<DataTable
+			useStaticWidth
+			zebra
+			sortable
+			headers={[
+				{ key: 'dni', value: 'DNI' },
+				{ key: 'nombre', value: 'Nombre' },
+				{ key: 'apellido', value: 'Apellido' },
+				{ key: 'fechanacimiento', value: 'Nacimiento' },
+				{ key: 'created', value: 'Creado' },
+				{ key: 'updated', value: 'Actualizado' },
+				{ key: 'telefono', value: 'Telefono' },
+				{ key: 'nacionalidad', value: 'Nacionalidad' }
+			]}
+			{rows}
+			{pageSize}
+			{page}
+		>
+			<svelte:fragment slot="cell-header" let:header>
+				{#if header.key === 'dni'}
+					<div class="flex"><i class="bx bx-id-card mr-2 text-blue-600" />DNI</div>
+				{:else if header.key === 'nombre'}
+					<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Nombre</div>
+				{:else if header.key === 'apellido'}
+					<div class="flex"><i class="bx bx-user mr-2 text-blue-600" />Apellido</div>
+				{:else if header.key === 'telefono'}
+					<div class="flex"><i class="bx bx-phone mr-2 text-blue-600" />Telefono</div>
+				{:else if header.key === 'fechanacimiento'}
+					<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Nacimiento</div>
+				{:else if header.key === 'created'}
+					<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Creado</div>
+				{:else if header.key === 'updated'}
+					<div class="flex"><i class="bx bx-calendar mr-2 text-blue-600" />Actualizado</div>
+				{:else if header.key === 'nacionalidad'}
+					<div class="flex"><i class="bx bx-globe mr-2 text-blue-600" />Nacionalidad</div>
+				{:else}
+					{header.value}
+				{/if}
+			</svelte:fragment>
 
-		<svelte:fragment slot="cell" let:row let:cell>
-			{#if cell.key === 'fechanacimiento'}
-				{new Date(cell.value).toLocaleDateString('es-ES', {
-					day: '2-digit',
-					month: 'short',
-					year: 'numeric'
-				})}
-			{:else if cell.key === 'created'}
-				{new Date(cell.value).toLocaleDateString('es-ES', {
-					day: '2-digit',
-					month: 'short',
-					year: 'numeric'
-				})}
-			{:else if cell.key === 'updated'}
-				{new Date(cell.value).toLocaleDateString('es-ES', {
-					day: '2-digit',
-					month: 'short',
-					year: 'numeric'
-				})}
-			{:else if cell.key === 'dni'}
-				<div
-					role="button"
-					tabindex="0"
-					on:click={() => (window.location.href = `/clientes/${row.id}`)}
-					on:keydown={() => (window.location.href = `/clientes/${row.id}`)}
-				>
+			<svelte:fragment slot="cell" let:row let:cell>
+				{#if cell.key === 'fechanacimiento'}
+					{new Date(cell.value).toLocaleDateString('es-ES', {
+						day: '2-digit',
+						month: 'short',
+						year: 'numeric'
+					})}
+				{:else if cell.key === 'created'}
+					{new Date(cell.value).toLocaleDateString('es-ES', {
+						day: '2-digit',
+						month: 'short',
+						year: 'numeric'
+					})}
+				{:else if cell.key === 'updated'}
+					{new Date(cell.value).toLocaleDateString('es-ES', {
+						day: '2-digit',
+						month: 'short',
+						year: 'numeric'
+					})}
+				{:else if cell.key === 'dni'}
+					<div
+						role="button"
+						tabindex="0"
+						on:click={() => (window.location.href = `/clientes/${row.id}`)}
+						on:keydown={() => (window.location.href = `/clientes/${row.id}`)}
+					>
+						{cell.value}
+					</div>
+				{:else if cell.key === 'nombre'}
+					<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				{:else if cell.key === 'apellido'}
+					<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				{:else if cell.key === 'email'}
+					<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				{:else if cell.key === 'telefono'}
+					<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
+				{:else}
 					{cell.value}
-				</div>
-			{:else if cell.key === 'nombre'}
-				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
-			{:else if cell.key === 'apellido'}
-				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
-			{:else if cell.key === 'email'}
-				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
-			{:else if cell.key === 'telefono'}
-				<a class="text-sm text-gray-300" href="/clientes/{row.id}">{cell.value}</a>
-			{:else}
-				{cell.value}
-			{/if}
-		</svelte:fragment>
+				{/if}
+			</svelte:fragment>
 
-		<Toolbar>
-			<ToolbarContent>
-				<ToolbarSearch persistent shouldFilterRows placeholder="Buscar..." bind:filteredRowIds />
-				<ToolbarMenu>
-					<NumberInput min={1} max={100} label="Numero de filas por pagina" bind:value={pageSize} />
-				</ToolbarMenu>
-				<Button icon={Add} on:click={() => (open = true)}>Registrar cliente</Button>
-			</ToolbarContent>
-		</Toolbar>
-	</DataTable>
+			<Toolbar>
+				<ToolbarContent>
+					<ToolbarSearch persistent shouldFilterRows placeholder="Buscar..." bind:filteredRowIds />
+					<ToolbarMenu>
+						<NumberInput
+							min={1}
+							max={100}
+							label="Numero de filas por pagina"
+							bind:value={pageSize}
+						/>
+					</ToolbarMenu>
+					<Button icon={Add} on:click={() => (open = true)}>Registrar cliente</Button>
+				</ToolbarContent>
+			</Toolbar>
+		</DataTable>
+	</div>
 
-	<div class="fixed bottom-0 w-2/3">
+	<div class="fixed bottom-0 sm:w-2/3 ml-8">
 		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />
 	</div>
 </main>

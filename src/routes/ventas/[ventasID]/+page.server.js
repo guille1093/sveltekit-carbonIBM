@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs';
+
+
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, params }) {
 
@@ -5,7 +8,8 @@ export async function load({ locals, params }) {
      * Obtiene una venta por su id
      * @param ventaId
      * @returns {Promise<*>}
-     */
+    */
+    
     const getventa = async (/** @type {string} */ ventaId) => {
         try {
             const [ventaRaw, clientesRaw, paquetesRaw] = await Promise.all([
@@ -15,8 +19,6 @@ export async function load({ locals, params }) {
             ]);
 
             const venta = structuredClone(ventaRaw);
-
-
 
             const clientes = clientesRaw.reduce((/** @type {{ [x: string]: any; }} */ map, /** @type {{ id: string | number; }} */ cliente) => {
                 map[cliente.id] = cliente;
@@ -57,7 +59,18 @@ export async function load({ locals, params }) {
         }
     };
 
+    // Ruta de la imagen en el lado del servidor
+    const logoPath = 'static/images/logo.png';
+
+    // Lee la imagen como un buffer
+    const logoBuffer = readFileSync(logoPath);
+
+    // Convierte el buffer en una cadena base64
+    const logoBase64 = logoBuffer.toString('base64');
+
+
     return {
-        venta: getventa(params.ventasID)
+        venta: getventa(params.ventasID),
+        logo: logoBase64
     };
 };

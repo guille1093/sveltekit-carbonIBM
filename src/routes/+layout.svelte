@@ -1,6 +1,6 @@
 <script>
 	import '../app.postcss';
-	import 'carbon-components-svelte/css/all.css';
+	import 'carbon-components-svelte/css/g100.css';
 	import { page } from '$app/stores';
 	import {
 		Header,
@@ -15,8 +15,7 @@
 		Content,
 		Grid,
 		Row,
-		Column,
-		Theme
+		Column
 	} from 'carbon-components-svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
@@ -46,8 +45,6 @@
 		}
 	];
 </script>
-
-<Theme theme="g100" />
 
 <Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">
@@ -83,11 +80,5 @@
 </SideNav>
 
 <Content>
-	<Grid>
-		<Row>
-			<Column>
-				<slot />
-			</Column>
-		</Row>
-	</Grid>
+	<slot />
 </Content>
