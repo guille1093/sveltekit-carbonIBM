@@ -7,7 +7,6 @@
 	import { slide } from 'svelte/transition';
 	import {
 		Button,
-		TextInput,
 		NumberInput,
 		FormGroup,
 		ComposedModal,
@@ -30,18 +29,9 @@
 		Tag
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
-	import Close from 'carbon-icons-svelte/lib/Close.svelte';
 	import { enhance } from '$app/forms';
 	import { MultiSelect } from 'carbon-components-svelte';
-	import {
-		StructuredList,
-		StructuredListHead,
-		StructuredListRow,
-		StructuredListCell,
-		StructuredListBody
-	} from 'carbon-components-svelte';
 	import { Printer } from 'carbon-icons-svelte';
-	import { Tile } from 'carbon-components-svelte';
 	import { Grid, Row, Column } from 'carbon-components-svelte';
 
 	const pdfFonts = {
@@ -59,7 +49,6 @@
 
 	import pdfMake from 'pdfmake/build/pdfmake';
 
-	let selectedID = 0;
 	/**
 	 * @type {never[]}
 	 */
@@ -73,8 +62,6 @@
 	 * @type {HTMLFormElement}
 	 */
 	let form;
-
-	$: selectCantidad = (selected.length + 1).toString();
 
 	let paqueteDropdownOpen = false;
 
@@ -185,6 +172,7 @@
 		fecha: cliente.fechanacimiento,
 		dni: cliente.dni
 	}));
+
 	let clientesFiltered = [...clientesItems]; // Mantén una copia de los clientes originales
 
 	let clienteDropdownOpen = false;
@@ -199,9 +187,20 @@
 
 	let titular = clientesItems[0].id;
 
-	$: precio = paquetesItems[0].precio;
-
 	let paquete = paquetesItems[0].id;
+	$: selectCantidad = (selected.length + 1).toString();
+	$: precio = (getPrecio(paquete) * (selected.length + 1)).toString();
+
+	//funcion que toma el ID de un paquete y retorna el precio
+	const getPrecio = (id) => {
+		let precio = 0;
+		paquetesItems.forEach((/** @type {{ id: any; precio: any; }} */ paquete) => {
+			if (paquete.id === id) {
+				precio = paquete.precio;
+			}
+		});
+		return precio;
+	};
 
 	let paquetePrecio = paquetesItems[0].precio;
 
@@ -429,15 +428,15 @@
 						</Row>
 						<Row>
 							<Column>
-								<FormGroup legendText="Precio">
+								<FormGroup legendText="Precio: ${Intl.NumberFormat('es-AR').format(precio)}">
 									<NumberInput
 										name="precio"
-										label="Precio"
+										label="Precio por persona: ${Intl.NumberFormat('es-AR').format(paquetePrecio)}"
 										min={1}
-										max={100000000}
 										step={1}
 										bind:value={precio}
 										hideLabel
+										readOnly
 									/>
 								</FormGroup>
 							</Column>

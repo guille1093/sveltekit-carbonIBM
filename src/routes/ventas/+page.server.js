@@ -5,7 +5,7 @@ export async function load({ locals }) {
 	try {
 		const getClientes = async () => {
 			// @ts-ignore
-			return structuredClone(await locals.pb.collection('clientes').getFullList(5000, {}));
+			return structuredClone(await locals.pb.collection('clientes').getFullList(undefined, {}));
 		};
 
 		const getPaquetes = async () => {
@@ -32,7 +32,6 @@ export async function load({ locals }) {
 				const nombre = cliente.nombre;
 				const apellido = cliente.apellido;
 				const dni = cliente.dni;
-
 				const nombrePaquete = paquete.nombre;
 				const estadoPaquete = paquete.estado;
 				const precioPaquete = paquete.precio;
@@ -47,8 +46,6 @@ export async function load({ locals }) {
 					precioPaquete,
 				};
 			} else {
-				// Puedes manejar el caso donde no se encuentra el cliente o el paquete aquí.
-				// Por ejemplo, puedes retornar un objeto con valores predeterminados o manejarlo de otra manera.
 				console.log('Cliente o paquete no encontrado para venta:', venta);
 				return {
 					...venta,
@@ -101,6 +98,7 @@ export const actions = {
 			valor
 		};
 		console.log('data: ', data);
+		// @ts-ignore
 		const { id } = await locals.pb.collection('ventas').create(data);
 		return {
 			status: 303,
