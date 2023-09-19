@@ -34,7 +34,7 @@ export const load = ({ locals, params }) => {
 
 			// Mostrar los IDs de los pasajeros y obtener sus nombres
 			await Promise.all(
-				ventas.map(async (/** @type {{ pasajeros: any[]; }} */ venta) => {
+				ventas.map(async (/** @type {{ pasajeros: any[]; cliente: any; }} */ venta) => {
 					await Promise.all(
 						venta.pasajeros.map(
 							async (/** @type {string} */ pasajero, /** @type {string | number} */ index) => {
@@ -42,16 +42,22 @@ export const load = ({ locals, params }) => {
 							}
 						)
 					);
+
+					const titular = await getNombrePasajero(venta.cliente);
+					venta.cliente = titular;
+					// Agregar la información del cliente al array de pasajeros
+					venta.pasajeros.push(venta.cliente);
 				})
 			);
-
-			
-
+			console.log('ventas: ', ventas);
 			return ventas;
-		} catch (err) {
-			console.log('Error: ', err);
+		} catch (error) {
+			// Manejar errores aquí
+			console.error(error);
+			throw error;
 		}
 	};
+
 
 	return {
 		paquetes: getProject(params.paqueteID),
@@ -80,7 +86,7 @@ export const actions = {
 		const fecharetorno = new Date(
 			`${((parts) => `${parts[1]}/${parts[0]}/${parts[2]}`)(
 				form.get('fecharetorno')?.toString().split('/') ??
-					new Date().toLocaleDateString().split('/')
+				new Date().toLocaleDateString().split('/')
 			)}`
 		);
 		const descripcion = form.get('obervaciones') ?? '';

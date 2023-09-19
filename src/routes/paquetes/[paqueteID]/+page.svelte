@@ -240,15 +240,15 @@
 				</div>
 
 				{#each data.ventas as venta}
-					<div class="border rounded-2xl mt-4 p-2 dark:border-gray-600">
-						<a class="text-xl uppercase" href="/ventas/{venta.id}"
-							><strong>Contrato:</strong> {venta.id}</a
-						>
-
+					<div class="mt-4 p-2">
+						<h4><a class="" href="/ventas/{venta.id}"><strong>CONTRATO:</strong> {venta.id}</a></h4>
 						<StructuredList>
 							<StructuredListBody>
 								<StructuredListRow>
-									<StructuredListCell>Titular {venta.cliente}{venta.cliente.dni}</StructuredListCell
+									<StructuredListCell
+										><strong>Titular:</strong>
+										{venta.cliente.nombre}
+										{venta.cliente.apellido}</StructuredListCell
 									>
 								</StructuredListRow>
 								{#each venta.pasajeros as pasajero}
