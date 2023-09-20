@@ -2,7 +2,8 @@
 const config = {
 	webServer: {
 		command: 'npm run build && npm run preview',
-		port: 4173
+		url: 'http://localhost:4173',
+		timeout: 120 * 2000
 	},
 	testDir: 'tests',
 	testMatch: /(.+\.)?(test|spec)\.[jt]s/
