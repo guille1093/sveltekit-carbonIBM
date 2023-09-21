@@ -263,6 +263,7 @@
 
 	<h1>Paquetes</h1>
 	<p>Aqui puede ver, buscar y filtrar todos los paquetes registrados en el sistema.</p>
+	<div class="overflow-scroll">
 	<DataTable
 		zebra
 		sortable
@@ -418,6 +419,7 @@
 			</ToolbarContent>
 		</Toolbar>
 	</DataTable>
+	</div>
 
 	<div class="fixed bottom-0 w-2/3">
 		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />

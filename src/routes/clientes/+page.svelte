@@ -371,7 +371,6 @@
 	<p>Aqui puede ver, buscar y filtrar todos los clientes registrados en el sistema.</p>
 	<div class="overflow-scroll">
 		<DataTable
-			useStaticWidth
 			zebra
 			sortable
 			headers={[
