@@ -35,6 +35,7 @@ export async function load({ locals }) {
 				const nombrePaquete = paquete.nombre;
 				const estadoPaquete = paquete.estado;
 				const precioPaquete = paquete.precio;
+				const precioVenta = precioPaquete * venta.cant_personas;
 
 				return {
 					...venta,
@@ -44,6 +45,7 @@ export async function load({ locals }) {
 					nombrePaquete,
 					estadoPaquete,
 					precioPaquete,
+					precioVenta
 				};
 			} else {
 				console.log('Cliente o paquete no encontrado para venta:', venta);

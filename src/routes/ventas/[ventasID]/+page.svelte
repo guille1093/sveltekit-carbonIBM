@@ -1,8 +1,8 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
-	import { Button } from 'carbon-components-svelte';
-	import { Printer } from 'carbon-icons-svelte';
+	import { Button, ButtonSet } from 'carbon-components-svelte';
+	import { Printer, CurrencyDollar } from 'carbon-icons-svelte';
 	export let data;
 	const created = new Date(data.venta.created).toLocaleString('es-AR');
 	const updated = new Date(data.venta.updated).toLocaleString('es-AR');
@@ -119,7 +119,7 @@
 				text: 'CONTRATO DE EXCURSIÓN',
 				style: 'header'
 			},
-			
+
 			{
 				text: [
 					'En la ciudad de ',
@@ -228,24 +228,9 @@
 	};
 </script>
 
-
-
-<Button
-	size="small"
-	tooltipPosition="right"
-	tooltipAlignment="end"
-	iconDescription="Generar PDF"
-	icon={Printer}
-	on:click={() => {
-		pdfMake.createPdf(docDefinition, null, pdfFonts).open();
-	}}
-/>
-
 <div class="min-h-screen">
 	<section>
-		<div
-			class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6"
-		>
+		<div class="items-center px-4 mx-auto max-w-screen-xl md:grid md:grid-cols-2">
 			<section class="mb-32">
 				<div class="block rounded-lg shadow-lg">
 					<div class="flex flex-wrap w-full items-center">
@@ -255,6 +240,30 @@
 									<i class="bx bx-venta text-blue-600 mr-2" /><strong>VENTA </strong>
 									{data.venta.id}
 								</h2>
+								<div class="">
+									<Button
+										size="small"
+										kind="tertiary"
+										tooltipPosition="right"
+										tooltipAlignment="end"
+										iconDescription="Imprimir contrato"
+										icon={Printer}
+										on:click={() => {
+											pdfMake.createPdf(docDefinition, null, pdfFonts).open();
+										}}
+									>
+										Imprimir contrato
+									</Button>
+									<Button
+										size="small"
+										tooltipPosition="right"
+										tooltipAlignment="end"
+										iconDescription="Imprimir contrato"
+										icon={CurrencyDollar}
+									>
+										Generar Pago
+									</Button>
+								</div>
 								<p class="mb-6 pb-2">
 									{data.venta.observaciones}
 								</p>
@@ -318,9 +327,8 @@
 						</strong>, con DNI N°
 						<strong class="uppercase tracking-tight"> {data.venta.cliente.dni} </strong>. <br />
 						Contrata una excursión para
-						<strong class="uppercase tracking-tight"> {data.venta.cant_personas} </strong> persona/s
 						<strong class="uppercase tracking-tight"> {data.venta.cant_personas} </strong>
-						El precio es por persona en habitaciones dobles, triples o cuádruples, de
+						persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples, de
 						<strong class="uppercase tracking-tight"> {precio} </strong>
 						con el regimen de
 						<strong class="uppercase tracking-tight">{data.venta.paquete.regimen} </strong>. <br />

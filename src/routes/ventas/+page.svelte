@@ -33,21 +33,6 @@
 	import { MultiSelect } from 'carbon-components-svelte';
 	import { Grid, Row, Column } from 'carbon-components-svelte';
 
-	import { Printer } from 'carbon-icons-svelte';
-	import pdfMake from 'pdfmake/build/pdfmake';
-	const pdfFonts = {
-		// download default Roboto font from cdnjs.com
-		Roboto: {
-			normal:
-				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf',
-			bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf',
-			italics:
-				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Italic.ttf',
-			bolditalics:
-				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf'
-		}
-	};
-
 	/**
 	 * @type {never[]}
 	 */
@@ -63,79 +48,6 @@
 	let form;
 
 	let paqueteDropdownOpen = false;
-
-	var docDefinition = {
-		pageMargins: [40, 40], // Márgenes de la página
-		pageSize: 'A4', // Establece el tamaño de página A4
-		content: [
-			{
-				text: 'CONTRATO DE EXCURSIÓN',
-				style: 'header'
-			},
-			{
-				text: 'En la ciudad de Posadas, Provincia de Misiones, a los VAR días del mes de VAR del año VAR, entre la empresa de viajes y turismo DEL VALLE TURISMO, con domicilio en la calle La Rioja 2203 de la ciudad de Posadas, Provincia de Misiones, y la parte contratante el Sr/a VAR, con DNI N° VAR.',
-				style: 'paragraph'
-			},
-			{
-				text: 'Contrata una excursión para VAR persona/s VAR El precio es por persona en habitaciones dobles, triples o cuádruples, de VAR con el régimen de VAR. Estando la salida prevista para el día VAR y el regreso para el día VAR por VAR noches y VAR días. El precio total de la excursión es de VAR.',
-				style: 'paragraph'
-			},
-			{
-				text: 'Incluye:',
-				style: 'bold'
-			},
-			{
-				ul: [
-					'Todos los servicios que estén expresamente detallados en el programa elegido.',
-					'No Incluye: Extras en los hoteles, lavado, planchado, llamadas telefónicas, entradas a los parques y complejos turísticos, así como cualquier otro gasto de carácter personal. El organizador no se hace responsable por problemas de salud en general que padezca el viajero en el transcurso de la excursión, pudiendo este contratar, como servicio adicional, una asistencia de salud a su exclusivo cargo.',
-					'Traslado: Desde La Empresa Turismo Valle Hermoso al destino elegido y viceversa, en ómnibus o minibús acondicionado para viajes especiales de larga distancia, provisto con Aire Acondicionado, TV, Video, butacas reclinables y/o semi cama, y coordinación permanente.',
-					'Alojamiento: De acuerdo a la categoría del hotel según el programa elegido por el/los pasajeros.',
-					'Responsabilidad: El pasajero cuenta con seguro de responsabilidad civil durante el viaje a cargo de la Empresa transportadora. El operador Turismo Valle Hermoso declina toda responsabilidad por cualquier daño o inconveniente que el/los pasajeros o sus pertenencias pudieran sufrir por huelgas, accidentes y sus consecuencias, enfermedades, robos o pérdidas o daños de equipajes u objetos personales, sean cuales fueren sus causas durante los días de la excursión contratada.',
-					'Documentación: El operador Turismo Valle Hermoso declina toda responsabilidad en caso de ser rechazado por las autoridades Policiales, Migratorias y Aduaneras. Cualquier gasto que se origine correrá por cuenta del pasajero. En este caso, se aplicarán las condiciones establecidas para anulaciones o desistimiento voluntario sin derecho a ninguna indemnización.',
-					'El pasajero deberá ir provisto de: DNI, Cédula de la Policía Federal o Pasaporte, según corresponda. ARGENTINOS CON DOBLE CIUDADANÍA deberán tener pasaporte argentino válido. EXTRANJEROS RESIDENTES EN EL PAÍS deben presentar el pasaporte del país de origen, cédula de identidad y visado si fuese necesario.',
-					'DERECHO DE PERMANENCIA: El operador Turismo Valle Hermoso se reserva el derecho de hacer abandonar el tour en cualquier circunstancia o lugar a toda aquella persona que, por su conducta o modo de obrar, cause malestar al grupo y ponga en peligro el normal desarrollo de la excursión. Esta persona no tendrá derecho alguno a exigir indemnización por los servicios no utilizados.',
-					'Cantidad Mínima: El operador Turismo Valle Hermoso se reserva el derecho de cancelar algunas salidas establecidas cuando no se complete la cantidad mínima de (35) treinta y cinco personas en ómnibus o en minibús (17) pasajeros inscritos. En este caso, se les reintegrará la totalidad del dinero abonado hasta la fecha, sin ningún tipo de interés u otro tipo de ajuste. La empresa comunicará 5 (cinco) días antes de la salida la suspensión del viaje.',
-					'Cancelaciones: Una vez confirmados los servicios, la cancelación de los mismos sufrirá una retención del 10% del total de la excursión si esta se produce con una anticipación de 20 días o más a la fecha de salida. Si la cancelación se realiza entre 20 días y 10 días antes, la retención será del 20%. En caso de cancelación con menos de 10 días de anticipación, la retención será del 50% del valor total de la excursión. Si se produce una cancelación en menos de 5 (cinco) días, la retención será del 100%. Como alternativa, se podrá ceder o transferir a otra persona, con la condición de que no esté inscrita, o la Empresa otorgará una nota de crédito para otra excursión futura.',
-					'COSTO DE LA EXCURSIÓN: El precio está expresado en dólares estadounidenses y está sujeto a modificación según la cotización del día. El costo no sufrirá variación una vez abonada la totalidad de la excursión.',
-					'DE CONOCIMIENTO DEL PASAJERO: El simple hecho de inscribirse para tomar parte en los viajes detallados en el presente folleto implica la total conformidad, aceptación y conocimiento de todas y cada una de las condiciones generales mencionadas anteriormente. La Empresa Turismo Valle Hermoso.'
-				],
-				style: 'list'
-			},
-			{
-				text: 'Observaciones:',
-				style: 'bold'
-			},
-			'VAR', // Aquí debes reemplazar 'VAR' con el contenido real de las observaciones.
-			{
-				text: 'Página 1/1',
-				style: 'page'
-			}
-		],
-		styles: {
-			header: {
-				fontSize: 14, // Reduzco el tamaño de fuente del encabezado
-				bold: true,
-				alignment: 'center'
-			},
-			paragraph: {
-				fontSize: 10, // Reduzco el tamaño de fuente del párrafo
-				alignment: 'justify',
-				margin: [0, 5, 0, 5]
-			},
-			bold: {
-				bold: true,
-				margin: [0, 5, 0, 5]
-			},
-			list: {
-				fontSize: 10, // Reduzco el tamaño de fuente de la lista
-				margin: [0, 5, 0, 5]
-			},
-			page: {
-				fontSize: 8,
-				alignment: 'right'
-			}
-		}
-	};
 
 	$: creating = false;
 
@@ -210,7 +122,7 @@
 </script>
 
 <main>
-	<ComposedModal class="" bind:open on:close={() => closeModals()}>
+	<ComposedModal bind:open on:close={() => closeModals()}>
 		<ModalHeader label="" title="Nueva venta" />
 		<ModalBody hasForm hasScrollingContent>
 			{#if creating}
@@ -254,6 +166,7 @@
 							<Column>
 								<FormGroup legendText="Titular">
 									<input type="hidden" name="cliente" value={titular} />
+
 									<Search
 										size="sm"
 										placeholder="Buscar cliente"
@@ -312,6 +225,7 @@
 							<Column>
 								<FormGroup legendText="Paquete">
 									<input type="hidden" name="paquete" value={paquete} />
+									<input type="hidden" name="cant_personas" value={selectCantidad} />
 									<Search
 										size="sm"
 										placeholder="Buscar paquete"
@@ -481,7 +395,7 @@
 			headers={[
 				{ key: 'nombrePaquete', value: 'Destino' },
 				{ key: 'nombre', value: 'Titular' },
-				{ key: 'valor', value: 'Precio' },
+				{ key: 'precioVenta', value: 'Precio' },
 				{ key: 'pagado', value: 'Pagado' },
 				{ key: 'restante', value: 'Adeudado' },
 				{ key: 'estado', value: 'Estado' },
@@ -531,8 +445,8 @@
 
 			<svelte:fragment slot="cell" let:row let:cell>
 				{#if cell.key === 'restante'}
-					${Intl.NumberFormat('es-AR').format(row.valor - row.pagado)}
-				{:else if cell.key === 'valor'}
+					${Intl.NumberFormat('es-AR').format(row.precioVenta - row.pagado)}
+				{:else if cell.key === 'precioVenta'}
 					${Intl.NumberFormat('es-AR').format(cell.value)}
 				{:else if cell.key === 'pagado'}
 					${Intl.NumberFormat('es-AR').format(cell.value)}
@@ -615,17 +529,6 @@
 		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />
 	</div>
 </main>
-
-<Button
-	size="small"
-	tooltipPosition="right"
-	tooltipAlignment="end"
-	iconDescription="Generar PDF"
-	icon={Printer}
-	on:click={() => {
-		pdfMake.createPdf(docDefinition, null, pdfFonts).open();
-	}}
-/>
 
 <style>
 	:global(.bx--list-box__menu-item, .bx--list-box__menu-item__option) {

@@ -33,7 +33,22 @@
 
 	import { enhance } from '$app/forms';
 
-	import { Edit, TrashCan } from 'carbon-icons-svelte';
+	import { Edit, TrashCan, Printer } from 'carbon-icons-svelte';
+
+	const pdfFonts = {
+		// download default Roboto font from cdnjs.com
+		Roboto: {
+			normal:
+				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf',
+			bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf',
+			italics:
+				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Italic.ttf',
+			bolditalics:
+				'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf'
+		}
+	};
+
+	import pdfMake from 'pdfmake/build/pdfmake';
 
 	export let data;
 
@@ -166,6 +181,155 @@
 		toast = false;
 		window.location.reload();
 	};
+
+	const docDefinition = {
+		pageMargins: [40, 40],
+		pageSize: 'A4',
+		content: [
+			{
+				columns: [
+					[
+						{
+							image: `data:image/jpeg;base64,${data.logo}`,
+							width: 72, // Ajusta el ancho de la imagen según tus necesidades
+							alignment: 'left',
+							margin: [0, 0]
+						},
+						{
+							text: [
+								{ text: 'Del Valle Turismo.\n', fontSize: 14, bold: true },
+								{ text: 'Empresa de viajes y turismo \n', fontSize: 10, bold: true },
+								{ text: 'Legajo número: ', bold: true },
+								'18376. \n',
+								{ text: 'Dirección: ', bold: true },
+								'La Rioja 2203 - Posadas (3360) - Misiones. \n',
+								{ text: 'Teléfonos: ', bold: true },
+								'+54 (3764) 222333 / +54 (3764) 424450'
+							],
+							fontSize: 10,
+							alignment: 'left',
+							width: 320,
+							margin: [0, 0]
+						}
+					],
+					{
+						text: `ID PAQUETE: ${data.paquetes.id.toString().padStart(4, '0').toUpperCase()}`,
+						fontSize: 10,
+						alignment: 'right',
+						margin: [0, 10]
+					}
+				]
+			},
+
+			{
+				text: `MANIFIESTO DE PASAJEROS Y TRIPULACIÓN \n ${data.paquetes.nombre.toUpperCase()}  ${new Date(
+					data.paquetes.fechasalida
+				)
+					.toLocaleDateString('es-ES', {
+						day: '2-digit',
+						month: 'short',
+						year: 'numeric'
+					})
+					.toUpperCase()} \n \n`,
+				style: 'header'
+			},
+
+			//una tabla con los campos nombre y apellido, fecha de nacimiento, nacionalidad, dni
+			// Tabla dinámica con los campos: nombre y apellido, fecha de nacimiento, nacionalidad, dni
+			// ...
+
+			{
+				table: {
+					headerRows: 1,
+					widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+					body: [
+						// Encabezado de la tabla
+						[
+							{ text: 'NRO.', style: 'tableHeader' },
+							{ text: 'APELLIDO Y NOMBRE', style: 'tableHeader' },
+							{ text: 'NACIMIENTO', style: 'tableHeader' },
+							{ text: 'NACIONALIDAD', style: 'tableHeader' },
+							{ text: 'OCUPACIÓN', style: 'tableHeader' },
+							{ text: 'SEXO', style: 'tableHeader' },
+							{ text: 'DNI', style: 'tableHeader' },
+							{ text: 'PAIS RESIDENCIA', style: 'tableHeader' }
+						],
+						// Datos de los pasajeros
+						...data.ventas.reduce((rows, venta) => {
+							// Agregar cada pasajero como una fila en la tabla
+							venta.pasajeros.forEach((pasajero) => {
+								rows.push([
+									{ text: rows.length + 1, fontSize: 8 }, // Tamaño de fuente de la celda
+									{ text: pasajero.apellido + ' ' + pasajero.nombre || '', fontSize: 8 },
+									{
+										text:
+											new Date(pasajero.fechanacimiento)
+												.toLocaleDateString('es-ES', {
+													day: '2-digit',
+													month: '2-digit',
+													year: 'numeric'
+												})
+												.toUpperCase() || '',
+										fontSize: 8
+									},
+									{ text: pasajero.nacionalidad || '', fontSize: 8 },
+									{ text: pasajero.ocupacion || '', fontSize: 8 },
+									{
+										text:
+											pasajero.sexo === 'MASCULINO'
+												? 'M'
+												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
+										fontSize: 8
+									},
+									{ text: pasajero.dni || '', fontSize: 8 },
+									{ text: pasajero.nacionalidad || '', fontSize: 8 }
+								]);
+							});
+							return rows;
+						}, [])
+					]
+				}
+			}
+
+			// ...
+		],
+		styles: {
+			tableFont: {
+				fontSize: 6 // Ajusta el tamaño de fuente deseado para la tabla
+			},
+
+			header: {
+				fontSize: 14,
+				bold: true,
+				alignment: 'center',
+				margin: [0, 15, 0, 5]
+			},
+			// Estilo para el encabezado de la tabla
+			tableHeader: {
+				bold: true,
+				fontSize: 8,
+				alignment: 'center',
+				fillColor: '#eeeeee' // Color de fondo del encabezado de la tabla
+			},
+			paragraph: {
+				fontSize: 10,
+				alignment: 'justify',
+				margin: [0, 2, 0, 2]
+			},
+			bold: {
+				bold: true,
+				margin: [0, 5, 0, 5]
+			},
+			list: {
+				fontSize: 8,
+				margin: [0, 5, 0, 5]
+			},
+			page: {
+				fontSize: 8,
+				alignment: 'right'
+			}
+		}
+	};
 </script>
 
 <form
@@ -198,9 +362,19 @@
 <Grid>
 	<Row class="justify-between p-4">
 		<h1>Paquete: {data.paquetes.nombre}</h1>
-		<ButtonSet class="mr-36">
-			<Button on:click={() => (open2 = true)} icon={TrashCan} kind="danger">Eliminar</Button>
-			<Button icon={Edit} on:click={() => (open = true)}>Editar</Button>
+		<ButtonSet class="mr-36 p-4">
+			<Button size="small" on:click={() => (open2 = true)} icon={TrashCan} kind="danger"
+				>Eliminar</Button
+			>
+			<Button size="small" icon={Edit} on:click={() => (open = true)}>Editar</Button>
+			<Button
+				size="small"
+				kind="tertiary"
+				icon={Printer}
+				on:click={() => {
+					pdfMake.createPdf(docDefinition, null, pdfFonts).open();
+				}}>Imprimir Manifiesto</Button
+			>
 		</ButtonSet>
 	</Row>
 	<Row>
