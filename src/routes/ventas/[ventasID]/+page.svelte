@@ -217,7 +217,7 @@
 				margin: [0, 5, 0, 5]
 			},
 			list: {
-				fontSize: 8,
+				fontSize: 9,
 				margin: [0, 5, 0, 5]
 			},
 			page: {

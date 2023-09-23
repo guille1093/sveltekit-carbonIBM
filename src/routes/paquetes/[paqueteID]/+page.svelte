@@ -295,7 +295,7 @@
 		],
 		styles: {
 			tableFont: {
-				fontSize: 6 // Ajusta el tamaño de fuente deseado para la tabla
+				fontSize: 8 // Ajusta el tamaño de fuente deseado para la tabla
 			},
 
 			header: {
