@@ -348,5 +348,4 @@
 			</article>
 		</div>
 	</section>
-	<!--	nro pagina 1/1-->
 </div>
