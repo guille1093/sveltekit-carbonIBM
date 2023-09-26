@@ -60,7 +60,7 @@ export const load = ({ locals, params }) => {
 	};
 
 	// Ruta de la imagen en el lado del servidor
-	const logoPath = 'static/images/logo.png';
+	const logoPath = 'images/logo.png';
 
 	// Lee la imagen como un buffer
 	const logoBuffer = readFileSync(logoPath);
