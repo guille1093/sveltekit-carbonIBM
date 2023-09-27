@@ -59,18 +59,10 @@ export async function load({ locals, params }) {
         }
     };
 
-    // Ruta de la imagen en el lado del servidor
-    const logoPath = 'static/images/logo.png';
 
-    // Lee la imagen como un buffer
-    const logoBuffer = readFileSync(logoPath);
-
-    // Convierte el buffer en una cadena base64
-    const logoBase64 = logoBuffer.toString('base64');
 
 
     return {
         venta: getventa(params.ventasID),
-        logo: logoBase64
     };
 };
