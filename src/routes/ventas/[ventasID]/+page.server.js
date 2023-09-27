@@ -1,6 +1,3 @@
-import { readFileSync } from 'fs';
-
-
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, params }) {
 
