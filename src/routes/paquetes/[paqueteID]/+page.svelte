@@ -233,10 +233,6 @@
 				style: 'header'
 			},
 
-			//una tabla con los campos nombre y apellido, fecha de nacimiento, nacionalidad, dni
-			// Tabla dinámica con los campos: nombre y apellido, fecha de nacimiento, nacionalidad, dni
-			// ...
-
 			{
 				table: {
 					headerRows: 1,

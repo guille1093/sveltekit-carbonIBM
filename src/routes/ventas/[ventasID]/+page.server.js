@@ -62,4 +62,4 @@ export async function load({ locals, params }) {
     return {
         venta: getventa(params.ventasID),
     };
-};
+}
