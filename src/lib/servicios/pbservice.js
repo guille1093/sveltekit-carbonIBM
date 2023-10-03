@@ -3,21 +3,20 @@
 */
 
 export async function getPasajeros(locals) {
-    try {
-        const getClientes = async () => {
-            // @ts-ignore
-            return structuredClone(await locals.pb.collection('clientes').getFullList(undefined, {}));
-        };
+	try {
+		const getClientes = async () => {
+			// @ts-ignore
+			return structuredClone(await locals.pb.collection('clientes').getFullList(undefined, {}));
+		};
 
-        const [clientes] = await Promise.all([getClientes()]);
-        
-        console.log('clientes cargados' + clientes);
+		const [clientes] = await Promise.all([getClientes()]);
 
-        return {
-            clientes
-        };
+		console.log('clientes cargados' + clientes);
 
-    } catch (err) {
-        console.log('Error: ', err);
-    }
+		return {
+			clientes
+		};
+	} catch (err) {
+		console.log('Error: ', err);
+	}
 }

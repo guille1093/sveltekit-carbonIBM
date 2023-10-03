@@ -394,7 +394,6 @@
 			</Tile></Column
 		>
 		<Column>
-
 			<Tile>
 				<h2 class="">Pasajeros</h2>
 				<div class="flex justify-between">

@@ -9,7 +9,6 @@ export async function load({ locals }) {
 		};
 
 		const getPaquetes = async () => {
-			// @ts-ignore
 			return structuredClone(await locals.pb.collection('projects').getFullList(undefined, {}));
 		};
 
@@ -56,11 +55,10 @@ export async function load({ locals }) {
 					dni: 'No encontrado',
 					nombrePaquete: 'No encontrado',
 					estadoPaquete: 'No encontrado',
-					precioPaquete: 'No encontrado',
+					precioPaquete: 'No encontrado'
 				};
 			}
 		});
-
 
 		console.log('ventas cargadas');
 		console.log('ventasinf: ', ventasinf);

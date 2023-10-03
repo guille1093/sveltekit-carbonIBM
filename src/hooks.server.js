@@ -1,11 +1,9 @@
 import PocketBase from 'pocketbase';
 
 export const handle = async ({ event, resolve }) => {
-    
 	// Conectamos con la base de datos
 	event.locals.pb = new PocketBase('https://gq-pfs.pockethost.io');
-	
-    
+
 	// Cargamos la cookie de autenticación
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 

@@ -12,10 +12,7 @@
 		SideNavItems,
 		SideNavLink,
 		SkipToContent,
-		Content,
-		Grid,
-		Row,
-		Column
+		Content
 	} from 'carbon-components-svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';

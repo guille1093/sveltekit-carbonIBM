@@ -57,7 +57,7 @@ export const load = ({ locals, params }) => {
 	return {
 		paquetes: getProject(params.paqueteID),
 		ventas: getVentas(params.paqueteID),
-		nacionalidades: getNacionalidades(),
+		nacionalidades: getNacionalidades()
 	};
 };
 
@@ -81,7 +81,7 @@ export const actions = {
 		const fecharetorno = new Date(
 			`${((parts) => `${parts[1]}/${parts[0]}/${parts[2]}`)(
 				form.get('fecharetorno')?.toString().split('/') ??
-				new Date().toLocaleDateString().split('/')
+					new Date().toLocaleDateString().split('/')
 			)}`
 		);
 		const descripcion = form.get('obervaciones') ?? '';

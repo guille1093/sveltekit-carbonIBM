@@ -1,7 +1,18 @@
 <script>
 	// @ts-nocheck
 
-	import { Button, ButtonSet } from 'carbon-components-svelte';
+	import {
+		Button,
+		Grid,
+		Row,
+		Column,
+		Tile,
+		StructuredList,
+		StructuredListHead,
+		StructuredListRow,
+		StructuredListCell,
+		StructuredListBody
+	} from 'carbon-components-svelte';
 	import { Printer, CurrencyDollar } from 'carbon-icons-svelte';
 	export let data;
 	const created = new Date(data.venta.created).toLocaleString('es-AR');
@@ -229,123 +240,192 @@
 </script>
 
 <div class="min-h-screen">
-	<section>
-		<div class="items-center px-4 mx-auto max-w-screen-xl md:grid md:grid-cols-2">
-			<section class="mb-32">
-				<div class="block rounded-lg shadow-lg">
-					<div class="flex flex-wrap w-full items-center">
-						<div class="grow-0 shrink-0 basis-auto w-full lg:w-8/12 xl:w-[800px]">
-							<div class="px-6 py-12 md:px-12">
-								<h2 class="text-3xl font-bold mb-6 pb-2">
-									<i class="bx bx-venta text-blue-600 mr-2" /><strong>VENTA </strong>
-									{data.venta.id}
-								</h2>
-								<div class="">
-									<Button
-										size="small"
-										kind="tertiary"
-										tooltipPosition="right"
-										tooltipAlignment="end"
-										iconDescription="Imprimir contrato"
-										icon={Printer}
-										on:click={() => {
-											pdfMake.createPdf(docDefinition, null, pdfFonts).open();
-										}}
-									>
-										Imprimir contrato
-									</Button>
-									<Button
-										size="small"
-										tooltipPosition="right"
-										tooltipAlignment="end"
-										iconDescription="Imprimir contrato"
-										icon={CurrencyDollar}
-									>
-										Generar Pago
-									</Button>
-								</div>
-								<p class="mb-6 pb-2">
-									{data.venta.observaciones}
-								</p>
-								<ul class="space-y-5 my-7">
-									{#each items as item}
-										<li class="flex space-x-3">
-											<!-- Icon -->
-											<i class="bx text-blue-600 {item.icon}" />
-											<span class=""><strong>{item.name}:</strong> {item.value}</span>
-										</li>
-									{/each}
-									<!-- pasajeros -->
-									{#each data.venta.pasajeros as pasajero}
-										<li class="flex space-x-3">
-											<!-- Icon -->
-											<i class="bx text-blue-600 bx-user" />
-											<span class=""><strong>Pasajero:</strong> {pasajero}</span>
-										</li>
-									{/each}
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+	<div class="flex flex row">
+		<h2 class="m-4">
+			<i class="bx bx-venta text-blue-600 mr-2" /><strong>VENTA </strong>
+			{data.venta.id}
+		</h2>
+
+		<div class="grid grid-cols-3 gap-4 h-[36px] content-end mt-4">
+			<Button
+				class="mb-0"
+				icon={Printer}
+				iconDescription="Imprimir contrato"
+				kind="tertiary"
+				on:click={() => {
+					pdfMake.createPdf(docDefinition, null, pdfFonts).open();
+				}}
+				size="small"
+				tooltipAlignment="end"
+				tooltipPosition="right"
+			>
+				Imprimir contrato
+			</Button>
+			<Button
+				icon={CurrencyDollar}
+				iconDescription="Imprimir contrato"
+				size="small"
+				tooltipAlignment="end"
+				tooltipPosition="right"
+			>
+				Generar Pago
+			</Button>
 		</div>
-	</section>
+	</div>
 
-	<section class="page">
-		<div class="max-w-5xl mx-auto py-8 bg-white text-black">
-			<article class="overflow-hidden">
-				<div class="bg-[white] rounded-b-md">
-					<div class="px-9 flex flex-col">
-						<div class="text-slate-700 top-0">
-							<div class="flex flex-row justify-between">
-								<div class="justify-end">
-									<p class="uppercase"><strong>CONTRATO NRO. </strong>{data.venta.id}</p>
+	<Grid>
+		<Row>
+			<Column
+				><Tile class="m-4">
+					<h3>Detalles</h3>
+					<section class="">
+						<p class="mb-6 pb-2">
+							{data.venta.observaciones}
+						</p>
+						<ul class="space-y-5 my-7">
+							{#each items as item}
+								<li class="flex space-x-3">
+									<!-- Icon -->
+									<i class="bx text-blue-600 {item.icon}" />
+									<span class=""><strong>{item.name}:</strong> {item.value}</span>
+								</li>
+							{/each}
+							<!-- pasajeros -->
+							{#each data.ventaExpanded.expand.pasajeros as pasajero}
+								<li class="flex space-x-3">
+									<!-- Icon -->
+									<i class="bx text-blue-600 bx-user" />
+									<span class=""
+										><strong>Pasajero:</strong>
+										{pasajero.nombre}
+										{pasajero.apellido} (DNI: {pasajero.dni})</span
+									>
+								</li>
+							{/each}
+						</ul>
+					</section></Tile
+				></Column
+			>
+			<Column
+				><Tile class="m-4">
+					<h3>Pagos</h3>
+					<section class="">
+						<StructuredList>
+							<StructuredListHead>
+								<StructuredListRow head>
+									<StructuredListCell head>ID</StructuredListCell>
+									<StructuredListCell head>Fecha</StructuredListCell>
+									<StructuredListCell head>Monto</StructuredListCell>
+								</StructuredListRow>
+							</StructuredListHead>
+							<StructuredListBody>
+								{#each data.ventaExpanded.expand.pagos as pago}
+									<StructuredListRow>
+										<StructuredListCell>{pago.id}</StructuredListCell>
+										<StructuredListCell
+											>{new Date(pago.created).toLocaleDateString('es-ES', {
+												day: '2-digit',
+												month: 'short',
+												year: 'numeric'
+											})}</StructuredListCell
+										>
+										<StructuredListCell>
+											{pago.valor.toLocaleString('es-AR', {
+												style: 'currency',
+												currency: 'ARS'
+											})}
+										</StructuredListCell>
+									</StructuredListRow>
+								{/each}
+							</StructuredListBody>
+						</StructuredList>
+					</section>
+				</Tile></Column
+			>
+		</Row>
+
+		<Row>
+			<Column
+				><Tile class="m-4">
+					<section class="page">
+						<div class="max-w-5xl mx-auto py-8 bg-white text-black">
+							<article class="overflow-hidden">
+								<div class="bg-[white] rounded-b-md">
+									<div class="px-9 flex flex-col">
+										<div class="text-slate-700 top-0">
+											<div class="flex flex-row justify-between">
+												<div class="justify-end">
+													<p class="uppercase"><strong>CONTRATO NRO. </strong>{data.venta.id}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="flex flex-row justify-center px-9 py-9">
+										<h1 class="underline text-3xl font-bold">CONTRATO DE EXCURSIÓN</h1>
+									</div>
+
+									<p class="px-9 tracking-widest text-justify">
+										En la ciudad de <strong class="uppercase tracking-tight"
+											>Posadas, Provincia de Misiones,</strong
+										>
+										a los <strong class="uppercase tracking-tight">{createdDia}</strong>
+										días del mes de <strong class="uppercase tracking-tight">{createdMes}</strong>
+										del año
+										<strong class="uppercase tracking-tight">{createdAnio}</strong>, entre la
+										empresa de viajes y turismo <strong class="">DEL VALLE TURISMO</strong>, con
+										domicilio en la calle
+										<strong class="uppercase tracking-tight">La Rioja 2203</strong> de la ciudad de
+										<strong class="uppercase tracking-tight">Posadas, Provincia de Misiones,</strong
+										>
+										y la parte contratante el Sr/a
+										<strong class="uppercase tracking-tight">
+											{data.venta.cliente.nombre}
+											{data.venta.cliente.apellido}
+										</strong>, con DNI N°
+										<strong class="uppercase tracking-tight"> {data.venta.cliente.dni} </strong>.
+										<br />
+										Contrata una excursión para
+										<strong class="uppercase tracking-tight"> {data.venta.cant_personas} </strong>
+										persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples,
+										de
+										<strong class="uppercase tracking-tight"> {precio} </strong>
+										con el regimen de
+										<strong class="uppercase tracking-tight">{data.venta.paquete.regimen} </strong>.
+										<br />
+										Estando la salida prevista para el día
+										<strong class="uppercase tracking-tight"> {fechasalida} </strong> y el regreso
+										para el día <strong class="uppercase tracking-tight"> {fecharetorno} </strong>
+										por
+										<strong class="uppercase tracking-tight">
+											{data.venta.paquete.cant_noches}
+										</strong>
+										noches y
+										<strong class="uppercase tracking-tight">
+											{data.venta.paquete.cant_dias}
+										</strong>
+										días. El precio total de la excursión es de
+										<strong class="uppercase tracking-tight"> {precio_total} </strong>. <br />
+										<strong class="uppercase font-bold">observaciones:</strong>
+										{data.venta.observaciones}
+										<br />
+									</p>
 								</div>
-							</div>
+							</article>
 						</div>
-					</div>
-
-					<div class="flex flex-row justify-center px-9 py-9">
-						<h1 class="underline text-3xl font-bold">CONTRATO DE EXCURSIÓN</h1>
-					</div>
-
-					<p class="px-9 tracking-widest text-justify">
-						En la ciudad de <strong class="uppercase tracking-tight"
-							>Posadas, Provincia de Misiones,</strong
-						>
-						a los <strong class="uppercase tracking-tight">{createdDia}</strong>
-						días del mes de <strong class="uppercase tracking-tight">{createdMes}</strong> del año
-						<strong class="uppercase tracking-tight">{createdAnio}</strong>, entre la empresa de
-						viajes y turismo <strong class="">DEL VALLE TURISMO</strong>, con domicilio en la calle
-						<strong class="uppercase tracking-tight">La Rioja 2203</strong> de la ciudad de
-						<strong class="uppercase tracking-tight">Posadas, Provincia de Misiones,</strong>
-						y la parte contratante el Sr/a
-						<strong class="uppercase tracking-tight">
-							{data.venta.cliente.nombre}
-							{data.venta.cliente.apellido}
-						</strong>, con DNI N°
-						<strong class="uppercase tracking-tight"> {data.venta.cliente.dni} </strong>. <br />
-						Contrata una excursión para
-						<strong class="uppercase tracking-tight"> {data.venta.cant_personas} </strong>
-						persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples, de
-						<strong class="uppercase tracking-tight"> {precio} </strong>
-						con el regimen de
-						<strong class="uppercase tracking-tight">{data.venta.paquete.regimen} </strong>. <br />
-						Estando la salida prevista para el día
-						<strong class="uppercase tracking-tight"> {fechasalida} </strong> y el regreso para el
-						día <strong class="uppercase tracking-tight"> {fecharetorno} </strong>
-						por <strong class="uppercase tracking-tight"> {data.venta.paquete.cant_noches} </strong>
-						noches y
-						<strong class="uppercase tracking-tight"> {data.venta.paquete.cant_dias} </strong>
-						días. El precio total de la excursión es de
-						<strong class="uppercase tracking-tight"> {precio_total} </strong>. <br />
-						<strong class="uppercase font-bold">observaciones:</strong>
-						{data.venta.observaciones}
-						<br />
-					</p>
-				</div>
-			</article>
-		</div>
-	</section>
+					</section>
+				</Tile></Column
+			>
+		</Row>
+	</Grid>
 </div>
+
+<form method="post" action="?/createPago">
+	<input class="text-black" type="number" id="valor" />
+	<button type="submit">Enviar</button>
+</form>
+
+{#each data.ventaExpanded.expand.pagos as pago}
+	{pago.created}
+	{pago.valor}
+{/each}
