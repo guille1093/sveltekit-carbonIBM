@@ -27,7 +27,8 @@
 		FormGroup,
 		InlineLoading,
 		ComposedModal,
-		ToastNotification
+		ToastNotification,
+		ProgressBar
 	} from 'carbon-components-svelte';
 
 	import { enhance } from '$app/forms';
@@ -325,6 +326,12 @@
 			}
 		}
 	};
+
+	const totaldepelotuditos = data.ventas.reduce(
+		(/** @type {any} */ acc, /** @type {{ pasajeros: string | any[]; }} */ venta) =>
+			acc + venta.pasajeros.length,
+		0
+	);
 </script>
 
 <form
@@ -398,14 +405,11 @@
 				<h2 class="">Pasajeros</h2>
 				<div class="flex justify-between">
 					<p class=" mb-6 pb-2">
-						Total de pasajeros: <strong class="font-mono text-2xl"
-							>{data.ventas.reduce(
-								(/** @type {any} */ acc, /** @type {{ pasajeros: string | any[]; }} */ venta) =>
-									acc + venta.pasajeros.length,
-								0
-							)}</strong
-						>
+						Total de pasajeros: <strong class="font-mono text-2xl">{totaldepelotuditos}</strong>
 					</p>
+				</div>
+				<div class="bg-gray-900 h-4">
+					<ProgressBar max={50} value={totaldepelotuditos} />
 				</div>
 
 				{#each data.ventas as venta}

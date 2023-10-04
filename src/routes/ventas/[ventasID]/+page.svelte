@@ -481,6 +481,7 @@
 							<StructuredListRow head>
 								<StructuredListCell head>Fecha</StructuredListCell>
 								<StructuredListCell head>Monto</StructuredListCell>
+								<StructuredListCell head>Acciones</StructuredListCell>
 							</StructuredListRow>
 						</StructuredListHead>
 						<StructuredListBody>
@@ -500,10 +501,14 @@
 										})}
 									</StructuredListCell>
 									<StructuredListCell>
-										<Button icon={Printer} size="small" on:click={() => {}} />
-									</StructuredListCell>
-									<StructuredListCell>
-										<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}} />
+										<OverflowMenu size="sm" flipped>
+											<Button icon={Printer} size="small" on:click={() => {}}>
+												Imprimir comprobante</Button
+											>
+											<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}}>
+												Cancelar Pago
+											</Button>
+										</OverflowMenu>
 									</StructuredListCell>
 								</StructuredListRow>
 							{/each}
