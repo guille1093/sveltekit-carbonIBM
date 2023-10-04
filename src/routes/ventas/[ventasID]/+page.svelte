@@ -141,6 +141,34 @@
 			data.ventaExpanded.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0)
 	);
 
+	// Definir el contenido del documento
+	const documentDefinition = {
+		pageSize: 'A4',
+		pageOrientation: 'landscape',
+		content: [
+			{
+				layout: 'noBorders',
+				table: {
+					widths: ['50%', '50%'],
+					body: [
+						[
+							{
+								text: 'Contenido de la Mitad Izquierda',
+								border: [true, true, true, true], // Borde solo en el lado derecho
+								alignment: 'center'
+							},
+							{
+								text: 'Contenido de la Mitad Derecha',
+								border: [true, true, true, true], // Borde solo en el lado izquierdo
+								alignment: 'center'
+							}
+						]
+					]
+				}
+			}
+		]
+	};
+
 	const docDefinition = {
 		pageMargins: [40, 40],
 		pageSize: 'A4',
@@ -324,7 +352,7 @@
 			>
 				Generar Pago
 			</Button>
-			<OverflowMenu>
+			<OverflowMenu flipped>
 				<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}}
 					>Cancelar Venta</Button
 				>
@@ -536,6 +564,12 @@
 		{/if}
 	</ModalBody>
 	<ModalFooter>
+		<Button
+			kind="secondary"
+			size="lg"
+			on:click={() => pdfMake.createPdf(documentDefinition, null, pdfFonts).print()}
+			>Imprimir comprobante</Button
+		>
 		<Button kind="secondary" size="lg" on:click={() => (open = false)}>Cancelar</Button>
 		<Button
 			id="modalSubmitButton"
