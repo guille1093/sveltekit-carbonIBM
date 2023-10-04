@@ -34,10 +34,11 @@
 	const precio = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(
 		data.venta.paquete.precio
 	);
+
 	const precio_total = new Intl.NumberFormat('es-AR', {
 		style: 'currency',
 		currency: 'ARS'
-	}).format(data.venta.valor);
+	}).format(data.ventaExpanded.expand.paquete.precio * data.ventaExpanded.cant_personas);
 
 	const fechasalida = new Date(data.venta.paquete.fechasalida).toLocaleString('es-AR', {
 		day: 'numeric',
@@ -392,22 +393,9 @@
 		<Row class="my-8">
 			<Column
 				><Tile class="">
+					<h3>Contrato</h3>
 					<article class="overflow-hidden">
 						<div class="bg-gray-200 text-black">
-							<div class="px-9 flex flex-col">
-								<div class="text-slate-700 top-0">
-									<div class="flex flex-row justify-between">
-										<div class="justify-end">
-											<p class="uppercase"><strong>CONTRATO NRO. </strong>{data.venta.id}</p>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="flex flex-row justify-center px-9 py-9">
-								<h1 class="underline text-3xl font-bold">CONTRATO DE EXCURSIÓN</h1>
-							</div>
-
 							<p class="px-9 tracking-widest text-justify">
 								En la ciudad de <strong class="uppercase tracking-tight"
 									>Posadas, Provincia de Misiones,</strong
