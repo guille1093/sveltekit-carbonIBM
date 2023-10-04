@@ -180,7 +180,7 @@
 										}
 									],
 									{
-										text: `ID CONTRATO: ${data.venta.id.toString().padStart(4, '0').toUpperCase()}`,
+										text: `ID PAGO: ${data.venta.id.toString().padStart(4, '0').toUpperCase()}`,
 										fontSize: 10,
 										alignment: 'right',
 										margin: [0, 10]
@@ -212,7 +212,7 @@
 										}
 									],
 									{
-										text: `ID CONTRATO: ${data.venta.id.toString().padStart(4, '0').toUpperCase()}`,
+										text: `ID PAGO: ${data.venta.id.toString().padStart(4, '0').toUpperCase()}`,
 										fontSize: 10,
 										alignment: 'right',
 										margin: [0, 10]
