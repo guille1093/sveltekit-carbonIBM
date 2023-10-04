@@ -521,13 +521,3 @@
 		>
 	</ModalFooter>
 </ComposedModal>
-
-<form method="post" action="?/createPago">
-	<input class="text-black" type="number" id="valor" />
-	<button type="submit">Enviar</button>
-</form>
-
-{#each data.ventaExpanded.expand.pagos as pago}
-	{pago.created}
-	{pago.valor}
-{/each}
