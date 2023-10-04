@@ -16,20 +16,13 @@
 		StructuredListCell,
 		StructuredListBody,
 		ModalBody,
-		Tag,
 		ModalFooter,
 		FormGroup,
-		Dropdown,
-		SelectItem,
-		TextArea,
 		ComposedModal,
 		InlineLoading,
 		ModalHeader,
-		MultiSelect,
-		Search,
 		ToastNotification,
-		NumberInput,
-		Select
+		NumberInput
 	} from 'carbon-components-svelte';
 	import { Printer, CurrencyDollar } from 'carbon-icons-svelte';
 	export let data;
