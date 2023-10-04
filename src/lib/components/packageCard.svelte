@@ -8,8 +8,11 @@
 		StructuredList,
 		StructuredListBody,
 		StructuredListRow,
-		StructuredListCell
+		StructuredListCell,
+		AspectRatio
 	} from 'carbon-components-svelte';
+
+	import { getImageURL } from '$lib/utils';
 	/**
 	 * @type {{ precio: number | bigint; fechasalida: string | number | Date; fecharetorno: string | number | Date; cant_dias: any; cant_noches: any; id: any; nombre: any; }}
 	 */
@@ -51,17 +54,26 @@
 	class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out min-w-[270px]"
 >
 	<ClickableTile on:click={() => (open = true)}>
-		<div class=" p-5">
-			<h3 class="mb-2">
+		{#if project.thumbnail}
+			<AspectRatio ratio="16x9">
+				<img
+					class="h-[170px] object-cover mb-2"
+					src={getImageURL(project.collectionId, project.id, project.thumbnail)}
+					alt="logo"
+				/>
+			</AspectRatio>
+		{/if}
+		<div class="mt-10">
+			<h3 class="">
 				{project.nombre}
 			</h3>
 
-			<div class="flex items-baseline">
-				<span class="text-3xl font-semibold" />
+			<div class="flex items-baseline mb-4">
+				<span class="" />
 				<h4>{precio}</h4>
 			</div>
 			<!-- List -->
-			<ul role="list" class="space-y-5 my-7">
+			<ul role="list" class="space-y-4">
 				{#each items as item}
 					<li class="flex space-x-3 justify-between">
 						<div>

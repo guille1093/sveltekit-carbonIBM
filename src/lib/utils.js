@@ -17,6 +17,10 @@ export const validateData = async (formData, schema) => {
 	}
 };
 
+export const getImageURL = (collectionId, recordId, fileName, size = '0x0') => {
+	return `https://gq-pfs.pockethost.io/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
+};
+
 export const gridStyle = {
 	container: 'w-full text-sm text-left dark:bg-gray-800 p-4 shadow-md',
 	table: 'w-full',
