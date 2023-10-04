@@ -119,6 +119,20 @@
 		window.location.reload();
 	};
 
+	//una constante abonado que es la suma de los pagos
+	const abonado = new Intl.NumberFormat('es-AR', {
+		style: 'currency',
+		currency: 'ARS'
+	}).format(data.ventaExpanded.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0));
+
+	const restante = new Intl.NumberFormat('es-AR', {
+		style: 'currency',
+		currency: 'ARS'
+	}).format(
+		data.ventaExpanded.expand.paquete.precio * data.ventaExpanded.cant_personas -
+			data.ventaExpanded.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0)
+	);
+
 	const docDefinition = {
 		pageMargins: [40, 40],
 		pageSize: 'A4',
@@ -309,17 +323,26 @@
 		<Row class="my-8">
 			<Column>
 				<Tile>
-					<h5>Total</h5>
+					<div class="flex flex-row justify-between">
+						<h5>Total</h5>
+						<p>{precio_total}</p>
+					</div>
 				</Tile>
 			</Column>
 			<Column>
 				<Tile>
-					<h5>Abonado</h5>
+					<div class="flex flex-row justify-between">
+						<h5>Abonado</h5>
+						<p>{abonado}</p>
+					</div>
 				</Tile>
 			</Column>
 			<Column>
 				<Tile>
-					<h5>Restante</h5>
+					<div class="flex flex-row justify-between">
+						<h5>Restante</h5>
+						<p>{restante}</p>
+					</div>
 				</Tile>
 			</Column>
 		</Row>
