@@ -1,6 +1,9 @@
 <script>
 	// @ts-nocheck
 
+	import { fly } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
+	import { enhance } from '$app/forms';
 	import {
 		Button,
 		Grid,
@@ -11,7 +14,22 @@
 		StructuredListHead,
 		StructuredListRow,
 		StructuredListCell,
-		StructuredListBody
+		StructuredListBody,
+		ModalBody,
+		Tag,
+		ModalFooter,
+		FormGroup,
+		Dropdown,
+		SelectItem,
+		TextArea,
+		ComposedModal,
+		InlineLoading,
+		ModalHeader,
+		MultiSelect,
+		Search,
+		ToastNotification,
+		NumberInput,
+		Select
 	} from 'carbon-components-svelte';
 	import { Printer, CurrencyDollar } from 'carbon-icons-svelte';
 	export let data;
@@ -50,16 +68,7 @@
 			icon: 'bx-dollar',
 			value: precio
 		},
-		{
-			name: 'Estado',
-			icon: 'bx-check-circle',
-			value: data.venta.estado
-		},
-		{
-			name: 'Observaciones',
-			icon: 'bx-comment-detail',
-			value: data.venta.observaciones
-		},
+
 		{
 			name: 'Creado',
 			icon: 'bx-calendar',
@@ -69,6 +78,16 @@
 			name: 'Modificado',
 			icon: 'bx-calendar-edit',
 			value: updated
+		},
+		{
+			name: 'Estado',
+			icon: 'bx-check-circle',
+			value: data.venta.estado
+		},
+		{
+			name: 'Observaciones',
+			icon: 'bx-comment-detail',
+			value: data.venta.observaciones
 		}
 	];
 
@@ -86,6 +105,25 @@
 	};
 
 	import pdfMake from 'pdfmake/build/pdfmake';
+
+	/**
+	 * @type {HTMLFormElement}
+	 */
+	let form;
+
+	$: creating = false;
+
+	let toast = false;
+
+	let isFormValid = true;
+	//VARIABLES Y CONSTANTES
+	let open = false;
+
+	const closeModals = () => {
+		open = false;
+		toast = false;
+		window.location.reload();
+	};
 
 	const docDefinition = {
 		pageMargins: [40, 40],
@@ -263,10 +301,10 @@
 			</Button>
 			<Button
 				icon={CurrencyDollar}
-				iconDescription="Imprimir contrato"
 				size="small"
-				tooltipAlignment="end"
-				tooltipPosition="right"
+				on:click={() => {
+					open = true;
+				}}
 			>
 				Generar Pago
 			</Button>
@@ -278,68 +316,63 @@
 			<Column
 				><Tile class="m-4">
 					<h3>Detalles</h3>
-					<section class="">
-						<p class="mb-6 pb-2">
-							{data.venta.observaciones}
-						</p>
-						<ul class="space-y-5 my-7">
+					<StructuredList condensed>
+						<StructuredListBody>
 							{#each items as item}
-								<li class="flex space-x-3">
-									<!-- Icon -->
-									<i class="bx text-blue-600 {item.icon}" />
-									<span class=""><strong>{item.name}:</strong> {item.value}</span>
-								</li>
-							{/each}
-							<!-- pasajeros -->
-							{#each data.ventaExpanded.expand.pasajeros as pasajero}
-								<li class="flex space-x-3">
-									<!-- Icon -->
-									<i class="bx text-blue-600 bx-user" />
-									<span class=""
-										><strong>Pasajero:</strong>
-										{pasajero.nombre}
-										{pasajero.apellido} (DNI: {pasajero.dni})</span
+								<StructuredListRow>
+									<StructuredListCell head
+										><i class="mr-2 bx text-blue-600 {item.icon}" />{item.name}</StructuredListCell
 									>
-								</li>
+									<StructuredListCell>{item.value}</StructuredListCell>
+								</StructuredListRow>
 							{/each}
-						</ul>
-					</section></Tile
-				></Column
+							{#each data.ventaExpanded.expand.pasajeros as pasajero}
+								<StructuredListRow>
+									<StructuredListCell head
+										><i class="mr-2 bx text-blue-600 bx-user" />Acompañante:
+									</StructuredListCell>
+									<StructuredListCell
+										>{pasajero.nombre}
+										{pasajero.apellido} (DNI: {pasajero.dni})</StructuredListCell
+									>
+								</StructuredListRow>
+							{/each}
+						</StructuredListBody>
+					</StructuredList>
+				</Tile></Column
 			>
 			<Column
 				><Tile class="m-4">
 					<h3>Pagos</h3>
-					<section class="">
-						<StructuredList>
-							<StructuredListHead>
-								<StructuredListRow head>
-									<StructuredListCell head>ID</StructuredListCell>
-									<StructuredListCell head>Fecha</StructuredListCell>
-									<StructuredListCell head>Monto</StructuredListCell>
+					<StructuredList condensed>
+						<StructuredListHead>
+							<StructuredListRow head>
+								<StructuredListCell head>ID</StructuredListCell>
+								<StructuredListCell head>Fecha</StructuredListCell>
+								<StructuredListCell head>Monto</StructuredListCell>
+							</StructuredListRow>
+						</StructuredListHead>
+						<StructuredListBody>
+							{#each data.ventaExpanded.expand.pagos as pago}
+								<StructuredListRow>
+									<StructuredListCell>{pago.id}</StructuredListCell>
+									<StructuredListCell
+										>{new Date(pago.created).toLocaleDateString('es-ES', {
+											day: '2-digit',
+											month: 'short',
+											year: 'numeric'
+										})}</StructuredListCell
+									>
+									<StructuredListCell>
+										{pago.valor.toLocaleString('es-AR', {
+											style: 'currency',
+											currency: 'ARS'
+										})}
+									</StructuredListCell>
 								</StructuredListRow>
-							</StructuredListHead>
-							<StructuredListBody>
-								{#each data.ventaExpanded.expand.pagos as pago}
-									<StructuredListRow>
-										<StructuredListCell>{pago.id}</StructuredListCell>
-										<StructuredListCell
-											>{new Date(pago.created).toLocaleDateString('es-ES', {
-												day: '2-digit',
-												month: 'short',
-												year: 'numeric'
-											})}</StructuredListCell
-										>
-										<StructuredListCell>
-											{pago.valor.toLocaleString('es-AR', {
-												style: 'currency',
-												currency: 'ARS'
-											})}
-										</StructuredListCell>
-									</StructuredListRow>
-								{/each}
-							</StructuredListBody>
-						</StructuredList>
-					</section>
+							{/each}
+						</StructuredListBody>
+					</StructuredList>
 				</Tile></Column
 			>
 		</Row>
@@ -419,6 +452,69 @@
 		</Row>
 	</Grid>
 </div>
+
+<ComposedModal bind:open on:close={() => closeModals()}>
+	<ModalHeader label="" title="Nuevo pago" />
+	<ModalBody hasForm hasScrollingContent>
+		{#if creating}
+			<div in:fly={{ y: 100 }} out:slide>
+				<InlineLoading description="Registrando Pago..." />
+			</div>
+		{:else if toast}
+			<div in:fly={{ y: 100 }} out:slide>
+				<ToastNotification
+					lowContrast
+					kind="success"
+					title="Operación exitosa"
+					subtitle={new Date().toLocaleString()}
+					caption="Pago registrado correctamente."
+					fullWidth
+					on:close={() => (toast = false)}
+				/>
+			</div>
+		{:else}
+			<form
+				id="modalForm"
+				on:submit={() => {
+					open = true;
+					isFormValid = false;
+					console.log('submit');
+				}}
+				method="post"
+				action="?/createPago"
+				bind:this={form}
+				use:enhance={() => {
+					creating = true;
+					return async ({ update }) => {
+						await update();
+						creating = false;
+						toast = true;
+					};
+				}}
+			>
+				<Grid>
+					<Row>
+						<Column>
+							<FormGroup legendText="Precio:">
+								<NumberInput name="valor" label="Importe a pagar" min={1} step={1} hideLabel />
+							</FormGroup>
+						</Column>
+					</Row>
+				</Grid>
+			</form>
+		{/if}
+	</ModalBody>
+	<ModalFooter>
+		<Button kind="secondary" size="lg" on:click={() => (open = false)}>Cancelar</Button>
+		<Button
+			id="modalSubmitButton"
+			size="lg"
+			type="submit"
+			disabled={!isFormValid || creating}
+			on:click={() => form.requestSubmit()}>Crear</Button
+		>
+	</ModalFooter>
+</ComposedModal>
 
 <form method="post" action="?/createPago">
 	<input class="text-black" type="number" id="valor" />
