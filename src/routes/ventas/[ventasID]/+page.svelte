@@ -22,9 +22,11 @@
 		InlineLoading,
 		ModalHeader,
 		ToastNotification,
-		NumberInput
+		NumberInput,
+		OverflowMenu,
+		OverflowMenuItem
 	} from 'carbon-components-svelte';
-	import { Printer, CurrencyDollar } from 'carbon-icons-svelte';
+	import { Printer, CurrencyDollar, TrashCan } from 'carbon-icons-svelte';
 	export let data;
 	const created = new Date(data.venta.created).toLocaleString('es-AR');
 	const updated = new Date(data.venta.updated).toLocaleString('es-AR');
@@ -61,6 +63,12 @@
 			name: 'Precio paquete',
 			icon: 'bx-dollar',
 			value: precio
+		},
+
+		{
+			name: 'Destino',
+			icon: 'bx-map',
+			value: data.venta.paquete.nombre
 		},
 
 		{
@@ -286,13 +294,13 @@
 </script>
 
 <div class="min-h-screen">
-	<div class="flex flex row">
+	<div class="flex flex-row flex-wrap justify-between">
 		<h2 class="m-4">
 			<i class="bx bx-venta text-blue-600 mr-2" /><strong>VENTA </strong>
 			{data.venta.id}
 		</h2>
 
-		<div class="grid grid-cols-3 gap-4 h-[36px] content-end mt-4">
+		<div class="grid grid-cols-3 gap-4 h-[36px] content-end mt-4 mr-[-115px]">
 			<Button
 				class="mb-0"
 				icon={Printer}
@@ -316,6 +324,11 @@
 			>
 				Generar Pago
 			</Button>
+			<OverflowMenu>
+				<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}}
+					>Cancelar Venta</Button
+				>
+			</OverflowMenu>
 		</div>
 	</div>
 
@@ -381,7 +394,6 @@
 					<StructuredList condensed>
 						<StructuredListHead>
 							<StructuredListRow head>
-								<StructuredListCell head>ID</StructuredListCell>
 								<StructuredListCell head>Fecha</StructuredListCell>
 								<StructuredListCell head>Monto</StructuredListCell>
 							</StructuredListRow>
@@ -389,7 +401,6 @@
 						<StructuredListBody>
 							{#each data.ventaExpanded.expand.pagos as pago}
 								<StructuredListRow>
-									<StructuredListCell>{pago.id}</StructuredListCell>
 									<StructuredListCell
 										>{new Date(pago.created).toLocaleDateString('es-ES', {
 											day: '2-digit',
@@ -405,6 +416,9 @@
 									</StructuredListCell>
 									<StructuredListCell>
 										<Button icon={Printer} size="small" on:click={() => {}} />
+									</StructuredListCell>
+									<StructuredListCell>
+										<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}} />
 									</StructuredListCell>
 								</StructuredListRow>
 							{/each}
