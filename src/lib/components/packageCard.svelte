@@ -48,23 +48,23 @@
 		}
 	];
 	let open = false;
+
+	import { truncate } from 'carbon-components-svelte';
 </script>
 
-<div
-	class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out min-w-[270px]"
->
+<div class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out w-[320px]">
 	<ClickableTile on:click={() => (open = true)}>
 		{#if project.thumbnail}
 			<AspectRatio ratio="16x9">
 				<img
-					class="h-[170px] object-cover mb-2"
+					class="h-[220px] object-cover"
 					src={getImageURL(project.collectionId, project.id, project.thumbnail)}
 					alt="logo"
 				/>
 			</AspectRatio>
 		{/if}
-		<div class="mt-10">
-			<h3 class="">
+		<div class="mt-16">
+			<h3 use:truncate class="">
 				{project.nombre}
 			</h3>
 
