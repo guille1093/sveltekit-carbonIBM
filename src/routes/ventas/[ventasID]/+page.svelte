@@ -305,9 +305,26 @@
 	</div>
 
 	<Grid>
-		<Row>
+		<Row class="my-8">
+			<Column>
+				<Tile>
+					<h5>Total</h5>
+				</Tile>
+			</Column>
+			<Column>
+				<Tile>
+					<h5>Abonado</h5>
+				</Tile>
+			</Column>
+			<Column>
+				<Tile>
+					<h5>Restante</h5>
+				</Tile>
+			</Column>
+		</Row>
+		<Row class="my-8">
 			<Column
-				><Tile class="m-4">
+				><Tile class="">
 					<h3>Detalles</h3>
 					<StructuredList condensed>
 						<StructuredListBody>
@@ -335,7 +352,7 @@
 				</Tile></Column
 			>
 			<Column
-				><Tile class="m-4">
+				><Tile class="">
 					<h3>Pagos</h3>
 					<StructuredList condensed>
 						<StructuredListHead>
@@ -362,6 +379,9 @@
 											currency: 'ARS'
 										})}
 									</StructuredListCell>
+									<StructuredListCell>
+										<Button icon={Printer} size="small" on:click={() => {}} />
+									</StructuredListCell>
 								</StructuredListRow>
 							{/each}
 						</StructuredListBody>
@@ -369,77 +389,70 @@
 				</Tile></Column
 			>
 		</Row>
-
-		<Row>
+		<Row class="my-8">
 			<Column
-				><Tile class="m-4">
-					<section class="page">
-						<div class="max-w-5xl mx-auto py-8 bg-white text-black">
-							<article class="overflow-hidden">
-								<div class="bg-[white] rounded-b-md">
-									<div class="px-9 flex flex-col">
-										<div class="text-slate-700 top-0">
-											<div class="flex flex-row justify-between">
-												<div class="justify-end">
-													<p class="uppercase"><strong>CONTRATO NRO. </strong>{data.venta.id}</p>
-												</div>
-											</div>
+				><Tile class="">
+					<article class="overflow-hidden">
+						<div class="bg-gray-200 text-black">
+							<div class="px-9 flex flex-col">
+								<div class="text-slate-700 top-0">
+									<div class="flex flex-row justify-between">
+										<div class="justify-end">
+											<p class="uppercase"><strong>CONTRATO NRO. </strong>{data.venta.id}</p>
 										</div>
 									</div>
-
-									<div class="flex flex-row justify-center px-9 py-9">
-										<h1 class="underline text-3xl font-bold">CONTRATO DE EXCURSIÓN</h1>
-									</div>
-
-									<p class="px-9 tracking-widest text-justify">
-										En la ciudad de <strong class="uppercase tracking-tight"
-											>Posadas, Provincia de Misiones,</strong
-										>
-										a los <strong class="uppercase tracking-tight">{createdDia}</strong>
-										días del mes de <strong class="uppercase tracking-tight">{createdMes}</strong>
-										del año
-										<strong class="uppercase tracking-tight">{createdAnio}</strong>, entre la
-										empresa de viajes y turismo <strong class="">DEL VALLE TURISMO</strong>, con
-										domicilio en la calle
-										<strong class="uppercase tracking-tight">La Rioja 2203</strong> de la ciudad de
-										<strong class="uppercase tracking-tight">Posadas, Provincia de Misiones,</strong
-										>
-										y la parte contratante el Sr/a
-										<strong class="uppercase tracking-tight">
-											{data.venta.cliente.nombre}
-											{data.venta.cliente.apellido}
-										</strong>, con DNI N°
-										<strong class="uppercase tracking-tight"> {data.venta.cliente.dni} </strong>.
-										<br />
-										Contrata una excursión para
-										<strong class="uppercase tracking-tight"> {data.venta.cant_personas} </strong>
-										persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples,
-										de
-										<strong class="uppercase tracking-tight"> {precio} </strong>
-										con el regimen de
-										<strong class="uppercase tracking-tight">{data.venta.paquete.regimen} </strong>.
-										<br />
-										Estando la salida prevista para el día
-										<strong class="uppercase tracking-tight"> {fechasalida} </strong> y el regreso
-										para el día <strong class="uppercase tracking-tight"> {fecharetorno} </strong>
-										por
-										<strong class="uppercase tracking-tight">
-											{data.venta.paquete.cant_noches}
-										</strong>
-										noches y
-										<strong class="uppercase tracking-tight">
-											{data.venta.paquete.cant_dias}
-										</strong>
-										días. El precio total de la excursión es de
-										<strong class="uppercase tracking-tight"> {precio_total} </strong>. <br />
-										<strong class="uppercase font-bold">observaciones:</strong>
-										{data.venta.observaciones}
-										<br />
-									</p>
 								</div>
-							</article>
+							</div>
+
+							<div class="flex flex-row justify-center px-9 py-9">
+								<h1 class="underline text-3xl font-bold">CONTRATO DE EXCURSIÓN</h1>
+							</div>
+
+							<p class="px-9 tracking-widest text-justify">
+								En la ciudad de <strong class="uppercase tracking-tight"
+									>Posadas, Provincia de Misiones,</strong
+								>
+								a los <strong class="uppercase tracking-tight">{createdDia}</strong>
+								días del mes de <strong class="uppercase tracking-tight">{createdMes}</strong>
+								del año
+								<strong class="uppercase tracking-tight">{createdAnio}</strong>, entre la empresa de
+								viajes y turismo <strong class="">DEL VALLE TURISMO</strong>, con domicilio en la
+								calle
+								<strong class="uppercase tracking-tight">La Rioja 2203</strong> de la ciudad de
+								<strong class="uppercase tracking-tight">Posadas, Provincia de Misiones,</strong>
+								y la parte contratante el Sr/a
+								<strong class="uppercase tracking-tight">
+									{data.venta.cliente.nombre}
+									{data.venta.cliente.apellido}
+								</strong>, con DNI N°
+								<strong class="uppercase tracking-tight"> {data.venta.cliente.dni} </strong>.
+								<br />
+								Contrata una excursión para
+								<strong class="uppercase tracking-tight"> {data.venta.cant_personas} </strong>
+								persona/s. El precio es por persona en habitaciones dobles, triples o cuádruples, de
+								<strong class="uppercase tracking-tight"> {precio} </strong>
+								con el regimen de
+								<strong class="uppercase tracking-tight">{data.venta.paquete.regimen} </strong>.
+								<br />
+								Estando la salida prevista para el día
+								<strong class="uppercase tracking-tight"> {fechasalida} </strong> y el regreso para
+								el día <strong class="uppercase tracking-tight"> {fecharetorno} </strong>
+								por
+								<strong class="uppercase tracking-tight">
+									{data.venta.paquete.cant_noches}
+								</strong>
+								noches y
+								<strong class="uppercase tracking-tight">
+									{data.venta.paquete.cant_dias}
+								</strong>
+								días. El precio total de la excursión es de
+								<strong class="uppercase tracking-tight"> {precio_total} </strong>. <br />
+								<strong class="uppercase font-bold">observaciones:</strong>
+								{data.venta.observaciones}
+								<br />
+							</p>
 						</div>
-					</section>
+					</article>
 				</Tile></Column
 			>
 		</Row>
