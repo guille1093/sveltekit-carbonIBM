@@ -46,6 +46,8 @@
 	let theme = 'g100';
 </script>
 
+<Theme bind:theme persist persistKey="__carbon-theme" />
+
 <Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">
 		<SkipToContent />
