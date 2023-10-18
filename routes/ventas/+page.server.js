@@ -18,7 +18,7 @@ export async function load({ locals }) {
 		// Obtener las ventas
 		const getVentas = async () => {
 			// @ts-ignore
-			return structuredClone(await locals.pb.collection('ventas').getFullList(undefined, {}));
+			return structuredClone(await locals.pb.collection('ventas').getFullList(undefined, { expand: 'cliente, pasajeros, pagos, paquete' }));
 		};
 
 		const ventas = await getVentas();
@@ -61,7 +61,6 @@ export async function load({ locals }) {
 		});
 
 		console.log('ventas cargadas');
-		console.log('ventasinf: ', ventasinf);
 
 		return {
 			clientes,

@@ -81,11 +81,25 @@ export const actions = {
 		const fecharetorno = new Date(
 			`${((parts) => `${parts[1]}/${parts[0]}/${parts[2]}`)(
 				form.get('fecharetorno')?.toString().split('/') ??
-					new Date().toLocaleDateString().split('/')
+				new Date().toLocaleDateString().split('/')
 			)}`
 		);
 		const descripcion = form.get('obervaciones') ?? '';
 		const pais_destino = form.get('pais_destino') ?? '';
+
+		//   "chofer1nombre": "test",
+		// "chofer1dni": "test",
+		// 	"chofer2nombre": "test",
+		// 		"chofer2dni": "test",
+		// 			"dominio": "test"
+
+		const chofer1nombre = form.get('chofer1nombre') ?? '';
+		const chofer1dni = form.get('chofer1dni') ?? '';
+		const chofer2nombre = form.get('chofer2nombre') ?? '';
+		const chofer2dni = form.get('chofer2dni') ?? '';
+		const dominio = form.get('dominio') ?? '';
+		const interno = form.get('interno') ?? '';
+
 
 		const data = {
 			nombre,
@@ -99,7 +113,13 @@ export const actions = {
 			fechasalida,
 			fecharetorno,
 			descripcion,
-			pais_destino
+			pais_destino,
+			chofer1nombre,
+			chofer1dni,
+			chofer2nombre,
+			chofer2dni,
+			dominio,
+			interno
 		};
 
 		console.log('data: ', data);

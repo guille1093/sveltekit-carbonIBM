@@ -28,7 +28,9 @@
 		InlineLoading,
 		ComposedModal,
 		ToastNotification,
-		ProgressBar
+		ProgressBar,
+		Accordion,
+		AccordionItem
 	} from 'carbon-components-svelte';
 
 	import { enhance } from '$app/forms';
@@ -237,6 +239,45 @@
 			{
 				table: {
 					headerRows: 1,
+					widths: ['*', '*'],
+					body: [
+						[
+							{
+								table: {
+									headerRows: 1,
+									widths: ['*', '*'],
+									body: [
+										[
+											{ text: 'DATOS CONDUCTOR', style: 'tableHeader' },
+											{ text: 'DNI', style: 'tableHeader' }
+										],
+										[`${data.paquetes.chofer1nombre}`, `${data.paquetes.chofer1dni}`],
+										[`${data.paquetes.chofer2nombre}`, `${data.paquetes.chofer2dni}`]
+									]
+								}
+							},
+							{
+								table: {
+									headerRows: 1,
+									widths: ['*', '*'],
+									body: [
+										[
+											{ text: 'DOMINIO VEHICULO', style: 'tableHeader' },
+											{ text: 'INTERNO VEHICULO', style: 'tableHeader' }
+										],
+
+										[`${data.paquetes.dominio}`, `${data.paquetes.interno}`]
+									]
+								}
+							}
+						]
+					]
+				}
+			},
+
+			{
+				table: {
+					headerRows: 1,
 					widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
 					body: [
 						// Encabezado de la tabla
@@ -255,8 +296,8 @@
 							// Agregar cada pasajero como una fila en la tabla
 							venta.pasajeros.forEach((pasajero) => {
 								rows.push([
-									{ text: rows.length + 1, fontSize: 8 }, // Tamaño de fuente de la celda
-									{ text: pasajero.apellido + ' ' + pasajero.nombre || '', fontSize: 8 },
+									{ text: rows.length + 1, fontSize: 10 }, // Tamaño de fuente de la celda
+									{ text: pasajero.apellido + ' ' + pasajero.nombre || '', fontSize: 10 },
 									{
 										text:
 											new Date(pasajero.fechanacimiento)
@@ -266,19 +307,19 @@
 													year: 'numeric'
 												})
 												.toUpperCase() || '',
-										fontSize: 8
+										fontSize: 10
 									},
-									{ text: pasajero.nacionalidad || '', fontSize: 8 },
-									{ text: pasajero.ocupacion || '', fontSize: 8 },
+									{ text: pasajero.nacionalidad || '', fontSize: 10 },
+									{ text: pasajero.ocupacion || '', fontSize: 10 },
 									{
 										text:
 											pasajero.sexo === 'MASCULINO'
 												? 'M'
 												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
-										fontSize: 8
+										fontSize: 10
 									},
-									{ text: pasajero.dni || '', fontSize: 8 },
-									{ text: pasajero.nacionalidad || '', fontSize: 8 }
+									{ text: pasajero.dni || '', fontSize: 10 },
+									{ text: pasajero.nacionalidad || '', fontSize: 10 }
 								]);
 							});
 							return rows;
@@ -383,6 +424,13 @@
 		<Column
 			><Tile>
 				<h2 class="">Información del paquete</h2>
+
+				choferes y dominio {data.paquetes.chofer1nombre}
+				{data.paquetes.chofer1dni}
+				{data.paquetes.chofer2nombre}
+				{data.paquetes.chofer2dni}
+				{data.paquetes.dominio}
+
 				<ul class="mt-4">
 					{#each items as item}
 						<li class="flex space-x-3 space-y-2 justify-between">
@@ -402,38 +450,43 @@
 		>
 		<Column>
 			<Tile>
-				<h2 class="">Pasajeros</h2>
-				<div class="flex justify-between">
-					<p class=" mb-6 pb-2">
-						Total de pasajeros: <strong class="font-mono text-2xl">{totaldepelotuditos}</strong>
-					</p>
+				<h2 class="">Pasajeros {totaldepelotuditos}</h2>
+				
+				<div class="mb-4">
+					<ProgressBar
+						max={30}
+						status={totaldepelotuditos > 30 ? 'finished' : undefined}
+						labelText="Total de pasajeros:"
+						helperText="{totaldepelotuditos} de {30} necesarios"
+						value={totaldepelotuditos}
+					/>
 				</div>
-				<div class="bg-gray-900 h-4">
-					<ProgressBar max={50} value={totaldepelotuditos} />
-				</div>
-
-				{#each data.ventas as venta}
-					<div class="mt-4 p-2">
-						<h4><a class="" href="/ventas/{venta.id}"><strong>CONTRATO:</strong> {venta.id}</a></h4>
-						<StructuredList>
-							<StructuredListBody>
-								<StructuredListRow>
-									<StructuredListCell
-										><strong>Titular:</strong>
-										{venta.cliente.nombre}
-										{venta.cliente.apellido}</StructuredListCell
-									>
-								</StructuredListRow>
-								{#each venta.pasajeros as pasajero}
-									<StructuredListRow>
-										<StructuredListCell>{pasajero.dni}</StructuredListCell>
-										<StructuredListCell>{pasajero.nombre} {pasajero.apellido}</StructuredListCell>
-									</StructuredListRow>
-								{/each}
-							</StructuredListBody>
-						</StructuredList>
-					</div>
-				{/each}
+				<Accordion>
+					{#each data.ventas as venta}
+						<AccordionItem>
+							<svelte:fragment slot="title">
+								<h5>
+									<a class="" href="/ventas/{venta.id}"><strong>CONTRATO:</strong> {venta.id}</a>
+								</h5>
+								<div>
+									<strong>Titular:</strong>
+									{venta.cliente.nombre}
+									{venta.cliente.apellido}
+								</div>
+							</svelte:fragment>
+							<StructuredList>
+								<StructuredListBody>
+									{#each venta.pasajeros as pasajero}
+										<StructuredListRow>
+											<StructuredListCell>DNI: {pasajero.dni}</StructuredListCell>
+											<StructuredListCell>{pasajero.nombre} {pasajero.apellido}</StructuredListCell>
+										</StructuredListRow>
+									{/each}
+								</StructuredListBody>
+							</StructuredList>
+						</AccordionItem>
+					{/each}
+				</Accordion>
 			</Tile></Column
 		>
 	</Row>
@@ -581,6 +634,39 @@
 
 				<FormGroup legendText="Hotel">
 					<TextInput id="hotel" name="hotel" placeholder="Ingrese el hotel" bind:value={hotel} />
+				</FormGroup>
+
+				<FormGroup legendText="Chofer 1">
+					<TextInput
+						id="chofer1nombre"
+						name="chofer1nombre"
+						placeholder="Ingrese el nombre del chofer 1"
+					/>
+					<NumberInput
+						id="chofer1dni"
+						min={1}
+						name="chofer1dni"
+						placeholder="Ingrese el dni del chofer 1"
+					/>
+				</FormGroup>
+
+				<FormGroup legendText="Chofer 2">
+					<TextInput
+						id="chofer2nombre"
+						name="chofer2nombre"
+						placeholder="Ingrese el nombre del chofer 2"
+					/>
+					<NumberInput
+						id="chofer2dni"
+						min={1}
+						name="chofer2dni"
+						placeholder="Ingrese el dni del chofer 2"
+					/>
+				</FormGroup>
+
+				<FormGroup legendText="Dominio del bus">
+					<TextInput id="interno" name="interno" placeholder="Ingrese el interno del bus" />
+					<TextInput id="dominio" name="dominio" placeholder="Ingrese el dominio del bus" />
 				</FormGroup>
 
 				<TextArea
