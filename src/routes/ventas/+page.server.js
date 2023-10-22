@@ -31,10 +31,13 @@ export async function load({ locals }) {
 				const nombre = cliente.nombre;
 				const apellido = cliente.apellido;
 				const dni = cliente.dni;
+
 				const nombrePaquete = paquete.nombre;
 				const estadoPaquete = paquete.estado;
 				const precioPaquete = paquete.precio;
+				const paqueteFecha = paquete.fechasalida;
 				const precioVenta = precioPaquete * venta.cant_personas;
+
 
 				return {
 					...venta,
@@ -44,7 +47,8 @@ export async function load({ locals }) {
 					nombrePaquete,
 					estadoPaquete,
 					precioPaquete,
-					precioVenta
+					paqueteFecha,
+					precioVenta,
 				};
 			} else {
 				console.log('Cliente o paquete no encontrado para venta:', venta);
@@ -79,7 +83,7 @@ export const actions = {
 		console.log('form: ', form);
 		const cliente = form.get('cliente') ?? '';
 		const paquete = form.get('paquete') ?? '';
-		const pagado = form.get('pagado') ?? '';
+		const pagado = '0';
 		const observaciones = form.get('observaciones') ?? '';
 		const estado = form.get('estado') ?? '';
 		const cant_personas = form.get('cant_personas') ?? '';

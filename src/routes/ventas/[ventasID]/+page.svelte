@@ -55,6 +55,7 @@
 		month: 'long',
 		year: 'numeric'
 	});
+	
 	const items = [
 		{
 			name: 'Nombre y Apellido Titular',
@@ -66,13 +67,11 @@
 			icon: 'bx-dollar',
 			value: precio
 		},
-
 		{
 			name: 'Destino',
 			icon: 'bx-map',
 			value: data.venta.paquete.nombre
 		},
-
 		{
 			name: 'Creado',
 			icon: 'bx-calendar',

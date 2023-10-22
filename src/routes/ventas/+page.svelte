@@ -389,6 +389,7 @@
 	<h1>Ventas</h1>
 	<p>Aqui puede ver y crear ventas.</p>
 	<div class="overflow-hidden">
+		<!-- svelte-ignore a11y-missing-attribute -->
 		<DataTable
 			zebra
 			sortable
@@ -475,6 +476,15 @@
 					<a class="text-sm text-gray-300" href="/ventas/{row.id}">
 						{cell.value}
 					</a>
+					<br />
+					<a class="text-xs text-gray-500" href="/ventas/{row.id}">
+						<i class="bx bx-calendar text-xs mr-2 text-blue-600" />
+						{new Date(row.paqueteFecha).toLocaleDateString('es-ES', {
+							day: '2-digit',
+							month: 'short',
+							year: 'numeric'
+						})}
+					</a>
 				{:else if cell.key === 'estado'}
 					{#if cell.value === 'EN CURSO'}
 						<div class="flex">
@@ -528,6 +538,7 @@
 	<div class="fixed bottom-0 w-2/3">
 		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />
 	</div>
+
 </main>
 
 <style>
