@@ -84,7 +84,9 @@ export const actions = {
 	createPago: async ({ request, locals, params }) => {
 		const form = await request.formData();
 		const data = {
-			valor: form.get('valor')
+			valor: form.get('valor'),
+			total: form.get('total'),
+			saldo: form.get('saldo'),
 		};
 
 		// Convert data.valor to an integer.

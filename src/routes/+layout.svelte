@@ -1,6 +1,6 @@
 <script>
 	import '../app.postcss';
-	import 'carbon-components-svelte/css/all.css';
+	import 'carbon-components-svelte/css/g100.css';
 	import { page } from '$app/stores';
 	import {
 		Header,
@@ -42,11 +42,9 @@
 			icon: Currency
 		}
 	];
-
-	let theme = 'g100';
 </script>
 
-<Theme bind:theme persist persistKey="__carbon-theme" />
+
 
 <Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">
@@ -57,7 +55,7 @@
 		<HeaderAction bind:isOpen={isOpen1} icon={UserAvatarFilledAlt} closeIcon={UserAvatarFilledAlt}>
 			<HeaderPanelLinks>
 				<HeaderPanelDivider>Cuenta</HeaderPanelDivider>
-				<Theme bind:theme render="select" persist persistKey="__carbon-theme" />
+				
 			</HeaderPanelLinks>
 		</HeaderAction>
 	</HeaderUtilities>
