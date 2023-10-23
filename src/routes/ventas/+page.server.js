@@ -85,7 +85,7 @@ export const actions = {
 		const paquete = form.get('paquete') ?? '';
 		const pagado = '0';
 		const observaciones = form.get('observaciones') ?? '';
-		const estado = form.get('estado') ?? '';
+		const estado = 'EN CURSO';
 		const cant_personas = form.get('cant_personas') ?? '';
 		const pasajeros = form.get('pasajeros') ?? '';
 		const valor = form.get('precio') ?? '1';
@@ -109,3 +109,4 @@ export const actions = {
 		};
 	}
 };
+

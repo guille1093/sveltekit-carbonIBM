@@ -55,7 +55,7 @@
 		month: 'long',
 		year: 'numeric'
 	});
-	
+
 	const items = [
 		{
 			name: 'Nombre y Apellido Titular',
@@ -122,10 +122,37 @@
 
 	let open = false;
 
+	let valor = 0;
+
 	const closeModals = () => {
 		open = false;
 		toast = false;
 		window.location.reload();
+	};
+
+	const validarPago = () => {
+		//si el elemento introducido es un punto o una coma borrarlos
+		if (
+			valor.toString().includes('.') ||
+			valor.toString().includes(',') ||
+			valor.toString().includes(' ') ||
+			valor.toString().includes('-')
+		) {
+			valor = valor.toString().replace('.', '');
+			valor = valor.toString().replace(',', '');
+			valor = valor.toString().replace(' ', '');
+			valor = valor.toString().replace('-', '');
+		}
+
+		//si valor es mayor a restanteint, restanteint es el valor
+		if (valor > restanteint) {
+			valor = restanteint;
+		}
+
+		//si valor es menor a 0, valor es 0
+		if (valor < 0) {
+			valor = 0;
+		}
 	};
 
 	let pagos = [];
@@ -454,6 +481,7 @@
 				Imprimir contrato
 			</Button>
 			<Button
+				disabled={data.venta.estado == 'FINALIZADA'}
 				icon={CurrencyDollar}
 				size="small"
 				on:click={() => {
@@ -512,7 +540,6 @@
 								</StructuredListRow>
 							{/each}
 							{#if data.ventaExpanded.expand.pasajeros != undefined}
-							
 								<StructuredListRow>
 									<Accordion>
 										<AccordionItem>
@@ -675,6 +702,56 @@
 			>
 				<Grid>
 					<Row>
+						<FormGroup legendText="Valores actuales">
+							<Row>
+								<Column>
+									<h5>Total</h5>
+									<p>{precio_total}</p>
+								</Column>
+								<Column>
+									<h5>Abonado</h5>
+									<p>{abonado}</p>
+								</Column>
+								<Column>
+									<h5>Restante</h5>
+									<p>{restante}</p>
+								</Column>
+							</Row>
+						</FormGroup>
+					</Row>
+					<Row>
+						<FormGroup legendText="Nuevos Valores">
+							<Row>
+								<Column>
+									<h5>Total</h5>
+									<p>{precio_total}</p>
+								</Column>
+								<Column>
+									<h5>Abonado</h5>
+									<p>
+										{new Intl.NumberFormat('es-AR', {
+											style: 'currency',
+											currency: 'ARS'
+										}).format(
+											data.ventaExpanded.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0) +
+												valor
+										)}
+									</p>
+								</Column>
+								<Column>
+									<h5>Restante</h5>
+									<p>
+										{new Intl.NumberFormat('es-AR', {
+											style: 'currency',
+											currency: 'ARS'
+										}).format(restanteint - valor)}
+									</p>
+								</Column>
+							</Row>
+						</FormGroup>
+					</Row>
+
+					<Row>
 						<Column>
 							<FormGroup legendText="Ingrese el importe a abonar: (max: {restanteint})">
 								<NumberInput
@@ -686,6 +763,13 @@
 									size="xl"
 									step={1}
 									hideLabel
+									bind:value={valor}
+									on:change={() => {
+										validarPago();
+									}}
+									on:input={() => {
+										validarPago();
+									}}
 								/>
 							</FormGroup>
 						</Column>

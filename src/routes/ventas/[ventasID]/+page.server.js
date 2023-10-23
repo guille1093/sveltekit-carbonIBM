@@ -1,5 +1,5 @@
 
-let pagado = 0;
+let venta = undefined;
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, params }) {
@@ -57,7 +57,7 @@ export async function load({ locals, params }) {
 			fechasalida: paquete.fechasalida,
 			fecharetorno: paquete.fecharetorno
 		};
-	
+
 		return venta;
 	};
 
@@ -67,7 +67,8 @@ export async function load({ locals, params }) {
 			.getOne(params.ventasID, { expand: 'cliente, pasajeros, pagos, paquete' })
 	);
 
-	pagado = ventaExpanded.pagado;
+	venta = ventaExpanded;
+	console.log(venta);
 
 	return {
 		venta: getVenta(params.ventasID),
@@ -90,7 +91,7 @@ export const actions = {
 		const NuevoPagoValor = parseInt(data.valor, 10);
 
 		// Convert pagado to an integer.
-		const TotalPagado = parseInt(pagado, 10);
+		const TotalPagado = parseInt(venta.pagado, 10);
 
 		// Add NuevoPagoValor to TotalPagado.
 		const NuevoTotalPagado = NuevoPagoValor + TotalPagado;
@@ -100,6 +101,29 @@ export const actions = {
 
 		// Update the Ventas record with the new Pago record ID and the new pagado value.
 		await updateVentas(locals, params, record.id, NuevoTotalPagado);
+	},
+
+
+
+
+	deletePago: async ({ locals, params }) => {
+		// Get the Pago record.
+		const record = await locals.pb.collection('pagos').getOne(params.pagosID);
+
+		// Convert the valor field to an integer.
+		const PagoValor = parseInt(record.valor, 10);
+
+		// Convert pagado to an integer.
+		const TotalPagado = parseInt(venta.pagado, 10);
+
+		// Subtract PagoValor from TotalPagado.
+		const NuevoTotalPagado = TotalPagado - PagoValor;
+
+		// Delete the Pago record.
+		await locals.pb.collection('pagos').delete(params.pagosID);
+
+		// Update the Ventas record with the new pagado value.
+		await updateVentas(locals, params, null, NuevoTotalPagado);
 	}
 };
 
@@ -110,9 +134,22 @@ async function createPago(locals, data) {
 }
 
 async function updateVentas(locals, params, recordID, NuevoTotalPagado) {
+	// if venta.expand.paquete.precio * venta.cant_personas === NuevoTotalPagado then estado = 'pagado'
+	let estado = 'EN CURSO';
+	let valor = venta.expand.paquete.precio * venta.cant_personas;
+
+	if (venta.expand.paquete.precio * venta.cant_personas === NuevoTotalPagado) {
+		estado = 'FINALIZADA';
+		valor = NuevoTotalPagado;
+
+	}
+
+
 	// update the sale
 	return await locals.pb.collection('ventas').update(params.ventasID, {
 		'pagos+': recordID,
-		pagado: NuevoTotalPagado
+		estado: estado,
+		pagado: NuevoTotalPagado,
+		valor: valor
 	});
 }
