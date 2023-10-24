@@ -56,9 +56,9 @@
 
 <ComposedModal bind:open>
 	<ModalHeader>
-		<h2 class="text-2xl font-semibold">
+		<h3 class="text-2xl font-semibold">
 			{project.nombre}
-		</h2>
+		</h3>
 		<p>
 			{precio}
 		</p>
@@ -130,7 +130,7 @@
 
 			<div class="flex items-baseline mb-4">
 				<span class="" />
-				<h4>{precio}</h4>
+				<h3>{precio}</h3>
 			</div>
 			<!-- List -->
 			<ul role="list" class="space-y-4">
