@@ -66,13 +66,14 @@
 	</HeaderUtilities>
 </Header>
 
-<SideNav bind:isOpen={isSideNavOpen} rail>
+<SideNav bind:isOpen={isSideNavOpen} aria-hidden=false rail>
 	<SideNavItems>
 		<SideNavLink
 			href="/"
 			text="Inicio"
 			icon={Home}
 			isSelected={$page.url.pathname === '/' ? true : false}
+			
 		/>
 		{#each navigation as navItem}
 			<SideNavLink
