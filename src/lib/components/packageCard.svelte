@@ -52,45 +52,7 @@
 	import { truncate } from 'carbon-components-svelte';
 </script>
 
-<div class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out w-[320px]">
-	<ClickableTile on:click={() => (open = true)}>
-		{#if project.thumbnail}
-			<AspectRatio ratio="16x9">
-				<img
-					class="h-[220px] object-cover"
-					src={getImageURL(project.collectionId, project.id, project.thumbnail)}
-					alt="logo"
-				/>
-			</AspectRatio>
-		{/if}
-		<div class="mt-16">
-			<h3 use:truncate class="">
-				{project.nombre}
-			</h3>
 
-			<div class="flex items-baseline mb-4">
-				<span class="" />
-				<h4>{precio}</h4>
-			</div>
-			<!-- List -->
-			<ul role="list" class="space-y-4">
-				{#each items as item}
-					<li class="flex space-x-3 justify-between">
-						<div>
-							<!-- Icon -->
-							<i class="bx text-blue-600 {item.icon}" />
-							<!-- Name -->
-							<span>{item.name}:</span>
-						</div>
-
-						<!-- Text -->
-						<span>{item.value}</span>
-					</li>
-				{/each}
-			</ul>
-		</div>
-	</ClickableTile>
-</div>
 
 <ComposedModal bind:open>
 	<ModalHeader>
@@ -147,3 +109,46 @@
 		</div>
 	</ModalBody>
 </ComposedModal>
+
+
+
+<div class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out w-[320px]">
+	<ClickableTile on:click={() => (open = true)}>
+		{#if project.thumbnail}
+			<AspectRatio ratio="16x9">
+				<img
+					class="h-[220px] w-[160px] object-cover"
+					src={getImageURL(project.collectionId, project.id, project.thumbnail)}
+					alt="logo"
+				/>
+			</AspectRatio>
+		{/if}
+		<div class="mt-16">
+			<h3 use:truncate class="">
+				{project.nombre}
+			</h3>
+
+			<div class="flex items-baseline mb-4">
+				<span class="" />
+				<h4>{precio}</h4>
+			</div>
+			<!-- List -->
+			<ul role="list" class="space-y-4">
+				{#each items as item}
+					<li class="flex space-x-3 justify-between">
+						<div>
+							<!-- Icon -->
+							<i class="bx text-blue-600 {item.icon}" />
+							<!-- Name -->
+							<span>{item.name}:</span>
+						</div>
+
+						<!-- Text -->
+						<span>{item.value}</span>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</ClickableTile>
+</div>
+
