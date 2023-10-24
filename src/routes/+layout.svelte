@@ -45,6 +45,11 @@
 </script>
 
 
+<svelte:head>
+	<title>Excursia</title>
+	<meta name="description" content="Software de gestión y control de ventas de paquetes turisticos" />
+</svelte:head>
+
 
 <Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">
