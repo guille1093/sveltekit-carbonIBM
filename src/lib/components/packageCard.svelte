@@ -117,7 +117,7 @@
 		{#if project.thumbnail}
 			<AspectRatio ratio="16x9">
 				<img
-					class="h-[220px] w-[160px] object-cover"
+					class="h-[220px] w-[300px] object-cover"
 					src={getImageURL(project.collectionId, project.id, project.thumbnail)}
 					alt="logo"
 				/>
