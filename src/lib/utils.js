@@ -17,7 +17,7 @@ export const validateData = async (formData, schema) => {
 	}
 };
 
-export const getImageURL = (collectionId, recordId, fileName, size = '220x0') => {
+export const getImageURL = (collectionId, recordId, fileName, size = '220x160') => {
 	return `https://gq-pfs.pockethost.io/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
 };
 
