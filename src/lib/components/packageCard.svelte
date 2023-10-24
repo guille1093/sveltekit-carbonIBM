@@ -124,9 +124,9 @@
 			</AspectRatio>
 		{/if}
 		<div class="mt-16">
-			<h3 use:truncate class="">
+			<h2 use:truncate class="text-md">
 				{project.nombre}
-			</h3>
+			</h2>
 
 			<div class="flex items-baseline mb-4">
 				<span class="" />
