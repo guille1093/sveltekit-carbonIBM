@@ -47,7 +47,7 @@
 
 <svelte:head>
 	<title>Excursia</title>
-	<meta name="Excursia" content="Software de gestión y control de ventas de paquetes turisticos" />
+	<meta name="description" content="Software de gestión y control de ventas de paquetes turisticos" />
 </svelte:head>
 
 
