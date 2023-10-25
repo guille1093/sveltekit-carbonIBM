@@ -1,6 +1,4 @@
 import { error, redirect } from '@sveltejs/kit';
-import { validateData } from '$lib/utils';
-import { loginUserSchema } from '$lib/schemas/login.js';
 
 //Si el usuario ya está logueado, lo redirige a la página principal
 export const load = async ({ locals }) => {
@@ -12,14 +10,9 @@ export const load = async ({ locals }) => {
 
 export const actions = {
 	login: async ({ request, locals }) => {
-		const { formData, errors } = await validateData(await request.formData(), loginUserSchema);
+		const formData = await request.formData();
 
-		if (errors) {
-			return {
-				data: formData,
-				errors: errors.fieldErrors
-			};
-		}
+
 
 		try {
 			await locals.pb.collection('users').authWithPassword(formData.email, formData.password);

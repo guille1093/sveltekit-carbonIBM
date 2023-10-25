@@ -1,3 +1,4 @@
+
 <script>
 	import '../app.postcss';
 	import 'carbon-components-svelte/css/g100.css';
@@ -13,7 +14,6 @@
 		SideNavLink,
 		SkipToContent,
 		Content,
-		Theme
 	} from 'carbon-components-svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
@@ -47,7 +47,7 @@
 
 <svelte:head>
 	<title>Excursia</title>
-	<meta name="description" content="Software de gestión y control de ventas de paquetes turisticos" />
+	<meta name="Excursia" content="Software de gestión y control de ventas de paquetes turisticos" />
 </svelte:head>
 
 

@@ -1,26 +1,18 @@
-export const validateData = async (formData, schema) => {
-	const body = Object.fromEntries(formData);
-
-	try {
-		const data = schema.parse(body);
-		return {
-			formData: data,
-			errors: null
-		};
-	} catch (err) {
-		console.log('Error: ', err);
-		const errors = err.flatten();
-		return {
-			formData: body,
-			errors
-		};
-	}
-};
-
+/**
+ * Returns the URL for an image with the given parameters.
+ * @param {string} collectionId - The ID of the collection containing the image.
+ * @param {string} recordId - The ID of the record containing the image.
+ * @param {string} fileName - The name of the image file.
+ * @param {string} [size='220x160'] - The size of the image thumbnail to retrieve.
+ * @returns {string} The URL for the requested image.
+ */
 export const getImageURL = (collectionId, recordId, fileName, size = '220x160') => {
 	return `https://gq-pfs.pockethost.io/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
 };
 
+/**
+ * Defines the styles for a grid component.
+ */
 export const gridStyle = {
 	container: 'w-full text-sm text-left dark:bg-gray-800 p-4 shadow-md',
 	table: 'w-full',

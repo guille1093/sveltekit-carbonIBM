@@ -108,7 +108,20 @@ export const actions = {
 
 
 
-	deletePago: async ({ locals, params }) => {
+	deletePago: async ({ locals, request, params }) => {
+
+		const form = await request.formData();
+		const data = {
+			valor: form.get('valor'),
+			total: form.get('total'),
+			saldo: form.get('saldo'),
+		};
+
+		//Data is undefined
+		console.log(data);
+
+		
+
 		// Get the Pago record.
 		const record = await locals.pb.collection('pagos').getOne(params.pagosID);
 
