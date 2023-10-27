@@ -1,4 +1,3 @@
-
 <script>
 	import '../app.postcss';
 	import 'carbon-components-svelte/css/g100.css';
@@ -13,7 +12,7 @@
 		SideNavItems,
 		SideNavLink,
 		SkipToContent,
-		Content,
+		Content
 	} from 'carbon-components-svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
@@ -44,12 +43,13 @@
 	];
 </script>
 
-
 <svelte:head>
 	<title>Excursia</title>
-	<meta name="description" content="Software de gestión y control de ventas de paquetes turisticos" />
+	<meta
+		name="description"
+		content="Software de gestión y control de ventas de paquetes turisticos"
+	/>
 </svelte:head>
-
 
 <Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">
@@ -60,21 +60,20 @@
 		<HeaderAction bind:isOpen={isOpen1} icon={UserAvatarFilledAlt} closeIcon={UserAvatarFilledAlt}>
 			<HeaderPanelLinks>
 				<HeaderPanelDivider>Cuenta</HeaderPanelDivider>
-				
 			</HeaderPanelLinks>
 		</HeaderAction>
 	</HeaderUtilities>
 </Header>
 
-<SideNav bind:isOpen={isSideNavOpen} aria-hidden=false rail>
+<SideNav bind:isOpen={isSideNavOpen} aria-hidden="false" rail>
 	<SideNavItems>
 		<SideNavLink
 			href="/"
 			text="Inicio"
 			icon={Home}
 			isSelected={$page.url.pathname === '/' ? true : false}
-			
 		/>
+
 		{#each navigation as navItem}
 			<SideNavLink
 				text={navItem.title}

@@ -52,8 +52,6 @@
 	import { truncate } from 'carbon-components-svelte';
 </script>
 
-
-
 <ComposedModal bind:open>
 	<ModalHeader>
 		<h3 class="text-2xl font-semibold">
@@ -110,8 +108,6 @@
 	</ModalBody>
 </ComposedModal>
 
-
-
 <div class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out w-[320px]">
 	<ClickableTile on:click={() => (open = true)}>
 		{#if project.thumbnail}
@@ -151,4 +147,3 @@
 		</div>
 	</ClickableTile>
 </div>
-

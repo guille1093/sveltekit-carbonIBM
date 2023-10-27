@@ -538,7 +538,6 @@
 	<div class="fixed bottom-0 w-2/3">
 		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />
 	</div>
-
 </main>
 
 <style>

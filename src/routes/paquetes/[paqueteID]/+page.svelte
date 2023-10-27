@@ -451,7 +451,7 @@
 		<Column>
 			<Tile>
 				<h2 class="">Pasajeros {totaldepelotuditos}</h2>
-				
+
 				<div class="mb-4">
 					<ProgressBar
 						max={30}

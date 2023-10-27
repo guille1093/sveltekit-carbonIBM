@@ -81,7 +81,7 @@ export const actions = {
 		const fecharetorno = new Date(
 			`${((parts) => `${parts[1]}/${parts[0]}/${parts[2]}`)(
 				form.get('fecharetorno')?.toString().split('/') ??
-				new Date().toLocaleDateString().split('/')
+					new Date().toLocaleDateString().split('/')
 			)}`
 		);
 		const descripcion = form.get('obervaciones') ?? '';
@@ -99,7 +99,6 @@ export const actions = {
 		const chofer2dni = form.get('chofer2dni') ?? '';
 		const dominio = form.get('dominio') ?? '';
 		const interno = form.get('interno') ?? '';
-
 
 		const data = {
 			nombre,

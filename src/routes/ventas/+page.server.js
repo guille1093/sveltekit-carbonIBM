@@ -18,7 +18,11 @@ export async function load({ locals }) {
 		// Obtener las ventas
 		const getVentas = async () => {
 			// @ts-ignore
-			return structuredClone(await locals.pb.collection('ventas').getFullList(undefined, { expand: 'cliente, pasajeros, pagos, paquete' }));
+			return structuredClone(
+				await locals.pb
+					.collection('ventas')
+					.getFullList(undefined, { expand: 'cliente, pasajeros, pagos, paquete' })
+			);
 		};
 
 		const ventas = await getVentas();
@@ -38,7 +42,6 @@ export async function load({ locals }) {
 				const paqueteFecha = paquete.fechasalida;
 				const precioVenta = precioPaquete * venta.cant_personas;
 
-
 				return {
 					...venta,
 					nombre,
@@ -48,7 +51,7 @@ export async function load({ locals }) {
 					estadoPaquete,
 					precioPaquete,
 					paqueteFecha,
-					precioVenta,
+					precioVenta
 				};
 			} else {
 				console.log('Cliente o paquete no encontrado para venta:', venta);
@@ -109,4 +112,3 @@ export const actions = {
 		};
 	}
 };
-

@@ -28,8 +28,8 @@
 		Accordion,
 		AccordionItem
 	} from 'carbon-components-svelte';
-	import {imprimirComp} from '$lib/trash.js';
-	import {logob64} from '$lib/logob64.js';
+	import { imprimirComp } from '$lib/trash.js';
+	import { logob64 } from '$lib/logob64.js';
 	import { Printer, CurrencyDollar, TrashCan } from 'carbon-icons-svelte';
 	export let data;
 	const created = new Date(data.venta.created).toLocaleString('es-AR');
@@ -197,8 +197,6 @@
 			data.ventaExpanded.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0);
 	}
 
-
-
 	const docDefinition = {
 		pageMargins: [40, 40],
 		pageSize: 'A4',
@@ -287,7 +285,7 @@
 					{ text: `${precio_total.toString().toUpperCase()}`, bold: true },
 					'.'
 				],
-				
+
 				style: 'paragraph'
 			},
 			{
@@ -351,10 +349,7 @@
 		}
 	};
 
-
-let deleteForm
-
-
+	let deleteForm;
 </script>
 
 <div class="min-h-screen">
@@ -508,8 +503,7 @@ let deleteForm
 												>
 													Imprimir comprobante</Button
 												>
-												<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}}
->
+												<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}}>
 													Cancelar Pago
 												</Button>
 											</OverflowMenu>
@@ -716,4 +710,3 @@ let deleteForm
 		>
 	</ModalFooter>
 </ComposedModal>
-

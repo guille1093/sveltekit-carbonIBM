@@ -1,4 +1,3 @@
-
 let venta = undefined;
 
 /** @type {import('./$types').PageServerLoad} */
@@ -76,8 +75,6 @@ export async function load({ locals, params }) {
 	};
 }
 
-
-
 // This code creates a new Pago record and updates the Ventas record with the new Pago record ID and the new pagado value.
 
 export const actions = {
@@ -86,7 +83,7 @@ export const actions = {
 		const data = {
 			valor: form.get('valor'),
 			total: form.get('total'),
-			saldo: form.get('saldo'),
+			saldo: form.get('saldo')
 		};
 
 		// Convert data.valor to an integer.
@@ -105,22 +102,16 @@ export const actions = {
 		await updateVentas(locals, params, record.id, NuevoTotalPagado);
 	},
 
-
-
-
 	deletePago: async ({ locals, request, params }) => {
-
 		const form = await request.formData();
 		const data = {
 			valor: form.get('valor'),
 			total: form.get('total'),
-			saldo: form.get('saldo'),
+			saldo: form.get('saldo')
 		};
 
 		//Data is undefined
 		console.log(data);
-
-		
 
 		// Get the Pago record.
 		const record = await locals.pb.collection('pagos').getOne(params.pagosID);
@@ -142,7 +133,6 @@ export const actions = {
 	}
 };
 
-
 async function createPago(locals, data) {
 	// create a new payment
 	return await locals.pb.collection('pagos').create(data);
@@ -156,9 +146,7 @@ async function updateVentas(locals, params, recordID, NuevoTotalPagado) {
 	if (venta.expand.paquete.precio * venta.cant_personas === NuevoTotalPagado) {
 		estado = 'FINALIZADA';
 		valor = NuevoTotalPagado;
-
 	}
-
 
 	// update the sale
 	return await locals.pb.collection('ventas').update(params.ventasID, {
