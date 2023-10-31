@@ -12,8 +12,15 @@ export const actions = {
 	login: async ({ request, locals }) => {
 		const formData = await request.formData();
 
+		console.log('formData: ', formData);
+
+		const data = {
+			email: formData.get('email'),
+			password: formData.get('password')
+		};
+
 		try {
-			await locals.pb.collection('users').authWithPassword(formData.email, formData.password);
+			await locals.pb.collection('users').authWithPassword(data);
 			if (!locals.pb?.authStore?.model?.verified) {
 				locals.pb.authStore.clear();
 				return {

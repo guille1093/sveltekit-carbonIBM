@@ -61,19 +61,23 @@ export function imprimirComp(pago, venta) {
 					body: [
 						[
 							[
-                                {
-                                    columns: [
-                                        {
-                                            image: `${logob64}`,
-                                            width: 72,
-                                            alignment: 'left',
-                                            margin: [0, 0]
-                                        },
-                                        {
-                                            text: 'ORIGINAL', fontsize: 16, bold: true, alignment: 'right', margin: [0, 0]
-                                        }
-                                    ]
-                                },
+								{
+									columns: [
+										{
+											image: `${logob64}`,
+											width: 72,
+											alignment: 'left',
+											margin: [0, 0]
+										},
+										{
+											text: 'ORIGINAL',
+											fontsize: 16,
+											bold: true,
+											alignment: 'right',
+											margin: [0, 0]
+										}
+									]
+								},
 								{
 									text: [
 										{ text: 'Legajo número: ', bold: true },
@@ -87,30 +91,28 @@ export function imprimirComp(pago, venta) {
 								}
 							],
 
-							
-								{
-                                text: [
-                                    {
-                                        text: `RECIBO N°: ${pago.id} \n`,
-                                        bold: true
-                                    },
-                                    { text: 'Documento no valido como factura', bold: true },
-                                    '\n',
-                                    { text: 'Fecha: ', bold: true },
-                                    `${new Date(pago.created).toLocaleString('es-AR', {
-                                        day: 'numeric',
-                                        month: 'short',
-                                        year: 'numeric'
-                                    })} \n`,
-                                    { text: 'CUIT: ', bold: true },
-                                    '23-17518170-9. \n',
-                                    { text: 'Teléfonos:\n ', bold: true },
-                                    '+54 (3764) 222333 / +54 (3764) 424450'
-                                ],
-                                fontSize: 9,
-                                alignment: 'left',
-                                margin: [0, 10]
-                            
+							{
+								text: [
+									{
+										text: `RECIBO N°: ${pago.id} \n`,
+										bold: true
+									},
+									{ text: 'Documento no valido como factura', bold: true },
+									'\n',
+									{ text: 'Fecha: ', bold: true },
+									`${new Date(pago.created).toLocaleString('es-AR', {
+										day: 'numeric',
+										month: 'short',
+										year: 'numeric'
+									})} \n`,
+									{ text: 'CUIT: ', bold: true },
+									'23-17518170-9. \n',
+									{ text: 'Teléfonos:\n ', bold: true },
+									'+54 (3764) 222333 / +54 (3764) 424450'
+								],
+								fontSize: 9,
+								alignment: 'left',
+								margin: [0, 10]
 							}
 						]
 					]
@@ -145,27 +147,27 @@ export function imprimirComp(pago, venta) {
 				}
 			},
 
-            //Segunda tabla
-            {
-                fontSize: 12,
-                table: {
-                    widths: ['*'],
-                    body: [
-                        //Unica columna
-                        [
-                            [
-                                // Datos del/los pasajeros
-                                {
-                                    text: [
-                                        { text: 'Datos del/los pasajeros: ', bold: true },
-                                        { text: pasajerosTexto },
-                                    ]
-                                }
-                            ]
-                        ]
-                    ]
-                }
-            },
+			//Segunda tabla
+			{
+				fontSize: 12,
+				table: {
+					widths: ['*'],
+					body: [
+						//Unica columna
+						[
+							[
+								// Datos del/los pasajeros
+								{
+									text: [
+										{ text: 'Datos del/los pasajeros: ', bold: true },
+										{ text: pasajerosTexto }
+									]
+								}
+							]
+						]
+					]
+				}
+			},
 
 			//Tercera tabla
 			{
@@ -300,36 +302,29 @@ export function imprimirComp(pago, venta) {
 						]
 					]
 				}
-            },
+			},
 
+			//Novena tabla Hotel y I.V.A.
+			{
+				fontSize: 12,
+				table: {
+					widths: ['*', '*'],
+					body: [
+						[
+							// HOTEL
+							{
+								text: [{ text: 'Hotel: ', bold: true }, `${venta.expand.paquete.hotel} \n`]
+							},
+							// I.V.A.
+							{
+								text: [{ text: 'I.V.A.: ', bold: true }, `Cons. final\n`]
+							}
+						]
+					]
+				}
+			},
 
-            //Novena tabla Hotel y I.V.A.
-            {
-                fontSize: 12,
-                table: {
-                    widths: ['*', '*'],
-                    body: [
-                        [
-                            // HOTEL
-                            {
-                                text: [
-                                    { text: 'Hotel: ', bold: true },
-                                    `${venta.expand.paquete.hotel} \n`
-                                ]
-                            },
-                            // I.V.A.
-                            {
-                                text: [
-                                    { text: 'I.V.A.: ', bold: true },
-                                    `Cons. final\n`
-                                ]
-                            }
-                        ]
-                    ]
-                }
-            },  
-            
-            //Firma y aclaracion
+			//Firma y aclaracion
 
 			{
 				absolutePosition: {
@@ -379,23 +374,25 @@ export function imprimirComp(pago, venta) {
 									widths: ['*', '*'],
 									body: [
 										[
-                                            [
-                                                {
-                                                    columns: [
-                                                        {
-                                                            image: `${logob64}`,
-                                                            width: 72,
-                                                            alignment: 'left',
-                                                            margin: [0, 0]
-                                                        },
-                                                        {
-                                                            text: 'DUPLICADO', fontsize: 16, bold: true, alignment: 'right', margin: [0, 0]
-                                                        }
-                                                    ]
-                                                },
-                                            
+											[
+												{
+													columns: [
+														{
+															image: `${logob64}`,
+															width: 72,
+															alignment: 'left',
+															margin: [0, 0]
+														},
+														{
+															text: 'DUPLICADO',
+															fontsize: 16,
+															bold: true,
+															alignment: 'right',
+															margin: [0, 0]
+														}
+													]
+												},
 
-												
 												{
 													text: [
 														{ text: 'Legajo número: ', bold: true },
@@ -410,12 +407,12 @@ export function imprimirComp(pago, venta) {
 											],
 
 											{
-                                                text: [
+												text: [
 													{
-                                                        text: `RECIBO N°: ${pago.id} \n`,
+														text: `RECIBO N°: ${pago.id} \n`,
 														bold: true
-                                                    },
-                                                    { text: 'Documento no valido como factura', bold: true },
+													},
+													{ text: 'Documento no valido como factura', bold: true },
 													'\n',
 													{ text: 'Fecha: ', bold: true },
 													`${new Date(pago.created).toLocaleString('es-AR', {
@@ -474,13 +471,13 @@ export function imprimirComp(pago, venta) {
 										//Unica columna
 										[
 											[
-                                                // Datos del/los pasajeros
-                                                {
-                                                    text: [
-                                                        { text: 'Datos del/los pasajeros: ', bold: true },
-                                                        { text: pasajerosTexto},
-                                                    ]
-                                                }
+												// Datos del/los pasajeros
+												{
+													text: [
+														{ text: 'Datos del/los pasajeros: ', bold: true },
+														{ text: pasajerosTexto }
+													]
+												}
 											]
 										]
 									]
@@ -628,36 +625,29 @@ export function imprimirComp(pago, venta) {
 										]
 									]
 								}
-                            },
-                            
+							},
 
-                            //Novena tabla Hotel y I.V.A.
-                            {
-                                fontSize: 12,
-                                table: {
-                                    widths: ['*', '*'],
-                                    body: [
-                                        [
-                                            // HOTEL
-                                            {
-                                                text: [
-                                                    { text: 'Hotel: ', bold: true },
-                                                    `${venta.expand.paquete.hotel} \n`
-                                                ]
-                                            },
-                                            // I.V.A.
-                                            {
-                                                text: [
-                                                    { text: 'I.V.A.: ', bold: true },
-                                                    `Cons. final\n`
-                                                ]
-                                            }
-                                        ]
-                                    ]
-                                }
-                            },
+							//Novena tabla Hotel y I.V.A.
+							{
+								fontSize: 12,
+								table: {
+									widths: ['*', '*'],
+									body: [
+										[
+											// HOTEL
+											{
+												text: [{ text: 'Hotel: ', bold: true }, `${venta.expand.paquete.hotel} \n`]
+											},
+											// I.V.A.
+											{
+												text: [{ text: 'I.V.A.: ', bold: true }, `Cons. final\n`]
+											}
+										]
+									]
+								}
+							},
 
-                            //Firma y aclaracion
+							//Firma y aclaracion
 
 							{
 								absolutePosition: {

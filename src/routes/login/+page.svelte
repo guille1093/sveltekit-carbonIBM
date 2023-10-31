@@ -1,6 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { TextInput, PasswordInput, FluidForm, Button } from 'carbon-components-svelte';
+	import { TextInput, PasswordInput, Button } from 'carbon-components-svelte';
 	import { Login } from 'carbon-icons-svelte';
 	export let form;
 	let loading = false;
@@ -67,6 +67,7 @@
 				<form bind:this={loginform} action="?/login" method="POST" use:enhance class="">
 					<TextInput
 						id="email"
+						name="email"
 						labelText="Nombre de usuario"
 						placeholder="Ingrese su nombre de usuario"
 						invalid={form?.errors?.email}
@@ -75,6 +76,7 @@
 
 					<PasswordInput
 						id="password"
+						name="password"
 						labelText="Contraseña"
 						placeholder="Ingrese su contraseña"
 						invalid={form?.errors?.password}
