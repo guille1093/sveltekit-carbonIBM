@@ -49,11 +49,10 @@
 		}
 	});
 
-	ventasMesAnterior =
-		new Intl.NumberFormat('es-AR', {
-			style: 'currency',
-			currency: 'ARS'
-		}).format(ventasMesAnterior);
+	ventasMesAnterior = new Intl.NumberFormat('es-AR', {
+		style: 'currency',
+		currency: 'ARS'
+	}).format(ventasMesAnterior);
 
 	// Primero separamos todos los paquetes por nombre y luego sumamos los valores de los pagos
 
@@ -82,6 +81,42 @@
 		});
 		dataForChart.push({ group: paquete, value: valor });
 	});
+
+	//para mandar a la tabla
+	import { DataTable, Pagination } from 'carbon-components-svelte';
+
+	let rows = data.ventas.map((venta) => {
+		return {
+			id: venta.expand.pagos[0].id,
+			Paquete:
+				venta.expand.paquete.nombre +
+				' ' +
+				new Date(venta.expand.paquete.fechasalida).toLocaleDateString('es-AR', {
+					year: 'numeric',
+					month: 'numeric',
+					day: 'numeric'
+				}),
+			Titular: venta.expand.cliente.nombre + ' ' + venta.expand.cliente.apellido,
+			Importe: new Intl.NumberFormat('es-AR', {
+				style: 'currency',
+				currency: 'ARS'
+			}).format(venta.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0)),
+			Fecha: new Date(venta.expand.pagos[0].created).toLocaleDateString('es-AR', {
+				year: 'numeric',
+				month: 'numeric',
+				day: 'numeric'
+			})
+		};
+	});
+	let pageSize = 5;
+	let page = 1;
+	// fin de las cosas para pasar a la tabla xd
+
+	//cosas para meter en el grupo de acordeones
+	let open1 = false;
+	let open2 = false;
+	let open3 = false;
+	//fin de cosas para meter en el grupo de acordeones
 </script>
 
 <Grid>
@@ -90,6 +125,7 @@
 			<h1>Reportes</h1>
 		</Column>
 	</Row>
+
 	<Row class="mt-8">
 		<Column>
 			<h4>Cierres de caja</h4>
@@ -99,103 +135,100 @@
 	<Row class="mb-8">
 		<Column>
 			<Tile>
-<Accordion>
-  <AccordionItem>
-    <svelte:fragment slot="title">
-				<h3>Último mes</h3>
-				{#each data.ventas as venta}
-					{#if venta.expand.pagos !== (undefined || null)}
-						{#each venta.expand.pagos as pago}
-							{#if pago.created >= date2 && pago.created <= date}
-								<p>Fecha: {pago.fechaPago}</p>
-								<p>Monto: {pago.valor}</p>
-							{/if}
-						{/each}
-					{/if}
-				{/each}
-				<h2>{ventasMesAnterior}</h2>
-    </svelte:fragment>
-<ul>
-	  <li>Item 1</li>
-	  <li>Item 2</li>
-	  <li>Item 3</li>
-</ul>
-  </AccordionItem>
-</Accordion>
-
-
-
-
+				<Accordion>
+					<AccordionItem open={open1} on:click={() => ((open2 = false), (open3 = false))}>
+						<svelte:fragment slot="title">
+							<h3>Último mes</h3>
+							{#each data.ventas as venta}
+								{#if venta.expand.pagos !== (undefined || null)}
+									{#each venta.expand.pagos as pago}
+										{#if pago.created >= date2 && pago.created <= date}
+											<p>Fecha: {pago.fechaPago}</p>
+											<p>Monto: {pago.valor}</p>
+										{/if}
+									{/each}
+								{/if}
+							{/each}
+							<h2>{ventasMesAnterior}</h2>
+						</svelte:fragment>
+						<DataTable
+							sortKey="Fecha"
+							sortDirection="descending"
+							sortable
+							headers={[
+								{ key: 'Paquete', value: 'Paquete' },
+								{ key: 'Titular', value: 'Titular' },
+								{ key: 'Importe', value: 'Importe' },
+								{ key: 'Fecha', value: 'Fecha' }
+							]}
+							{pageSize}
+							{page}
+							{rows}
+						/>
+						<Pagination bind:pageSize bind:page totalItems={rows.length} pageSizeInputDisabled />
+					</AccordionItem>
+				</Accordion>
 			</Tile>
 		</Column>
 
 		<Column>
 			<Tile>
-<Accordion>
-  <AccordionItem>
-    <svelte:fragment slot="title">
-				<h3>Diario</h3>
-				{#each data.ventas as venta}
-					{#if venta.expand.pagos !== (undefined || null)}
-						{#each venta.expand.pagos as pago}
-							{#if pago.created >= date2 && pago.created <= date}
-								<p>Fecha: {pago.fechaPago}</p>
-								<p>Monto: {pago.valor}</p>
-							{/if}
-						{/each}
-					{/if}
-				{/each}
-				<h2>{ventasMesAnterior}</h2>
-    </svelte:fragment>
-<ul>
-	  <li>Item 1</li>
-	  <li>Item 2</li>
-	  <li>Item 3</li>
-</ul>
-  </AccordionItem>
-</Accordion>
-
-
-
-
+				<Accordion>
+					<AccordionItem open={open2} on:click={() => ((open1 = false), (open3 = false))}>
+						<svelte:fragment slot="title">
+							<h3>Diario</h3>
+							{#each data.ventas as venta}
+								{#if venta.expand.pagos !== (undefined || null)}
+									{#each venta.expand.pagos as pago}
+										{#if pago.created >= date2 && pago.created <= date}
+											<p>Fecha: {pago.fechaPago}</p>
+											<p>Monto: {pago.valor}</p>
+										{/if}
+									{/each}
+								{/if}
+							{/each}
+							<h2>{ventasMesAnterior}</h2>
+						</svelte:fragment>
+						<ul>
+							<li>Item 1</li>
+							<li>Item 2</li>
+							<li>Item 3</li>
+						</ul>
+					</AccordionItem>
+				</Accordion>
 			</Tile>
 		</Column>
 
-
-				<Column>
+		<Column>
 			<Tile>
-<Accordion>
-  <AccordionItem>
-    <svelte:fragment slot="title">
-				<h3>Última semana</h3>
-				{#each data.ventas as venta}
-					{#if venta.expand.pagos !== (undefined || null)}
-						{#each venta.expand.pagos as pago}
-							{#if pago.created >= date2 && pago.created <= date}
-								<p>Fecha: {pago.fechaPago}</p>
-								<p>Monto: {pago.valor}</p>
-							{/if}
-						{/each}
-					{/if}
-				{/each}
-				<h2>{ventasMesAnterior}</h2>
-    </svelte:fragment>
-<ul>
-	  <li>Item 1</li>
-	  <li>Item 2</li>
-	  <li>Item 3</li>
-</ul>
-  </AccordionItem>
-</Accordion>
-
-
-
-
+				<Accordion>
+					<AccordionItem open={open3} on:click={() => ((open1 = false), (open2 = false))}>
+						<svelte:fragment slot="title">
+							<h3>Última semana</h3>
+							{#each data.ventas as venta}
+								{#if venta.expand.pagos !== (undefined || null)}
+									{#each venta.expand.pagos as pago}
+										{#if pago.created >= date2 && pago.created <= date}
+											<p>Fecha: {pago.fechaPago}</p>
+											<p>Monto: {pago.valor}</p>
+										{/if}
+									{/each}
+								{/if}
+							{/each}
+							<h2>{ventasMesAnterior}</h2>
+						</svelte:fragment>
+						<ul>
+							<li>Item 1</li>
+							<li>Item 2</li>
+							<li>Item 3</li>
+						</ul>
+					</AccordionItem>
+				</Accordion>
 			</Tile>
 		</Column>
 	</Row>
 
-		<Row class="mt-8">
+	<Row class="mt-8">
 		<Column>
 			<h4>Gráficos de ventas</h4>
 		</Column>
