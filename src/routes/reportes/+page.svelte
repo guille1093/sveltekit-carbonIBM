@@ -164,7 +164,7 @@
 						resizable: true,
 						donut: {
 							center: {
-								label: 'Total'
+								label: 'Total ARS'
 							}
 						}
 					}}
