@@ -4,10 +4,10 @@ export const handle = async ({ event, resolve }) => {
 	// Conectamos con la base de datos
 
 	//pockethost.io
-	//event.locals.pb = new PocketBase('https://gq-pfs.pockethost.io');
+	event.locals.pb = new PocketBase('https://gq-pfs.pockethost.io');
 
 	//localhost
-	event.locals.pb = new PocketBase('http://127.0.0.1:8090');
+	// event.locals.pb = new PocketBase('http://127.0.0.1:8090');
 
 	// Cargamos la cookie de autenticación
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
