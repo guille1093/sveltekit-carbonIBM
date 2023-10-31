@@ -4,7 +4,7 @@
 
 	import '@carbon/charts-svelte/styles.css';
 	import { BarChartSimple, DonutChart } from '@carbon/charts-svelte';
-	import { Tile, Grid, Row, Column } from 'carbon-components-svelte';
+	import { Tile, Grid, Row, Column, Accordion, AccordionItem } from 'carbon-components-svelte';
 
 	//obtener el ultimo dia del mes anterior
 	let date = new Date();
@@ -53,7 +53,7 @@
 		new Intl.NumberFormat('es-AR', {
 			style: 'currency',
 			currency: 'ARS'
-		}).format(ventasMesAnterior) + ' ARS';
+		}).format(ventasMesAnterior);
 
 	// Primero separamos todos los paquetes por nombre y luego sumamos los valores de los pagos
 
@@ -99,7 +99,10 @@
 	<Row class="mb-8">
 		<Column>
 			<Tile>
-				<h2>Último mes</h2>
+<Accordion>
+  <AccordionItem>
+    <svelte:fragment slot="title">
+				<h3>Último mes</h3>
 				{#each data.ventas as venta}
 					{#if venta.expand.pagos !== (undefined || null)}
 						{#each venta.expand.pagos as pago}
@@ -110,12 +113,28 @@
 						{/each}
 					{/if}
 				{/each}
-				<h3>{ventasMesAnterior}</h3>
+				<h2>{ventasMesAnterior}</h2>
+    </svelte:fragment>
+<ul>
+	  <li>Item 1</li>
+	  <li>Item 2</li>
+	  <li>Item 3</li>
+</ul>
+  </AccordionItem>
+</Accordion>
+
+
+
+
 			</Tile>
 		</Column>
+
 		<Column>
 			<Tile>
-				<h2>Diario</h2>
+<Accordion>
+  <AccordionItem>
+    <svelte:fragment slot="title">
+				<h3>Diario</h3>
 				{#each data.ventas as venta}
 					{#if venta.expand.pagos !== (undefined || null)}
 						{#each venta.expand.pagos as pago}
@@ -126,12 +145,29 @@
 						{/each}
 					{/if}
 				{/each}
-				<h3>{ventasMesAnterior}</h3>
+				<h2>{ventasMesAnterior}</h2>
+    </svelte:fragment>
+<ul>
+	  <li>Item 1</li>
+	  <li>Item 2</li>
+	  <li>Item 3</li>
+</ul>
+  </AccordionItem>
+</Accordion>
+
+
+
+
 			</Tile>
 		</Column>
-		<Column>
+
+
+				<Column>
 			<Tile>
-				<h2>Última semana</h2>
+<Accordion>
+  <AccordionItem>
+    <svelte:fragment slot="title">
+				<h3>Última semana</h3>
 				{#each data.ventas as venta}
 					{#if venta.expand.pagos !== (undefined || null)}
 						{#each venta.expand.pagos as pago}
@@ -142,7 +178,19 @@
 						{/each}
 					{/if}
 				{/each}
-				<h3>{ventasMesAnterior}</h3>
+				<h2>{ventasMesAnterior}</h2>
+    </svelte:fragment>
+<ul>
+	  <li>Item 1</li>
+	  <li>Item 2</li>
+	  <li>Item 3</li>
+</ul>
+  </AccordionItem>
+</Accordion>
+
+
+
+
 			</Tile>
 		</Column>
 	</Row>
