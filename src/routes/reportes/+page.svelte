@@ -1,122 +1,67 @@
 <script>
+	import TileVentas from './/TileVentas.svelte';
+
 	/** @type {import('./$types').PageData} */
 	export let data;
 
 	import '@carbon/charts-svelte/styles.css';
 	import { BarChartSimple, DonutChart } from '@carbon/charts-svelte';
-	import { Tile, Grid, Row, Column, Accordion, AccordionItem } from 'carbon-components-svelte';
+	import { Tile, Grid, Row, Column } from 'carbon-components-svelte';
 
-	//obtener el ultimo dia del mes anterior
-	let date = new Date();
-	date.setDate(0);
-	date.setHours(0, 0, 0, 0);
-	date.setMonth(date.getMonth() - 1);
-	date.toLocaleDateString('es-ES', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	});
+	const dataForChart = getDataForChart(data.ventas);
 
-	console.log(date);
-	date.toLocaleDateString('es-ES', {
-		day: '2-digit',
-		month: 'short',
-		year: 'numeric'
-	});
+let dataUltimoMes = data;
 
-	//obtener el primer dia del mes anterior
-	let date2 = new Date();
-	date2.setDate(1);
-	date2.setHours(0, 0, 0, 0);
-	date2.setMonth(date2.getMonth() - 1);
-	console.log(date2);
-	date2.toLocaleDateString('es-ES', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	});
-
-	//ventas del mes anterior
-	let ventasMesAnterior = 0;
-
-	let todasLasVentas = data.ventas;
-
-	todasLasVentas.forEach((venta) => {
-		if (venta.expand.pagos !== (undefined || null)) {
-			venta.expand.pagos.forEach((pago) => {
-				ventasMesAnterior += pago.valor;
-			});
-		}
-	});
-
-	ventasMesAnterior = new Intl.NumberFormat('es-AR', {
-		style: 'currency',
-		currency: 'ARS'
-	}).format(ventasMesAnterior);
-
-	// Primero separamos todos los paquetes por nombre y luego sumamos los valores de los pagos
-
-	let dataForChart = [];
-
-	let paquetes = [];
-
-	data.ventas.forEach((paquete) => {
-		paquetes.push(paquete.expand.paquete.nombre + ' ' + paquete.expand.paquete.fechasalida);
-	});
-
-	//eliminamos los duplicados
-	paquetes = [...new Set(paquetes)];
-
-	//agregamos los valores de los pagos
-	paquetes.forEach((paquete) => {
-		let valor = 0;
-		data.ventas.forEach((venta) => {
-			if (venta.expand.paquete.nombre + ' ' + venta.expand.paquete.fechasalida === paquete) {
-				if (venta.expand.pagos !== (undefined || null)) {
-					venta.expand.pagos.forEach((pago) => {
-						valor += pago.valor;
-					});
-				}
+dataUltimoMes.ventas.forEach((venta) => {
+	if (venta.expand.pagos !== (undefined || null)) {
+		venta.expand.pagos.forEach((pago) => {
+			let fecha = new Date(pago.created);
+			let date = new Date();
+			date.setDate(0);
+			date.setHours(0, 0, 0, 0);
+			date.setMonth(date.getMonth() - 2);
+			console.log('date ' + date + '\nfecha ' + fecha);
+			if (fecha < date) {
+				dataUltimoMes = dataUltimoMes.ventas.filter((venta) => venta !== venta);
 			}
 		});
-		dataForChart.push({ group: paquete, value: valor });
-	});
+	}
+});
 
-	//para mandar a la tabla
-	import { DataTable, Pagination } from 'carbon-components-svelte';
 
-	let rows = data.ventas.map((venta) => {
-		return {
-			id: venta.expand.pagos[0].id,
-			Paquete:
-				venta.expand.paquete.nombre +
-				' ' +
-				new Date(venta.expand.paquete.fechasalida).toLocaleDateString('es-AR', {
-					year: 'numeric',
-					month: 'numeric',
-					day: 'numeric'
-				}),
-			Titular: venta.expand.cliente.nombre + ' ' + venta.expand.cliente.apellido,
-			Importe: new Intl.NumberFormat('es-AR', {
-				style: 'currency',
-				currency: 'ARS'
-			}).format(venta.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0)),
-			Fecha: new Date(venta.expand.pagos[0].created).toLocaleDateString('es-AR', {
-				year: 'numeric',
-				month: 'numeric',
-				day: 'numeric'
-			})
-		};
-	});
-	let pageSize = 5;
-	let page = 1;
-	// fin de las cosas para pasar a la tabla xd
 
-	//cosas para meter en el grupo de acordeones
-	let open1 = false;
-	let open2 = false;
-	let open3 = false;
-	//fin de cosas para meter en el grupo de acordeones
+	function getDataForChart(ventas) {
+		const paquetes = getPaquetes(ventas);
+		const dataForChart = getValuePaquetes(ventas, paquetes);
+		return dataForChart;
+	}
+
+	function getPaquetes(ventas) {
+		const paquetes = [];
+		ventas.forEach((paquete) => {
+			paquetes.push(paquete.expand.paquete.nombre + ' ' + paquete.expand.paquete.fechasalida);
+		});
+		return [...new Set(paquetes)];
+	}
+
+	function getValuePaquetes(ventas, paquetes) {
+		const dataForChart = [];
+		paquetes.forEach((paquete) => {
+			let valor = 0;
+			ventas.forEach((venta) => {
+				if (venta.expand.paquete.nombre + ' ' + venta.expand.paquete.fechasalida === paquete) {
+					if (venta.expand.pagos !== (undefined || null)) {
+						venta.expand.pagos.forEach((pago) => {
+							valor += pago.valor;
+						});
+					}
+				}
+			});
+			dataForChart.push({ group: paquete, value: valor });
+		});
+		return dataForChart;
+	}
+
 </script>
 
 <Grid>
@@ -134,106 +79,27 @@
 
 	<Row class="mb-8">
 		<Column>
-			<Tile>
-				<Accordion>
-					<AccordionItem open={open1} on:click={() => ((open2 = false), (open3 = false))}>
-						<svelte:fragment slot="title">
-							<h3>Último mes</h3>
-							{#each data.ventas as venta}
-								{#if venta.expand.pagos !== (undefined || null)}
-									{#each venta.expand.pagos as pago}
-										{#if pago.created >= date2 && pago.created <= date}
-											<p>Fecha: {pago.fechaPago}</p>
-											<p>Monto: {pago.valor}</p>
-										{/if}
-									{/each}
-								{/if}
-							{/each}
-							<h2>{ventasMesAnterior}</h2>
-						</svelte:fragment>
-						<DataTable
-							sortKey="Fecha"
-							sortDirection="descending"
-							sortable
-							headers={[
-								{ key: 'Paquete', value: 'Paquete' },
-								{ key: 'Titular', value: 'Titular' },
-								{ key: 'Importe', value: 'Importe' },
-								{ key: 'Fecha', value: 'Fecha' }
-							]}
-							{pageSize}
-							{page}
-							{rows}
-						/>
-						<Pagination bind:pageSize bind:page totalItems={rows.length} pageSizeInputDisabled />
-					</AccordionItem>
-				</Accordion>
-			</Tile>
+			<TileVentas titulo="Último mes" data={dataUltimoMes} />
 		</Column>
 
 		<Column>
-			<Tile>
-				<Accordion>
-					<AccordionItem open={open2} on:click={() => ((open1 = false), (open3 = false))}>
-						<svelte:fragment slot="title">
-							<h3>Diario</h3>
-							{#each data.ventas as venta}
-								{#if venta.expand.pagos !== (undefined || null)}
-									{#each venta.expand.pagos as pago}
-										{#if pago.created >= date2 && pago.created <= date}
-											<p>Fecha: {pago.fechaPago}</p>
-											<p>Monto: {pago.valor}</p>
-										{/if}
-									{/each}
-								{/if}
-							{/each}
-							<h2>{ventasMesAnterior}</h2>
-						</svelte:fragment>
-						<ul>
-							<li>Item 1</li>
-							<li>Item 2</li>
-							<li>Item 3</li>
-						</ul>
-					</AccordionItem>
-				</Accordion>
-			</Tile>
+			<TileVentas titulo="Diario" {data} />
 		</Column>
 
 		<Column>
-			<Tile>
-				<Accordion>
-					<AccordionItem open={open3} on:click={() => ((open1 = false), (open2 = false))}>
-						<svelte:fragment slot="title">
-							<h3>Última semana</h3>
-							{#each data.ventas as venta}
-								{#if venta.expand.pagos !== (undefined || null)}
-									{#each venta.expand.pagos as pago}
-										{#if pago.created >= date2 && pago.created <= date}
-											<p>Fecha: {pago.fechaPago}</p>
-											<p>Monto: {pago.valor}</p>
-										{/if}
-									{/each}
-								{/if}
-							{/each}
-							<h2>{ventasMesAnterior}</h2>
-						</svelte:fragment>
-						<ul>
-							<li>Item 1</li>
-							<li>Item 2</li>
-							<li>Item 3</li>
-						</ul>
-					</AccordionItem>
-				</Accordion>
-			</Tile>
+			<TileVentas titulo="Última semana" {data} />
 		</Column>
 	</Row>
+
 
 	<Row class="mt-8">
 		<Column>
 			<h4>Gráficos de ventas</h4>
 		</Column>
 	</Row>
+
 	<Row>
+
 		<Column>
 			<Tile>
 				<DonutChart
@@ -252,6 +118,7 @@
 				/>
 			</Tile>
 		</Column>
+
 		<Column>
 			<Tile>
 				<BarChartSimple
@@ -268,5 +135,6 @@
 				/>
 			</Tile>
 		</Column>
+
 	</Row>
 </Grid>
