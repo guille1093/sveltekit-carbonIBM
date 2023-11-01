@@ -8,6 +8,7 @@
 	import { BarChartSimple, DonutChart } from '@carbon/charts-svelte';
 	import { Tile, Grid, Row, Column, DatePicker, DatePickerInput } from 'carbon-components-svelte';
 	import { Spanish } from 'flatpickr/dist/l10n/es.js';
+	import ChartHistogram from 'carbon-pictograms-svelte/lib/ChartHistogram.svelte';
 
 	const dataForChart = getDataForChart(data.ventas);
 
@@ -66,12 +67,14 @@
 	<Row>
 		<Column>
 			<h1>Reportes</h1>
+			<p>Reportes de ventas y pagos</p>
 		</Column>
+		<Column class="flex justify-end"><ChartHistogram /></Column>
 	</Row>
 
 	<Row class="mt-8">
 		<Column>
-			<h4>Cierres de caja</h4>
+			<h4>Registros de pagos</h4>
 		</Column>
 	</Row>
 

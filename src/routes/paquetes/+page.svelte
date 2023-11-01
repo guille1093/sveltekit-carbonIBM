@@ -27,7 +27,9 @@
 		ToolbarSearch,
 		Pagination,
 		TextArea,
-		ClickableTile
+		Row,
+		Column,
+		Grid
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { enhance } from '$app/forms';
@@ -87,6 +89,8 @@
 		toast = false;
 		window.location.reload();
 	};
+
+	import Bus from 'carbon-pictograms-svelte/lib/Bus.svelte';
 </script>
 
 <main>
@@ -261,172 +265,195 @@
 		</ModalFooter>
 	</ComposedModal>
 
-	<h1>Paquetes</h1>
-	<p>Aqui puede ver, buscar y filtrar todos los paquetes registrados en el sistema.</p>
-	<div class="overflow-scroll">
-		<DataTable
-			zebra
-			sortable
-			headers={[
-				{ key: 'nombre', value: 'Destino' },
-				{ key: 'precio', value: 'Precio' },
-				{ key: 'fechasalida', value: 'Salida' },
-				{ key: 'fecharetorno', value: 'Llegada' },
-				{ key: 'cant_dias', value: 'Dias' },
-				{ key: 'cant_noches', value: 'Noches' },
-				{ key: 'regimen', value: 'Regimen' },
-				{ key: 'created', value: 'Creado' },
-				{ key: 'estado', value: 'Estado' }
-			]}
-			{rows}
-			{pageSize}
-			{page}
-		>
-			<!-- {Intl.NumberFormat('es-AR').format(header.value)} -->
-			<svelte:fragment slot="cell-header" let:header>
-				{#if header.key === 'precio'}
-					<div class="flex items-center">
-						<i class="bx bx-dollar-circle text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-						<span class="text-xs">ARS</span>
-					</div>
-				{:else if header.key === 'fechasalida'}
-					<div class="flex items-center">
-						<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'fecharetorno'}
-					<div class="flex items-center">
-						<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'created'}
-					<div class="flex items-center">
-						<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'updated'}
-					<div class="flex items-center">
-						<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'estado'}
-					<div class="flex items-center">
-						<i class="bx bx-check-circle text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'nombre'}
-					<div class="flex items-center">
-						<i class="bx bx-map text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'cant_dias'}
-					<div class="flex items-center">
-						<i class="bx bx-sun text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else if header.key === 'cant_noches'}
-					<div class="flex items-center">
-						<i class="bx bx-moon text-xl mr-2 text-blue-600" />
-						<span class="mr-2">{header.value}</span>
-					</div>
-				{:else}
-					{header.value}
-				{/if}
-			</svelte:fragment>
+	<Grid>
+		<Row>
+			<Column>
+				<h1>Paquetes</h1>
+				<p>Aqui puede ver, buscar y filtrar todos los paquetes registrados en el sistema.</p>
+			</Column>
+			<Column class="flex justify-end">
+				<Bus />
+			</Column>
+		</Row>
+		<Row>
+			<Column>
+				<div class="overflow-scroll">
+					<DataTable
+						zebra
+						sortable
+						headers={[
+							{ key: 'nombre', value: 'Destino' },
+							{ key: 'precio', value: 'Precio' },
+							{ key: 'fechasalida', value: 'Salida' },
+							{ key: 'fecharetorno', value: 'Llegada' },
+							{ key: 'cant_dias', value: 'Dias' },
+							{ key: 'cant_noches', value: 'Noches' },
+							{ key: 'regimen', value: 'Regimen' },
+							{ key: 'created', value: 'Creado' },
+							{ key: 'estado', value: 'Estado' }
+						]}
+						{rows}
+						{pageSize}
+						{page}
+					>
+						<!-- {Intl.NumberFormat('es-AR').format(header.value)} -->
+						<svelte:fragment slot="cell-header" let:header>
+							{#if header.key === 'precio'}
+								<div class="flex items-center">
+									<i class="bx bx-dollar-circle text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+									<span class="text-xs">ARS</span>
+								</div>
+							{:else if header.key === 'fechasalida'}
+								<div class="flex items-center">
+									<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'fecharetorno'}
+								<div class="flex items-center">
+									<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'created'}
+								<div class="flex items-center">
+									<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'updated'}
+								<div class="flex items-center">
+									<i class="bx bx-calendar text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'estado'}
+								<div class="flex items-center">
+									<i class="bx bx-check-circle text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'nombre'}
+								<div class="flex items-center">
+									<i class="bx bx-map text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'cant_dias'}
+								<div class="flex items-center">
+									<i class="bx bx-sun text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else if header.key === 'cant_noches'}
+								<div class="flex items-center">
+									<i class="bx bx-moon text-xl mr-2 text-blue-600" />
+									<span class="mr-2">{header.value}</span>
+								</div>
+							{:else}
+								{header.value}
+							{/if}
+						</svelte:fragment>
 
-			<svelte:fragment slot="cell" let:row let:cell>
-				{#if cell.key === 'fechasalida'}
-					{new Date(cell.value).toLocaleDateString('es-ES', {
-						day: '2-digit',
-						month: 'short',
-						year: 'numeric'
-					})}
-				{:else if cell.key === 'fecharetorno'}
-					{new Date(cell.value).toLocaleDateString('es-ES', {
-						day: '2-digit',
-						month: 'short',
-						year: 'numeric'
-					})}
-				{:else if cell.key === 'created'}
-					{new Date(cell.value).toLocaleDateString('es-ES', {
-						day: '2-digit',
-						month: 'short',
-						year: 'numeric'
-					})}
-				{:else if cell.key === 'updated'}
-					{new Date(cell.value).toLocaleDateString('es-ES', {
-						day: '2-digit',
-						month: 'short',
-						year: 'numeric'
-					})}
-				{:else if cell.key === 'precio'}
-					<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
-						$ {Intl.NumberFormat('es-AR').format(cell.value)}
-					</a>
-				{:else if cell.key === 'nombre'}
-					<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
-						{cell.value}
-					</a>
-				{:else if cell.key === 'estado'}
-					{#if cell.value === 'activo'}
-						<div class="flex justify-end">
-							<span
-								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-							>
+						<svelte:fragment slot="cell" let:row let:cell>
+							{#if cell.key === 'fechasalida'}
+								{new Date(cell.value).toLocaleDateString('es-ES', {
+									day: '2-digit',
+									month: 'short',
+									year: 'numeric'
+								})}
+							{:else if cell.key === 'fecharetorno'}
+								{new Date(cell.value).toLocaleDateString('es-ES', {
+									day: '2-digit',
+									month: 'short',
+									year: 'numeric'
+								})}
+							{:else if cell.key === 'created'}
+								{new Date(cell.value).toLocaleDateString('es-ES', {
+									day: '2-digit',
+									month: 'short',
+									year: 'numeric'
+								})}
+							{:else if cell.key === 'updated'}
+								{new Date(cell.value).toLocaleDateString('es-ES', {
+									day: '2-digit',
+									month: 'short',
+									year: 'numeric'
+								})}
+							{:else if cell.key === 'precio'}
+								<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+									$ {Intl.NumberFormat('es-AR').format(cell.value)}
+								</a>
+							{:else if cell.key === 'nombre'}
+								<a class="text-sm text-gray-300" href="/paquetes/{row.id}">
+									{cell.value}
+								</a>
+							{:else if cell.key === 'estado'}
+								{#if cell.value === 'activo'}
+									<div class="flex justify-end">
+										<span
+											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+										>
+											{cell.value}
+										</span>
+									</div>
+								{:else if cell.value === 'NO DISPONIBLE'}
+									<div class="flex justify-end">
+										<span
+											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+										>
+											{cell.value}
+										</span>
+									</div>
+								{:else if cell.value === 'DISPONIBLE'}
+									<div class="flex justify-end">
+										<span
+											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+										>
+											{cell.value}
+										</span>
+									</div>
+								{:else if cell.value === 'finalizado'}
+									<div class="flex justify-end">
+										<span
+											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+										>
+											{cell.value}
+										</span>
+									</div>
+								{:else}
+									{cell.value}
+								{/if}
+							{:else}
 								{cell.value}
-							</span>
-						</div>
-					{:else if cell.value === 'NO DISPONIBLE'}
-						<div class="flex justify-end">
-							<span
-								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-							>
-								{cell.value}
-							</span>
-						</div>
-					{:else if cell.value === 'DISPONIBLE'}
-						<div class="flex justify-end">
-							<span
-								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-							>
-								{cell.value}
-							</span>
-						</div>
-					{:else if cell.value === 'finalizado'}
-						<div class="flex justify-end">
-							<span
-								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
-							>
-								{cell.value}
-							</span>
-						</div>
-					{:else}
-						{cell.value}
-					{/if}
-				{:else}
-					{cell.value}
-				{/if}
-			</svelte:fragment>
+							{/if}
+						</svelte:fragment>
 
-			<Toolbar>
-				<ToolbarContent>
-					<ToolbarSearch persistent shouldFilterRows placeholder="Buscar..." bind:filteredRowIds />
-					<ToolbarMenu>
-						<NumberInput
-							min={1}
-							max={100}
-							label="Numero de filas por pagina"
-							bind:value={pageSize}
-						/>
-					</ToolbarMenu>
-					<Button icon={Add} on:click={() => (open = true)}>Registrar paquete</Button>
-				</ToolbarContent>
-			</Toolbar>
-		</DataTable>
-	</div>
+						<Toolbar>
+							<ToolbarContent>
+								<ToolbarSearch
+									persistent
+									shouldFilterRows
+									placeholder="Buscar..."
+									bind:filteredRowIds
+								/>
+								<ToolbarMenu>
+									<NumberInput
+										min={1}
+										max={100}
+										label="Numero de filas por pagina"
+										bind:value={pageSize}
+									/>
+								</ToolbarMenu>
+								<Button icon={Add} on:click={() => (open = true)}>Registrar paquete</Button>
+							</ToolbarContent>
+						</Toolbar>
+					</DataTable>
+				</div>
 
-	<div class="fixed bottom-0 w-2/3">
-		<Pagination bind:pageSize bind:page totalItems={filteredRowIds.length} pageSizeInputDisabled />
-	</div>
+				<div class="fixed bottom-0 w-2/3">
+					<Pagination
+						bind:pageSize
+						bind:page
+						totalItems={filteredRowIds.length}
+						pageSizeInputDisabled
+					/>
+				</div>
+			</Column>
+		</Row>
+	</Grid>
 </main>
