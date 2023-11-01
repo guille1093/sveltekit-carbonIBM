@@ -6,29 +6,28 @@
 
 	import '@carbon/charts-svelte/styles.css';
 	import { BarChartSimple, DonutChart } from '@carbon/charts-svelte';
-	import { Tile, Grid, Row, Column } from 'carbon-components-svelte';
+	import { Tile, Grid, Row, Column, DatePicker, DatePickerInput } from 'carbon-components-svelte';
+	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 	const dataForChart = getDataForChart(data.ventas);
 
-let dataUltimoMes = data;
+	let dataUltimoMes = data;
 
-dataUltimoMes.ventas.forEach((venta) => {
-	if (venta.expand.pagos !== (undefined || null)) {
-		venta.expand.pagos.forEach((pago) => {
-			let fecha = new Date(pago.created);
-			let date = new Date();
-			date.setDate(0);
-			date.setHours(0, 0, 0, 0);
-			date.setMonth(date.getMonth() - 2);
-			console.log('date ' + date + '\nfecha ' + fecha);
-			if (fecha < date) {
-				dataUltimoMes = dataUltimoMes.ventas.filter((venta) => venta !== venta);
-			}
-		});
-	}
-});
-
-
+	dataUltimoMes.ventas.forEach((venta) => {
+		if (venta.expand.pagos !== (undefined || null)) {
+			venta.expand.pagos.forEach((pago) => {
+				let fecha = new Date(pago.created);
+				let date = new Date();
+				date.setDate(0);
+				date.setHours(0, 0, 0, 0);
+				date.setMonth(date.getMonth() - 2);
+				console.log('date ' + date + '\nfecha ' + fecha);
+				if (fecha < date) {
+					dataUltimoMes = dataUltimoMes.ventas.filter((venta) => venta !== venta);
+				}
+			});
+		}
+	});
 
 	function getDataForChart(ventas) {
 		const paquetes = getPaquetes(ventas);
@@ -61,7 +60,6 @@ dataUltimoMes.ventas.forEach((venta) => {
 		});
 		return dataForChart;
 	}
-
 </script>
 
 <Grid>
@@ -91,7 +89,6 @@ dataUltimoMes.ventas.forEach((venta) => {
 		</Column>
 	</Row>
 
-
 	<Row class="mt-8">
 		<Column>
 			<h4>Gráficos de ventas</h4>
@@ -99,9 +96,27 @@ dataUltimoMes.ventas.forEach((venta) => {
 	</Row>
 
 	<Row>
-
 		<Column>
 			<Tile>
+				<Row>
+					<Column>
+						<h5>Rango de fechas</h5>
+					</Column>
+					<Column>
+						<DatePicker
+							datePickerType="range"
+							dateFormat="d/m/Y"
+							locale={Spanish}
+							valueFrom={new Date().toISOString()}
+							valueTo={new Date().toISOString()}
+							on:change
+						>
+							<DatePickerInput placeholder="dd/mm/aaa" name="fechasalida" />
+							<DatePickerInput placeholder="dd/mm/aaa" name="fecharetorno" />
+						</DatePicker>
+					</Column>
+				</Row>
+
 				<DonutChart
 					data={dataForChart}
 					options={{
@@ -121,6 +136,24 @@ dataUltimoMes.ventas.forEach((venta) => {
 
 		<Column>
 			<Tile>
+				<Row>
+					<Column>
+						<h5>Rango de fechas</h5>
+					</Column>
+					<Column>
+						<DatePicker
+							datePickerType="range"
+							dateFormat="d/m/Y"
+							locale={Spanish}
+							valueFrom={new Date().toISOString()}
+							valueTo={new Date().toISOString()}
+							on:change
+						>
+							<DatePickerInput placeholder="dd/mm/aaa" name="fechasalida" />
+							<DatePickerInput placeholder="dd/mm/aaa" name="fecharetorno" />
+						</DatePicker>
+					</Column>
+				</Row>
 				<BarChartSimple
 					data={dataForChart}
 					options={{
@@ -135,6 +168,5 @@ dataUltimoMes.ventas.forEach((venta) => {
 				/>
 			</Tile>
 		</Column>
-
 	</Row>
 </Grid>
