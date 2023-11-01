@@ -17,7 +17,7 @@
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
 	import { FlightInternational } from 'carbon-icons-svelte';
-	import { Currency } from 'carbon-icons-svelte';
+	import { Currency,ChartColumnTarget } from 'carbon-icons-svelte';
 	import { Home } from 'carbon-icons-svelte';
 	let isSideNavOpen = false;
 	let isOpen1 = false;
@@ -39,6 +39,12 @@
 			title: 'Ventas',
 			href: '/ventas',
 			icon: Currency
+		},
+
+		{
+			title: 'Reportes',
+			href: '/reportes',
+			icon: ChartColumnTarget
 		}
 	];
 </script>
