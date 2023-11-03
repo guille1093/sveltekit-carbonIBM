@@ -72,11 +72,9 @@ export async function load({ locals }) {
 			paquetes,
 			ventas: ventasinf
 		};
-
 	} catch (err) {
 		console.log('Error: ', err);
 	}
-
 }
 
 export const actions = {

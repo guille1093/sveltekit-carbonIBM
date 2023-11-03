@@ -65,7 +65,7 @@
 			value: data.venta.cliente.nombre + ' ' + data.venta.cliente.apellido
 		},
 		{
-			name: 'Precio paquete',
+			name: 'Precio paquete actual',
 			icon: 'bx-dollar',
 			value: precio
 		},
@@ -384,11 +384,11 @@
 			>
 				Generar Pago
 			</Button>
-			<OverflowMenu flipped>
+			<!-- <OverflowMenu flipped>
 				<Button icon={TrashCan} kind="danger" size="small" on:click={() => {}}
 					>Cancelar Venta</Button
 				>
-			</OverflowMenu>
+			</OverflowMenu> -->
 		</div>
 	</div>
 
@@ -398,7 +398,11 @@
 				<Tile>
 					<div class="flex flex-row justify-between">
 						<h5>Total</h5>
-						<p>{precio_total}</p>
+						{#if data.venta.estado == 'FINALIZADA'}
+							<p>Venta finalizada</p>
+						{:else}
+							<p>{precio_total}</p>
+						{/if}
 					</div>
 				</Tile>
 			</Column>

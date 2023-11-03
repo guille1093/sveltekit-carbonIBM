@@ -238,22 +238,25 @@
 													paquete.text.toLowerCase().includes(paqueteSearch.toLowerCase())
 											);
 
-
 											//filtrar del array de titulares y del array de acompañantes a cualquier persona que ya este incluida en alguno de las ventas de ese paquete
 											paquetesFiltered.forEach((/** @type {{ id: any; }} */ paquete) => {
-												rows.forEach((/** @type {{ expand: { paquete: { id: any; }; }; }} */ venta) => {
-													if (venta.expand.paquete.id === paquete.id) {
-														venta.expand.pagos.forEach((/** @type {{ cliente: { id: any; }; }} */ pago) => {
-															if (pago.cliente.id === titular) {
-																paquetesFiltered = paquetesFiltered.filter(
-																	(/** @type {{ id: any; }} */ paquete) => {
-																		return paquete.id !== venta.expand.paquete.id;
+												rows.forEach(
+													(/** @type {{ expand: { paquete: { id: any; }; }; }} */ venta) => {
+														if (venta.expand.paquete.id === paquete.id) {
+															venta.expand.pagos.forEach(
+																(/** @type {{ cliente: { id: any; }; }} */ pago) => {
+																	if (pago.cliente.id === titular) {
+																		paquetesFiltered = paquetesFiltered.filter(
+																			(/** @type {{ id: any; }} */ paquete) => {
+																				return paquete.id !== venta.expand.paquete.id;
+																			}
+																		);
 																	}
-																);
-															}
-														});
+																}
+															);
+														}
 													}
-												});
+												);
 											});
 
 											if (!paquetesFiltered.length) {
