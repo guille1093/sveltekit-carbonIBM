@@ -217,7 +217,7 @@
 								{ text: 'Legajo número: ', bold: true },
 								'18376. \n',
 								{ text: 'Dirección: ', bold: true },
-								'La Rioja 2203 - Posadas (3360) - Misiones. \n',
+								'La Rioja 2203 - Posadas (3300) - Misiones. \n',
 								{ text: 'Teléfonos: ', bold: true },
 								'+54 (3764) 222333 / +54 (3764) 424450'
 							],
