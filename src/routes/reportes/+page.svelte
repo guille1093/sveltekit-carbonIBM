@@ -22,7 +22,6 @@
 				date.setDate(0);
 				date.setHours(0, 0, 0, 0);
 				date.setMonth(date.getMonth() - 2);
-				console.log('date ' + date + '\nfecha ' + fecha);
 				if (fecha < date) {
 					dataUltimoMes = dataUltimoMes.ventas.filter((venta) => venta !== venta);
 				}

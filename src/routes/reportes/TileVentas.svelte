@@ -17,6 +17,8 @@
 		Button
 	} from 'carbon-components-svelte';
 	import Printer from 'carbon-icons-svelte/lib/Printer.svelte';
+	import { fly } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	//ventas del mes anterior
 	let ventasMesAnterior = 0;
 
@@ -94,45 +96,47 @@
 	// fin de las cosas para pasar a la tabla xd
 </script>
 
-<Tile>
-	<Accordion size="sm">
-		<AccordionItem>
-			<svelte:fragment slot="title">
-				<h5>{titulo}</h5>
-				<h3>{ventasMesAnterior}</h3>
-			</svelte:fragment>
-			<DataTable
-				useStaticWidth
-				stickyHeader
-				class="w-full"
-				sortKey="Fecha"
-				sortDirection="descending"
-				sortable
-				headers={[
-					{ key: 'Paquete', value: 'Paquete' },
-					{ key: 'Titular', value: 'Titular' },
-					{ key: 'Importe', value: 'Importe' },
-					{ key: 'Fecha', value: 'Fecha' }
-				]}
-				{pageSize}
-				{page}
-				{rows}
-			>
-				<Toolbar size="sm">
-					<ToolbarContent>
-						<ToolbarSearch placeholder="Buscar" persistent shouldFilterRows />
-						<ToolbarMenu>
-							<ToolbarMenuItem primaryFocus>Restart all</ToolbarMenuItem>
-							<ToolbarMenuItem href="https://cloud.ibm.com/docs/loadbalancer-service"
-								>API documentation</ToolbarMenuItem
-							>
-							<ToolbarMenuItem hasDivider danger>Stop all</ToolbarMenuItem>
-						</ToolbarMenu>
-						<Button icon={Printer}>Imprimir reporte</Button>
-					</ToolbarContent>
-				</Toolbar>
-			</DataTable>
-			<Pagination bind:pageSize bind:page totalItems={rows.length} pageSizeInputDisabled />
-		</AccordionItem>
-	</Accordion>
-</Tile>
+<div in:fly={{ y: 100 }} out:slide>
+	<Tile>
+		<Accordion size="sm">
+			<AccordionItem>
+				<svelte:fragment slot="title">
+					<h5>{titulo}</h5>
+					<h3>{ventasMesAnterior}</h3>
+				</svelte:fragment>
+				<DataTable
+					useStaticWidth
+					stickyHeader
+					class="w-full"
+					sortKey="Fecha"
+					sortDirection="descending"
+					sortable
+					headers={[
+						{ key: 'Paquete', value: 'Paquete' },
+						{ key: 'Titular', value: 'Titular' },
+						{ key: 'Importe', value: 'Importe' },
+						{ key: 'Fecha', value: 'Fecha' }
+					]}
+					{pageSize}
+					{page}
+					{rows}
+				>
+					<Toolbar size="sm">
+						<ToolbarContent>
+							<ToolbarSearch placeholder="Buscar" persistent shouldFilterRows />
+							<ToolbarMenu>
+								<ToolbarMenuItem primaryFocus>Restart all</ToolbarMenuItem>
+								<ToolbarMenuItem href="https://cloud.ibm.com/docs/loadbalancer-service"
+									>API documentation</ToolbarMenuItem
+								>
+								<ToolbarMenuItem hasDivider danger>Stop all</ToolbarMenuItem>
+							</ToolbarMenu>
+							<Button icon={Printer}>Imprimir reporte</Button>
+						</ToolbarContent>
+					</Toolbar>
+				</DataTable>
+				<Pagination bind:pageSize bind:page totalItems={rows.length} pageSizeInputDisabled />
+			</AccordionItem>
+		</Accordion>
+	</Tile>
+</div>
