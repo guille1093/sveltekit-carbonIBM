@@ -224,15 +224,7 @@
 			},
 
 			{
-				text: `MANIFIESTO DE PASAJEROS Y TRIPULACIÓN \n ${data.paquetes.nombre.toUpperCase()}  ${new Date(
-					data.paquetes.fechasalida
-				)
-					.toLocaleDateString('es-ES', {
-						day: '2-digit',
-						month: 'short',
-						year: 'numeric'
-					})
-					.toUpperCase()} \n \n`,
+				text: `MANIFIESTO DE PASAJEROS Y TRIPULACIÓN`,
 				style: 'header'
 			},
 
