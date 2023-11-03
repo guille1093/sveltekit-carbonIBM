@@ -109,7 +109,7 @@
 </ComposedModal>
 
 <div class="hover:scale-125 hover:z-50 transform transition-all duration-500 ease-in-out w-[320px]">
-	<ClickableTile on:click={() => (open = true)}>
+	<ClickableTile on:click={() => (open = true)} class="">
 		{#if project.thumbnail}
 			<AspectRatio ratio="16x9">
 				<img
@@ -147,3 +147,4 @@
 		</div>
 	</ClickableTile>
 </div>
+

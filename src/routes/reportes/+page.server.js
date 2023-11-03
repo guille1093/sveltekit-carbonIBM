@@ -1,5 +1,6 @@
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
+	
 	//Obtener todas las ventas y expandir los pagos
 	try {
 		const getVentas = async () => {

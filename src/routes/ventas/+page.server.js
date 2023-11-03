@@ -21,7 +21,7 @@ export async function load({ locals }) {
 			return structuredClone(
 				await locals.pb
 					.collection('ventas')
-					.getFullList(undefined, { expand: 'cliente, pasajeros, pagos, paquete' })
+					.getFullList(5000, { expand: 'cliente, pasajeros, pagos, paquete' })
 			);
 		};
 
@@ -66,17 +66,17 @@ export async function load({ locals }) {
 				};
 			}
 		});
-
 		console.log('ventas cargadas');
-
 		return {
 			clientes,
 			paquetes,
 			ventas: ventasinf
 		};
+
 	} catch (err) {
 		console.log('Error: ', err);
 	}
+
 }
 
 export const actions = {
