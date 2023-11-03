@@ -83,7 +83,7 @@ export function imprimirComp(pago, venta) {
 										{ text: 'Legajo número: ', bold: true },
 										'18376. \n',
 										{ text: 'Dirección: \n', bold: true },
-										'La Rioja 2203 - Posadas (3360) - Misiones. \n'
+										'La Rioja 2203 - Posadas (3300) - Misiones. \n'
 									],
 									fontSize: 9,
 									alignment: 'left',
