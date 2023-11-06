@@ -7,7 +7,7 @@
  * @returns {string} The URL for the requested image.
  */
 export const getImageURL = (collectionId, recordId, fileName, size = '220x160') => {
-	return `https://gq-pfs.pockethost.io/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
+	return `https://pfsdev.pockethost.io/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
 };
 
 /**
