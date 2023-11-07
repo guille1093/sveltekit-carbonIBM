@@ -66,7 +66,7 @@
 {#if !data.user}
 	<slot />
 {:else}
-	<Header company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
+	<Header href="/" company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 		<svelte:fragment slot="skip-to-content">
 			<SkipToContent />
 		</svelte:fragment>

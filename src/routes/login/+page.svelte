@@ -15,17 +15,16 @@
 			switch (result.type) {
 				case 'success':
 					open2 = true;
-					await new Promise((resolve) => setTimeout(resolve, 3000));
 					window.location.href = '/';
 					await update();
 					break;
 				case 'invalid':
-					await new Promise((resolve) => setTimeout(resolve, 3000));
+					await new Promise((resolve) => setTimeout(resolve, 1000));
 					open = true;
 					await update();
 					break;
 				case 'error':
-					await new Promise((resolve) => setTimeout(resolve, 3000));
+					await new Promise((resolve) => setTimeout(resolve, 1000));
 					open = true;
 					break;
 				default:
