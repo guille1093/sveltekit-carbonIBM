@@ -3,17 +3,20 @@
 	import { TextInput, PasswordInput, Button, Form, FormGroup } from 'carbon-components-svelte';
 	import { Login } from 'carbon-icons-svelte';
 	import { fly, slide } from 'svelte/transition';
-	export let form;
-	let loading = false;
-	 import { ToastNotification } from "carbon-components-svelte";
+	import { ToastNotification } from "carbon-components-svelte";
 
+	let loading = false;
 	let open = false;
+	let open2 = false;
 
 	const submitLogin = () => {
 		loading = true;
 		return async ({ result, update }) => {
 			switch (result.type) {
 				case 'success':
+					open2 = true;
+					await new Promise((resolve) => setTimeout(resolve, 3000));
+					window.location.href = '/';
 					await update();
 					break;
 				case 'invalid':
@@ -53,7 +56,20 @@
 					on:close={() => (open = false)}
 				/>
 			</div>
-{/if}		
+{/if}	
+
+{#if open2}
+<div in:fly={{ y: 100 }} out:slide class="z-0 absolute inset-0">
+				<ToastNotification
+					kind="success"
+					title="Inicio de sesión exitoso"
+					subtitle="Bienvenido"
+					caption={new Date().toLocaleString()}
+					fullWidth
+					on:close={() => (open2 = false)}
+				/>
+			</div>
+{/if}
 
 
 <div
@@ -94,7 +110,7 @@
 			</FormGroup>
 
 			<div class="flex w-full justify-end">
-				<Button type="submit" icon={Login} disabled={loading || open} skeleton={loading}
+				<Button type="submit" icon={Login} disabled={loading || open || open2} skeleton={loading}
 					>Iniciar sesión</Button
 				>
 			</div>
