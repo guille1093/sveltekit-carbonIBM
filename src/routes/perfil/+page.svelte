@@ -3,7 +3,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { getImageURL } from '$lib/utils';
 	import { Button } from 'carbon-components-svelte';
-	  import { FileUploaderDropContainer } from "carbon-components-svelte";
+	import { FileUploaderDropContainer } from 'carbon-components-svelte';
 
 	export let data;
 	export let form;
@@ -52,8 +52,7 @@
 				<span class="label-text dark:text-gray-200">Imagen de perfil</span>
 			</label>
 			<label for="avatar" class="avatar w-32 rounded-full hover:cursor-pointer">
-				<label for="avatar" class="absolute -bottom-0.5 -right-0.5 hover:cursor-pointer">
-				</label>
+				<label for="avatar" class="absolute -bottom-0.5 -right-0.5 hover:cursor-pointer" />
 				<div class="w-32 rounded-full">
 					<img
 						src={data.user?.avatar
@@ -78,23 +77,16 @@
 			<FileUploaderDropContainer
 				name="avatar"
 				id="avatar"
-  multiple
-  disabled={loading}
-  labelText="Drag and drop files here or click to upload"
-  validateFiles={(files) => {
-    return files.filter((file) => file.size < 1_024);
-  }}
-on:change={showPreview}
-/>
-
-
-
+				multiple
+				disabled={loading}
+				labelText="Drag and drop files here or click to upload"
+				validateFiles={(files) => {
+					return files.filter((file) => file.size < 1_024);
+				}}
+				on:change={showPreview}
+			/>
 		</div>
-		<input
-			id="name"
-			label="Nombre"
-			value={form?.data?.name ?? data?.user?.name}
-		/>
+		<input id="name" label="Nombre" value={form?.data?.name ?? data?.user?.name} />
 		<div class="w-full max-w-lg pt-3">
 			<Button class="w-full max-w-lg" type="submit" disabled={loading}>Actualizar perfil</Button>
 		</div>

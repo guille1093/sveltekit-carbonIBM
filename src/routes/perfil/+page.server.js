@@ -1,9 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { serialize } from 'object-to-formdata';
 
-
-
-
 export const load = ({ locals }) => {
 	if (!locals.pb.authStore.isValid) {
 		throw redirect(303, '/login');
@@ -19,8 +16,7 @@ export const actions = {
 			body.delete('avatar');
 		}
 
-		const formData  = body;
-
+		const formData = body;
 
 		try {
 			const { name, avatar } = await locals.pb

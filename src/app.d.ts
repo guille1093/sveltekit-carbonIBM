@@ -9,4 +9,6 @@ declare global {
 	}
 }
 
+//locals.pb
+
 export {};

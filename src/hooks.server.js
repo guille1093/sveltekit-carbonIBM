@@ -1,4 +1,5 @@
 import PocketBase from 'pocketbase';
+import { redirect } from '@sveltejs/kit';
 
 export const handle = async ({ event, resolve }) => {
 	// Conectamos con la base de datos
@@ -27,8 +28,12 @@ export const handle = async ({ event, resolve }) => {
 		event.locals.user = undefined;
 	}
 
-	// Ejecutamos el resto de hooks y la ruta solicitada
-	const response = await resolve(event);
+	// y la ruta no es login, redirigimos a login
+	if (!event.locals.user && event.url.pathname !== '/login') {
+		throw redirect(303, '/login');
+	}
+
+	const response = await resolve(event); // Stage 2
 
 	// Guardamos la cookie de autenticación
 	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: true }));
