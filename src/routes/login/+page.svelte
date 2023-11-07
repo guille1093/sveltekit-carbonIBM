@@ -37,6 +37,8 @@
 	 */
 
 	let loginform;
+
+	
 </script>
 
 
@@ -53,8 +55,9 @@
 			</div>
 {/if}		
 
+
 <div
-	class="container max-w-md mx-auto xl:max-w-3xl h-full flex justify-center mt-16 sm:mt-32 shadow-xl shadow-neutral-800"
+	class="container max-w-md  mx-auto xl:max-w-3xl h-full flex mt-16 sm:mt-32 shadow-black shadow-2xl"
 >
 
 	<div class="hidden xl:block xl:w-1/2">
@@ -63,35 +66,35 @@
 			src="https://images.unsplash.com/photo-1537100861360-bf6be4ddeac4?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8fA%3D%3D"
 			alt="una playa xd"
 		/>
-	</div>
-	<div class="w-full xl:w-1/2 p-8">
+	</div> 
+	<div class="w-full xl:w-1/2 p-8 ">
 		<h1>Del Valle Turismo</h1>
-		<p>Empresa de viajes y Turismo</p>
+		<p>Empresa de viajes y turismo</p>
 		<h4 class="mt-14 mb-4">Inicie sesión en su cuenta</h4>
 		<form bind:this={loginform} action="?/login" method="POST" use:enhance={submitLogin}>
 			<FormGroup legendText="Nombre de usuario">
 				<TextInput
+					required
 					id="email"
 					name="email"
 					placeholder="Ingrese su nombre de usuario"
-					invalid={form?.errors?.email}
 					disabled={loading}
 				/>
 			</FormGroup>
 
 			<FormGroup>
 				<PasswordInput
+				required
 					id="password"
 					name="password"
 					labelText="Contraseña"
 					placeholder="Ingrese su contraseña"
-					invalid={form?.errors?.password}
 					disabled={loading}
 				/>
 			</FormGroup>
 
 			<div class="flex w-full justify-end">
-				<Button type="submit" icon={Login} disabled={loading} skeleton={loading}
+				<Button type="submit" icon={Login} disabled={loading || open} skeleton={loading}
 					>Iniciar sesión</Button
 				>
 			</div>
