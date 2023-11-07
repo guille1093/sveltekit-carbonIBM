@@ -1,6 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { TextInput, PasswordInput, Button } from 'carbon-components-svelte';
+	import { TextInput, PasswordInput, Button, Form, FormGroup } from 'carbon-components-svelte';
 	import { Login } from 'carbon-icons-svelte';
 	export let form;
 	let loading = false;
@@ -16,10 +16,12 @@
 					await update();
 					break;
 				case 'invalid':
+					await new Promise((resolve) => setTimeout(resolve, 3000));
 					open = true;
 					await update();
 					break;
 				case 'error':
+					await new Promise((resolve) => setTimeout(resolve, 3000));
 					open = true;
 					break;
 				default:
@@ -32,84 +34,65 @@
 	/**
 	 * @type {HTMLFormElement}
 	 */
+
 	let loginform;
 </script>
 
-<div
-	class="bg-cover z-0"
-	style="background-image: url('https://images.unsplash.com/photo-1672661164570-d5e7e0890a69?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80');"
+<Modal
+	danger
+	bind:open
+	modalHeading="Error"
+	primaryButtonText="Aceptar"
+	secondaryButtonText="Olvido su contraseña?"
+	on:click:button--secondary={() => (open = false)}
+	on:click:button--primary={() => (open = false)}
+	on:open
+	on:close
+	on:submit
 >
-	<Modal
-		alert
-		bind:open
-		modalHeading="Error"
-		primaryButtonText="Aceptar"
-		secondaryButtonText="Cancel"
-		on:click:button--secondary={() => (open = false)}
-		on:open
-		on:close
-		on:submit
-	>
-		<p>Credenciales invalidas.</p>
-	</Modal>
-	<div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center items-center">
-		<div class="bg-gray-200 p-12">
-			<a href="/" class="text-2xl font-semibold flex justify-center items-center p-3">
-				<img src="/images/logo.png" height="50px" width="200px" alt="Logo" />
-			</a>
-			<div class="self-start hidden lg:flex flex-col">
-				<h1 class=" text-black">Empresa de viajes y turismo Del Valle.</h1>
-				<p class="text-2xl text-gray-900">Sistema de administración y control WEB.</p>
+	<p>Credenciales invalidas.</p>
+</Modal>
+
+<div
+	class="container max-w-md mx-auto xl:max-w-3xl h-full flex justify-center mt-16 sm:mt-32 shadow-xl shadow-neutral-800"
+>
+	<div class="hidden xl:block xl:w-1/2">
+		<img
+			class="object-cover object-center"
+			src="https://images.unsplash.com/photo-1537100861360-bf6be4ddeac4?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8fA%3D%3D"
+			alt="una playa xd"
+		/>
+	</div>
+	<div class="w-full xl:w-1/2 p-8">
+		<h1>Del Valle Turismo</h1>
+		<p>Empresa de viajes y Turismo</p>
+		<h4 class="mt-16">Inicie sesión en su cuenta</h4>
+		<form bind:this={loginform} action="?/login" method="POST" use:enhance={submitLogin}>
+			<FormGroup legendText="Nombre de usuario">
+				<TextInput
+					id="email"
+					name="email"
+					placeholder="Ingrese su nombre de usuario"
+					invalid={form?.errors?.email}
+					disabled={loading}
+				/>
+			</FormGroup>
+
+			<FormGroup>
+				<PasswordInput
+					id="password"
+					name="password"
+					labelText="Contraseña"
+					placeholder="Ingrese su contraseña"
+					invalid={form?.errors?.password}
+					disabled={loading}
+				/>
+			</FormGroup>
+			<div class="flex w-full justify-end">
+				<Button type="submit" icon={Login} disabled={loading} skeleton={loading}
+					>Iniciar sesión</Button
+				>
 			</div>
-
-			<div />
-			<div class="w-full mt-4">
-				<form bind:this={loginform} action="?/login" method="POST" use:enhance class="">
-					<TextInput
-						id="email"
-						name="email"
-						labelText="Nombre de usuario"
-						placeholder="Ingrese su nombre de usuario"
-						invalid={form?.errors?.email}
-						disabled={loading}
-					/>
-
-					<PasswordInput
-						id="password"
-						name="password"
-						labelText="Contraseña"
-						placeholder="Ingrese su contraseña"
-						invalid={form?.errors?.password}
-						disabled={loading}
-					/>
-					<div class="flex w-full justify-end">
-						<Button type="submit" icon={Login} disabled={loading}>Iniciar sesión</Button>
-					</div>
-
-					{#if form?.notVerified}
-						<div class="alert alert-error shadow-lg w-full max-w-lg">
-							<div>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="stroke-current flex-shrink-0 h-6 w-6"
-									fill="none"
-									viewBox="0 0 24 24"
-									><path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-									/></svg
-								>
-								<span
-									>Se cuenta debe estar habilitada para poder iniciar sesión.<br /> Comuniquese con un
-									administrador para habilitarla</span
-								>
-							</div>
-						</div>
-					{/if}
-				</form>
-			</div>
-		</div>
+		</form>
 	</div>
 </div>
