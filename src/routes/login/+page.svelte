@@ -2,9 +2,10 @@
 	import { enhance } from '$app/forms';
 	import { TextInput, PasswordInput, Button, Form, FormGroup } from 'carbon-components-svelte';
 	import { Login } from 'carbon-icons-svelte';
+	import { fly, slide } from 'svelte/transition';
 	export let form;
 	let loading = false;
-	import { Modal } from 'carbon-components-svelte';
+	 import { ToastNotification } from "carbon-components-svelte";
 
 	let open = false;
 
@@ -38,24 +39,24 @@
 	let loginform;
 </script>
 
-<Modal
-	danger
-	bind:open
-	modalHeading="Error"
-	primaryButtonText="Aceptar"
-	secondaryButtonText="Olvido su contraseña?"
-	on:click:button--secondary={() => (open = false)}
-	on:click:button--primary={() => (open = false)}
-	on:open
-	on:close
-	on:submit
->
-	<p>Credenciales invalidas.</p>
-</Modal>
+
+			{#if open}
+<div in:fly={{ y: 100 }} out:slide class="z-0 absolute inset-0">
+				<ToastNotification
+					kind="error"
+					title="Error de autenticación"
+					subtitle="Credenciales incorrectas"
+					caption={new Date().toLocaleString()}
+					fullWidth
+					on:close={() => (open = false)}
+				/>
+			</div>
+{/if}		
 
 <div
 	class="container max-w-md mx-auto xl:max-w-3xl h-full flex justify-center mt-16 sm:mt-32 shadow-xl shadow-neutral-800"
 >
+
 	<div class="hidden xl:block xl:w-1/2">
 		<img
 			class="object-cover object-center"
@@ -66,7 +67,7 @@
 	<div class="w-full xl:w-1/2 p-8">
 		<h1>Del Valle Turismo</h1>
 		<p>Empresa de viajes y Turismo</p>
-		<h4 class="mt-16">Inicie sesión en su cuenta</h4>
+		<h4 class="mt-14 mb-4">Inicie sesión en su cuenta</h4>
 		<form bind:this={loginform} action="?/login" method="POST" use:enhance={submitLogin}>
 			<FormGroup legendText="Nombre de usuario">
 				<TextInput
@@ -88,6 +89,7 @@
 					disabled={loading}
 				/>
 			</FormGroup>
+
 			<div class="flex w-full justify-end">
 				<Button type="submit" icon={Login} disabled={loading} skeleton={loading}
 					>Iniciar sesión</Button
