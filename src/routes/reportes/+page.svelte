@@ -10,56 +10,20 @@
 	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 	import ChartHistogram from 'carbon-pictograms-svelte/lib/ChartHistogram.svelte';
 
-	const dataForChart = getDataForChart(data.ventas);
-
 	let dataUltimoMes = data;
 
-	dataUltimoMes.ventas.forEach((venta) => {
-		if (venta.expand.pagos !== (undefined || null)) {
-			venta.expand.pagos.forEach((pago) => {
-				let fecha = new Date(pago.created);
-				let date = new Date();
-				date.setDate(0);
-				date.setHours(0, 0, 0, 0);
-				date.setMonth(date.getMonth() - 2);
-				if (fecha < date) {
-					dataUltimoMes = dataUltimoMes.ventas.filter((venta) => venta !== venta);
-				}
-			});
+	const dataForChart2 = data.ventas.map((venta) => {
+		// Verifica si el array de pagos existe y no es null ni undefined
+		if (venta.expand.pagos && Array.isArray(venta.expand.pagos)) {
+			const group = venta.expand.paquete.nombre;
+			// Suma los valores de los pagos o 0 si no hay pagos
+			const value = venta.expand.pagos.reduce((total, pago) => total + (pago.valor || 0), 0);
+			return { group, value };
+		} else {
+			// Si no hay array de pagos o no es válido, devuelve 0
+			return { group: venta.expand.paquete.nombre, value: 0 };
 		}
 	});
-
-	function getDataForChart(ventas) {
-		const paquetes = getPaquetes(ventas);
-		const dataForChart = getValuePaquetes(ventas, paquetes);
-		return dataForChart;
-	}
-
-	function getPaquetes(ventas) {
-		const paquetes = [];
-		ventas.forEach((paquete) => {
-			paquetes.push(paquete.expand.paquete.nombre + ' ' + paquete.expand.paquete.fechasalida);
-		});
-		return [...new Set(paquetes)];
-	}
-
-	function getValuePaquetes(ventas, paquetes) {
-		const dataForChart = [];
-		paquetes.forEach((paquete) => {
-			let valor = 0;
-			ventas.forEach((venta) => {
-				if (venta.expand.paquete.nombre + ' ' + venta.expand.paquete.fechasalida === paquete) {
-					if (venta.expand.pagos !== (undefined || null)) {
-						venta.expand.pagos.forEach((pago) => {
-							valor += pago.valor;
-						});
-					}
-				}
-			});
-			dataForChart.push({ group: paquete, value: valor });
-		});
-		return dataForChart;
-	}
 </script>
 
 <Grid>
@@ -120,7 +84,7 @@
 				</Row>
 
 				<DonutChart
-					data={dataForChart}
+					data={dataForChart2}
 					options={{
 						theme: 'g100',
 						title: 'Proporción del total de pagos por paquete',
@@ -157,7 +121,7 @@
 					</Column>
 				</Row>
 				<BarChartSimple
-					data={dataForChart}
+					data={dataForChart2}
 					options={{
 						theme: 'g100',
 						title: 'Pagos por paquete',
@@ -172,3 +136,5 @@
 		</Column>
 	</Row>
 </Grid>
+
+<pre class="text-white">{JSON.stringify(dataForChart2, null, 2)}</pre>

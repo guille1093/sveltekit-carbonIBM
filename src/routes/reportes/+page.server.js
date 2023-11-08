@@ -10,8 +10,6 @@ export async function load({ locals }) {
 					.getFullList(undefined, { expand: 'cliente, pasajeros, pagos, paquete' })
 			);
 		};
-
-		console.log('getVentas: ', await getVentas());
 		return {
 			ventas: await getVentas()
 		};

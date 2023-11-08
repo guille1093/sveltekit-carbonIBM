@@ -16,7 +16,7 @@
 		Button,
 		Breakpoint
 	} from 'carbon-components-svelte';
-	import { ContentSwitcher, Switch } from "carbon-components-svelte";
+	import { ContentSwitcher, Switch } from 'carbon-components-svelte';
 	import Logout from 'carbon-icons-svelte/lib/Logout.svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
@@ -29,7 +29,7 @@
 
 	let isSideNavOpen = false;
 	let isOpen1 = false;
-    let size;
+	let size;
 
 	//Variables
 	const navigation = [
@@ -60,7 +60,6 @@
 
 <Breakpoint bind:size on:change />
 
-
 <svelte:head>
 	<title>Del Valle Turismo</title>
 	<meta
@@ -69,13 +68,16 @@
 	/>
 </svelte:head>
 
-
-
-
 {#if !data.user}
 	<slot />
 {:else}
-	<Header href="/" uiShellAriaLabel="Del Valle" company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
+	<Header
+		href="/"
+		uiShellAriaLabel="Del Valle"
+		company="Del Valle"
+		platformName="Empresa de turismo"
+		bind:isSideNavOpen
+	>
 		<svelte:fragment slot="skip-to-content">
 			<SkipToContent />
 		</svelte:fragment>
@@ -111,70 +113,55 @@
 			</HeaderAction>
 		</HeaderUtilities>
 	</Header>
-{#if !(size === "sm")}
-	<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar" >
-		<SideNavItems>
-			<SideNavLink
-				href="/"
-				text="Inicio"
-				icon={Home}
-				isSelected={$page.url.pathname === '/' ? true : false}
-			/>
-
-			{#each navigation as navItem}
+	{#if !(size === 'sm')}
+		<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar">
+			<SideNavItems>
 				<SideNavLink
-					text={navItem.title}
-					href={navItem.href}
-					isSelected={$page.url.pathname.includes(navItem.href.replace(/^\//, '')) ? true : false}
-					icon={navItem.icon}
+					href="/"
+					text="Inicio"
+					icon={Home}
+					isSelected={$page.url.pathname === '/' ? true : false}
 				/>
-			{/each}
-		</SideNavItems>
-	</SideNav>
-{/if}
-
-	<Content>
-		
-
-
-		<slot />
-								{#if size === "sm"}	
-								<div class="fixed bottom-10 bg-neutral-900 left-0 z-50 w-full ">
-			<ContentSwitcher size="sm" selectedIndex={
-				$page.url.pathname.includes('/') ? 0 :
-				$page.url.pathname.includes('/clientes') ? 1 :
-				$page.url.pathname.includes('/paquetes') ? 2 :
-				$page.url.pathname.includes('/ventas') ? 3 :
-				$page.url.pathname.includes('/reportes') ? 4 : undefined
-			}
-			 >
-<Switch on:click={()=>(
-					window.location.href = `/`
-				)}>
-					
-						Inicio
-						</Switch>
 
 				{#each navigation as navItem}
-				<Switch on:click={()=>(
-					window.location.href = `${navItem.href}`
-				)}>
-					
-						{navItem.title}
-						
-					
-				</Switch>
+					<SideNavLink
+						text={navItem.title}
+						href={navItem.href}
+						isSelected={$page.url.pathname.includes(navItem.href.replace(/^\//, '')) ? true : false}
+						icon={navItem.icon}
+					/>
 				{/each}
-			</ContentSwitcher>
-		</div>
+			</SideNavItems>
+		</SideNav>
+	{/if}
+
+	<Content>
+		<slot />
+		{#if size === 'sm'}
+			<div class="fixed bottom-10 bg-neutral-900 left-0 z-50 w-full">
+				<ContentSwitcher
+					size="sm"
+					selectedIndex={$page.url.pathname.includes('/')
+						? 0
+						: $page.url.pathname.includes('/clientes')
+						? 1
+						: $page.url.pathname.includes('/paquetes')
+						? 2
+						: $page.url.pathname.includes('/ventas')
+						? 3
+						: $page.url.pathname.includes('/reportes')
+						? 4
+						: undefined}
+				>
+					<Switch on:click={() => (window.location.href = `/`)}>Inicio</Switch>
+
+					{#each navigation as navItem}
+						<Switch on:click={() => (window.location.href = `${navItem.href}`)}>
+							{navItem.title}
+						</Switch>
+					{/each}
+				</ContentSwitcher>
+			</div>
 		{/if}
-
-		
-
-
-		
 	</Content>
-
-
-
 {/if}
