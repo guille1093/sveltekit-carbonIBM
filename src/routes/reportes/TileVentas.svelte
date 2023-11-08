@@ -30,10 +30,10 @@
 		}
 	});
 
-	// ventasMesAnterior = new Intl.NumberFormat('es-AR', {
-	// 	style: 'currency',
-	// 	currency: 'ARS'
-	// }).format(ventasMesAnterior);
+	ventasMesAnterior = new Intl.NumberFormat('es-AR', {
+		style: 'currency',
+		currency: 'ARS'
+	}).format(ventasMesAnterior);
 
 	//para mandar a la tabla
 	import { DataTable, Pagination } from 'carbon-components-svelte';

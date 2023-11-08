@@ -136,5 +136,3 @@
 		</Column>
 	</Row>
 </Grid>
-
-<pre class="text-white">{JSON.stringify(dataForChart2, null, 2)}</pre>
