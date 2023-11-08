@@ -138,17 +138,23 @@
 
 
 		<slot />
-
-		
 								{#if size === "sm"}	
 								<div class="fixed bottom-10 bg-neutral-900 left-0 z-50 w-full ">
 			<ContentSwitcher size="sm" selectedIndex={
-				$page.url.pathname.includes('/clientes') ? 0 :
-				$page.url.pathname.includes('/paquetes') ? 1 :
-				$page.url.pathname.includes('/ventas') ? 2 :
-				$page.url.pathname.includes('/reportes') ? 3 : undefined
+				$page.url.pathname.includes('/') ? 0 :
+				$page.url.pathname.includes('/clientes') ? 1 :
+				$page.url.pathname.includes('/paquetes') ? 2 :
+				$page.url.pathname.includes('/ventas') ? 3 :
+				$page.url.pathname.includes('/reportes') ? 4 : undefined
 			}
 			 >
+<Switch on:click={()=>(
+					window.location.href = `/`
+				)}>
+					
+						Inicio
+						</Switch>
+
 				{#each navigation as navItem}
 				<Switch on:click={()=>(
 					window.location.href = `${navItem.href}`
