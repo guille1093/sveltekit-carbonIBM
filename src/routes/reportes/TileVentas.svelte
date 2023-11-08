@@ -63,6 +63,10 @@
 			};
 		}
 	});
+
+//eliminar pagos nulls de row
+	rows = rows.filter((row) => row !== undefined);
+
 	let pageSize = 5;
 	let page = 1;
 	// fin de las cosas para pasar a la tabla xd
