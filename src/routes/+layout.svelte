@@ -13,8 +13,10 @@
 		SideNavLink,
 		SkipToContent,
 		Content,
-		Button
+		Button,
+		Breakpoint
 	} from 'carbon-components-svelte';
+	import { ContentSwitcher, Switch } from "carbon-components-svelte";
 	import Logout from 'carbon-icons-svelte/lib/Logout.svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
@@ -27,6 +29,7 @@
 
 	let isSideNavOpen = false;
 	let isOpen1 = false;
+    let size;
 
 	//Variables
 	const navigation = [
@@ -55,6 +58,9 @@
 	];
 </script>
 
+<Breakpoint bind:size on:change />
+
+
 <svelte:head>
 	<title>Del Valle Turismo</title>
 	<meta
@@ -63,16 +69,20 @@
 	/>
 </svelte:head>
 
+
+
+
 {#if !data.user}
 	<slot />
 {:else}
-	<Header href="/" company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
+	<Header href="/" uiShellAriaLabel="Del Valle" company="Del Valle" platformName="Empresa de turismo" bind:isSideNavOpen>
 		<svelte:fragment slot="skip-to-content">
 			<SkipToContent />
 		</svelte:fragment>
 
 		<HeaderUtilities>
 			<HeaderAction
+				aria-label="User Avatar"
 				bind:isOpen={isOpen1}
 				icon={UserAvatarFilledAlt}
 				closeIcon={UserAvatarFilledAlt}
@@ -101,8 +111,8 @@
 			</HeaderAction>
 		</HeaderUtilities>
 	</Header>
-
-	<SideNav bind:isOpen={isSideNavOpen} aria-hidden="false" rail>
+{#if !(size === "sm")}
+	<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar" >
 		<SideNavItems>
 			<SideNavLink
 				href="/"
@@ -121,8 +131,44 @@
 			{/each}
 		</SideNavItems>
 	</SideNav>
+{/if}
 
 	<Content>
+		
+
+
 		<slot />
+
+		
+								{#if size === "sm"}	
+								<div class="fixed bottom-10 bg-neutral-900 left-0 z-50 w-full ">
+			<ContentSwitcher size="sm" selectedIndex={
+				$page.url.pathname.includes('/clientes') ? 0 :
+				$page.url.pathname.includes('/paquetes') ? 1 :
+				$page.url.pathname.includes('/ventas') ? 2 :
+				$page.url.pathname.includes('/reportes') ? 3 : undefined
+			}
+			 >
+				{#each navigation as navItem}
+				<Switch on:click={()=>(
+					window.location.href = `${navItem.href}`
+				)}>
+					
+						{navItem.title}
+						
+					
+				</Switch>
+				{/each}
+			</ContentSwitcher>
+		</div>
+		{/if}
+
+		
+
+
+		
 	</Content>
+
+
+
 {/if}
