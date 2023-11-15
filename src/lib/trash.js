@@ -663,7 +663,7 @@ export function imprimirComp(pago, venta) {
 								],
 								fontSize: 12
 							},
-							
+
 							{
 								absolutePosition: {
 									x: 425,

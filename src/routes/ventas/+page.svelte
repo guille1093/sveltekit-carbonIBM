@@ -85,7 +85,7 @@
 		dni: cliente.dni
 	}));
 
-	let clientesFiltered = [...clientesItems]; // Mantén una copia de los clientes originales     
+	let clientesFiltered = [...clientesItems]; // Mantén una copia de los clientes originales
 
 	let clienteDropdownOpen = false;
 
@@ -423,6 +423,7 @@
 						zebra
 						sortable
 						sortKey="created"
+						sortDirection="descending"
 						headers={[
 							{ key: 'nombrePaquete', value: 'Destino' },
 							{ key: 'nombre', value: 'Titular' },

@@ -10,6 +10,7 @@
 		Tile,
 		Grid,
 		Row,
+		ComboBox,
 		Column,
 		Button,
 		ButtonSet,
@@ -401,7 +402,7 @@
 	<Row class="justify-between p-4">
 		<h1>Paquete: {data.paquetes.nombre}</h1>
 		<ButtonSet class="mr-36 p-4">
-			<Button size="small" on:click={() => (open2 = true)} icon={TrashCan} kind="danger"
+			<Button disabled size="small" on:click={() => (open2 = true)} icon={TrashCan} kind="danger"
 				>Eliminar</Button
 			>
 			<Button size="small" icon={Edit} on:click={() => (open = true)}>Editar</Button>
