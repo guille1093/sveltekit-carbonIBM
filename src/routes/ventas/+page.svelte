@@ -85,7 +85,7 @@
 		dni: cliente.dni
 	}));
 
-	let clientesFiltered = [...clientesItems]; // Mantén una copia de los clientes originales
+	let clientesFiltered = [...clientesItems]; // Mantén una copia de los clientes originales     
 
 	let clienteDropdownOpen = false;
 
@@ -148,7 +148,6 @@
 					on:submit={() => {
 						open = true;
 						isFormValid = false;
-						console.log('submit');
 					}}
 					method="post"
 					action="?/createVenta"
@@ -286,8 +285,6 @@
 														: paquetesItems[0].precio;
 												paquetePrecio = paquetesItems[0].precio;
 											}
-
-											console.log('precio', precio);
 										}}
 										on:clear={() => {
 											paqueteDropdownOpen = false;
@@ -425,6 +422,7 @@
 					<DataTable
 						zebra
 						sortable
+						sortKey="created"
 						headers={[
 							{ key: 'nombrePaquete', value: 'Destino' },
 							{ key: 'nombre', value: 'Titular' },

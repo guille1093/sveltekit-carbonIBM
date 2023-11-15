@@ -281,6 +281,7 @@
 					<DataTable
 						zebra
 						sortable
+						sortKey="created"
 						headers={[
 							{ key: 'nombre', value: 'Destino' },
 							{ key: 'precio', value: 'Precio' },
