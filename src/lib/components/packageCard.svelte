@@ -26,13 +26,16 @@
 	let fechaSalida = new Date(project.fechasalida).toLocaleDateString('es-ES', {
 		day: '2-digit',
 		month: 'short',
-		year: 'numeric'
+		year: 'numeric',
+		timeZone: 'UTC'
+
 	});
 
 	let fechaRetorno = new Date(project.fecharetorno).toLocaleDateString('es-ES', {
 		day: '2-digit',
 		month: 'short',
-		year: 'numeric'
+		year: 'numeric',
+		timeZone: 'UTC'
 	});
 
 	const items = [

@@ -64,6 +64,29 @@
 
 	let precio = data.paquetes.precio;
 
+//fechas fix wtf
+const fecha = new Date(data.paquetes.fechasalida);
+
+const opciones = {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC'  // Establece la zona horaria a UTC
+};
+
+const formatoFecha = new Intl.DateTimeFormat('es-ES', opciones).format(fecha);
+
+console.log(formatoFecha);
+
+
+
+
+
+
+
+
+
+
 	const items = [
 		{
 			name: 'Destino',
@@ -81,7 +104,8 @@
 			value: new Date(data.paquetes.fechasalida).toLocaleDateString('es-ES', {
 				day: '2-digit',
 				month: 'short',
-				year: 'numeric'
+				year: 'numeric',
+				timeZone: 'UTC'
 			})
 		},
 		{
@@ -90,7 +114,8 @@
 			value: new Date(data.paquetes.fecharetorno).toLocaleDateString('es-ES', {
 				day: '2-digit',
 				month: 'short',
-				year: 'numeric'
+				year: 'numeric',
+				timeZone: 'UTC'
 			})
 		},
 		{
@@ -124,7 +149,8 @@
 			value: new Date(data.paquetes.created).toLocaleDateString('es-ES', {
 				day: '2-digit',
 				month: 'short',
-				year: 'numeric'
+				year: 'numeric',
+				timeZone: 'UTC'
 			})
 		},
 		{
@@ -133,7 +159,8 @@
 			value: new Date(data.paquetes.updated).toLocaleDateString('es-ES', {
 				day: '2-digit',
 				month: 'short',
-				year: 'numeric'
+				year: 'numeric',
+				timeZone: 'UTC'
 			})
 		},
 		{
@@ -401,6 +428,10 @@
 <Grid>
 	<Row class="justify-between p-4">
 		<h1>Paquete: {data.paquetes.nombre}</h1>
+
+<pre>{JSON.stringify(data.paquetes.fechasalida, null, 2)}</pre>
+<pre>{JSON.stringify(formatoFecha, null, 2)}</pre>
+
 		<ButtonSet class="mr-36 p-4">
 			<Button disabled size="small" on:click={() => (open2 = true)} icon={TrashCan} kind="danger"
 				>Eliminar</Button
@@ -687,3 +718,6 @@
 		>
 	</ModalFooter>
 </ComposedModal>
+
+
+
