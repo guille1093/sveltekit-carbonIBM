@@ -28,7 +28,6 @@
 		month: 'short',
 		year: 'numeric',
 		timeZone: 'UTC'
-
 	});
 
 	let fechaRetorno = new Date(project.fecharetorno).toLocaleDateString('es-ES', {

@@ -442,14 +442,14 @@
 										bind:value={pageSize}
 									/>
 
-																	<ComboBox
-									placeholder="Ver"
-									selectedId="1"
-									items={[
-										{ id: '0', text: 'Disponibles' },
-										{ id: '1', text: 'Todos' },
-									]}
-								/>
+									<ComboBox
+										placeholder="Ver"
+										selectedId="1"
+										items={[
+											{ id: '0', text: 'Disponibles' },
+											{ id: '1', text: 'Todos' }
+										]}
+									/>
 								</ToolbarMenu>
 
 								<Button icon={Add} on:click={() => (open = true)}>Registrar paquete</Button>

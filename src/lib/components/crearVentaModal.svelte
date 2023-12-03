@@ -1,10 +1,7 @@
 <script>
-	import SelectSearch from '../../lib/components/SelectSearch.svelte';
+    export let data;
 
-	/** @type {import('./$types').PageData} */
-	export let data;
-
-	//IMPORTS
+	import SelectSearch from './SelectSearch.svelte';
 	import { fly } from 'svelte/transition';
 	import { slide } from 'svelte/transition';
 	import {
@@ -20,26 +17,15 @@
 		Tile,
 		Dropdown,
 		Search,
-		Tag
+		Tag,
+        Grid, Row, Column, MultiSelect
 	} from 'carbon-components-svelte';
-	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { enhance } from '$app/forms';
-	import { MultiSelect } from 'carbon-components-svelte';
-	import { Grid, Row, Column } from 'carbon-components-svelte';
-	import NewFinancialCustomerExperiences from 'carbon-pictograms-svelte/lib/NewFinancialCustomerExperiences.svelte';
 
 	/**
 	 * @type {never[]}
 	 */
 	let selected = [];
-
-	let items = data.clientes.map(
-		(/** @type {{ id: any; nombre: any; apellido: string; dni:string}} */ cliente) => ({
-			id: cliente.id,
-			text: `${cliente.nombre} ${cliente.apellido}`,
-			dni: cliente.dni
-		})
-	);
 
 	/**
 	 * @type {HTMLFormElement}
@@ -54,7 +40,7 @@
 
 	let isFormValid = true;
 	//VARIABLES Y CONSTANTES
-	let open = true;
+	export let open;
 
 	let paquetesItems = data.paquetes.map(
 		(/** @type {{ id: any; nombre: any; fechasalida: Date; precio: number }} */ paquete) => ({
@@ -86,9 +72,7 @@
 	//Una copia para filtrar los clientes que ya estan en el paquete
 	//let clientesHabilitados = [...clientesItems]; // Mantén una copia de los clientes originales
 
-	let clienteDropdownOpen = false;
 
-	// $: console.log('filteredRowIds', filteredRowIds);
 
 	const closeModals = () => {
 		open = false;
@@ -271,6 +255,8 @@
 										paquetesFiltered = [...paquetesItems];
 										clientesFiltered = [...clientesItems];
 										getPersonasEnPaquete(paquete);
+                                        console.log('paquete', paquete);
+											console.log('precio', precio);
 									}}
 								/>
 							</FormGroup>
@@ -297,6 +283,8 @@
 								<MultiSelect
 									selectionFeedback="top-after-reopen"
 									filterable
+                                      direction="top"
+
 									bind:selectedIds={selected}
 									label="Seleccione los acompañantes"
 									items={acompañantes}
@@ -329,12 +317,12 @@
 									</div>
 									<div class="flex justify-between p-1">
 										<p>Precio por persona:</p>
-										<h5>${Intl.NumberFormat('es-AR').format(paquetePrecio)}</h5>
+										<h5>${Intl.NumberFormat('es-AR').format(precioUnitario)}</h5>
 									</div>
 									<div class="flex justify-between p-1 bg-blue-600">
 										<p>Total:</p>
 										<h5>
-											${Intl.NumberFormat('es-AR').format((selected.length + 1) * paquetePrecio)}
+											${Intl.NumberFormat('es-AR').format(precio)}
 										</h5>
 									</div>
 								</Tile>
@@ -363,15 +351,3 @@
 		>
 	</ModalFooter>
 </ComposedModal>
-
-<Button
-	kind="primary"
-	size="lg"
-	on:click={() => {
-		open = true;
-		isFormValid = false;
-	}}
->
-	<Add />
-	<span>Nueva venta</span>
-</Button>
