@@ -382,7 +382,7 @@
 		</Row>
 		<Row>
 			<Column>
-				<div class="overflow-scroll">
+				<div class="overflow-scroll uppercase">
 					<DataTable
 						zebra
 						sortable
@@ -395,7 +395,6 @@
 							{ key: 'fechanacimiento', value: 'Nacimiento' },
 							{ key: 'created', value: 'Creado' },
 							{ key: 'updated', value: 'Actualizado' },
-							{ key: 'telefono', value: 'Telefono' },
 							{ key: 'nacionalidad', value: 'Nacionalidad' }
 						]}
 						{rows}

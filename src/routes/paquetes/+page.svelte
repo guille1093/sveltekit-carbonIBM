@@ -278,7 +278,7 @@
 		</Row>
 		<Row>
 			<Column>
-				<div class="overflow-scroll">
+				<div class="overflow-scroll uppercase">
 					<DataTable
 						zebra
 						sortable
