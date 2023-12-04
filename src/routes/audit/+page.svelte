@@ -19,18 +19,13 @@
 
 //map reduce the data to a new array of objects
 let rows = data.registros.map((item) => {
-    let json = {};
-    for (let key in item.json) {
-		
-        json[key] = item.json[key];
-    }
     return {
         id: item.id,
-        user: item.expand.user.name + ' ' + item.expand.user.apellido,
+        user: item.usernas,
         rol: 'ADMINISTRADOR',
         action: item.accion,
         date: item.created,
-        JSON: json,
+        JSON: item.json,
         collection: item.collection === 'projects' ? 'PAQUETE' : item.collection,
         created: new Date(item.created).toLocaleString(
             'es-AR',
