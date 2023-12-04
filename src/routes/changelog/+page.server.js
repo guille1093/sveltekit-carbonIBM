@@ -1,43 +1,41 @@
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
+	try {
+		// Obtener las ventas
+		const getVentas = async () => {
+			// @ts-ignore
+			return structuredClone(
+				// @ts-ignore
+				await locals.pb
+					.collection('ventas')
+					.getFullList(5000, { expand: 'cliente, pasajeros, pagos, paquete' })
+			);
+		};
 
+		//Obtener los clientes
+		const getClientes = async () => {
+			// @ts-ignore
+			return structuredClone(await locals.pb.collection('clientes').getFullList(5000, {}));
+		};
 
-    try { 	// Obtener las ventas
-        const getVentas = async () => {
-            // @ts-ignore
-            return structuredClone(
-                // @ts-ignore
-                await locals.pb
-                    .collection('ventas')
-                    .getFullList(5000, { expand: 'cliente, pasajeros, pagos, paquete' })
-            );
-        };
+		//Obtener los paquetes
+		const getPaquetes = async () => {
+			// @ts-ignore
+			return structuredClone(await locals.pb.collection('projects').getFullList(5000, {}));
+		};
 
-        //Obtener los clientes
-        const getClientes = async () => {
-            // @ts-ignore
-            return structuredClone(await locals.pb.collection('clientes').getFullList(5000, {}));
-        };
+		const ventas = await getVentas();
+		const clientes = await getClientes();
+		const paquetes = await getPaquetes();
 
-        //Obtener los paquetes
-        const getPaquetes = async () => {
-            // @ts-ignore
-            return structuredClone(await locals.pb.collection('projects').getFullList(5000, {}));
-        };
-
-        const ventas = await getVentas();
-        const clientes = await getClientes();
-        const paquetes = await getPaquetes();
-
-
-        return {
-            ventas,
-            clientes,
-            paquetes
-        };
-} catch (error) {
-        console.log(error);
-    }
+		return {
+			ventas,
+			clientes,
+			paquetes
+		};
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export const actions = {

@@ -90,7 +90,6 @@ export const actions = {
 		const cant_personas = form.get('cant_personas') ?? '';
 		const pasajeros = form.get('pasajeros') ?? '';
 		const valor = form.get('precio') ?? '1';
-		console.log('pasajeros: ', pasajeros);
 		const data = {
 			cliente,
 			paquete,

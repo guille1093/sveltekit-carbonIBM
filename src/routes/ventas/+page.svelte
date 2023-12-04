@@ -34,7 +34,7 @@
 	import { MultiSelect } from 'carbon-components-svelte';
 	import { Grid, Row, Column } from 'carbon-components-svelte';
 	import NewFinancialCustomerExperiences from 'carbon-pictograms-svelte/lib/NewFinancialCustomerExperiences.svelte';
-import CrearVentaModal from '$lib/components/crearVentaModal.svelte';
+	import CrearVentaModal from '$lib/components/crearVentaModal.svelte';
 	/**
 	 * @type {never[]}
 	 */
@@ -106,8 +106,6 @@ import CrearVentaModal from '$lib/components/crearVentaModal.svelte';
 
 	let clienteDropdownOpen = false;
 
-
-
 	let titular = clientesItems[0].id;
 
 	let paquete = paquetesItems[0].id;
@@ -129,8 +127,7 @@ import CrearVentaModal from '$lib/components/crearVentaModal.svelte';
 </script>
 
 <main>
-
-<CrearVentaModal bind:open={open} data={data} />
+	<CrearVentaModal bind:open {data} />
 	<Grid>
 		<Row>
 			<Column>

@@ -8,10 +8,10 @@ export const handle = async ({ event, resolve }) => {
 	// event.locals.pb = new PocketBase('https://gq-pfs.pockethost.io');
 
 	//pockethost.io PROD
-	event.locals.pb = new PocketBase('https://pfsdev.pockethost.io/');
+		event.locals.pb = new PocketBase('https://pfsdev.pockethost.io/');
 
 	//localhost
-//	event.locals.pb = new PocketBase('http://127.0.0.1:8090');
+	//event.locals.pb = new PocketBase('http://127.0.0.1:8090');
 
 	// Cargamos la cookie de autenticación
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
@@ -37,5 +37,9 @@ export const handle = async ({ event, resolve }) => {
 
 	// Guardamos la cookie de autenticación
 	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: true }));
+
+	// Agregamos el usuario al encabezado de la respuesta
+	//response.headers.set('user', event.locals.user);
+
 	return response;
 };

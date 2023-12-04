@@ -1,5 +1,5 @@
 <script>
-    export let data;
+	export let data;
 
 	import SelectSearch from './SelectSearch.svelte';
 	import { fly } from 'svelte/transition';
@@ -18,7 +18,10 @@
 		Dropdown,
 		Search,
 		Tag,
-        Grid, Row, Column, MultiSelect
+		Grid,
+		Row,
+		Column,
+		MultiSelect
 	} from 'carbon-components-svelte';
 	import { enhance } from '$app/forms';
 
@@ -71,8 +74,6 @@
 
 	//Una copia para filtrar los clientes que ya estan en el paquete
 	//let clientesHabilitados = [...clientesItems]; // Mantén una copia de los clientes originales
-
-
 
 	const closeModals = () => {
 		open = false;
@@ -255,8 +256,8 @@
 										paquetesFiltered = [...paquetesItems];
 										clientesFiltered = [...clientesItems];
 										getPersonasEnPaquete(paquete);
-                                        console.log('paquete', paquete);
-											console.log('precio', precio);
+										console.log('paquete', paquete);
+										console.log('precio', precio);
 									}}
 								/>
 							</FormGroup>
@@ -283,8 +284,7 @@
 								<MultiSelect
 									selectionFeedback="top-after-reopen"
 									filterable
-                                      direction="top"
-
+									direction="top"
 									bind:selectedIds={selected}
 									label="Seleccione los acompañantes"
 									items={acompañantes}

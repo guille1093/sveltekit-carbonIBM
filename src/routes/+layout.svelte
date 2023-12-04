@@ -21,7 +21,7 @@
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
 	import { FlightInternational } from 'carbon-icons-svelte';
-	import { Currency, ChartColumnTarget } from 'carbon-icons-svelte';
+	import { Currency, ChartColumnTarget, ChangeCatalog, IbmCloudAppId } from 'carbon-icons-svelte';
 	import { Home } from 'carbon-icons-svelte';
 	import { getImageURL } from '$lib/utils';
 
@@ -43,7 +43,6 @@
 			href: '/paquetes',
 			icon: FlightInternational
 		},
-
 		{
 			title: 'Ventas',
 			href: '/ventas',
@@ -54,6 +53,18 @@
 			title: 'Reportes',
 			href: '/reportes',
 			icon: ChartColumnTarget
+		},
+
+		{
+			title: 'Auditoría',
+			href: '/audit',
+			icon: ChangeCatalog
+		},
+
+		{
+			title: 'Cuentas',
+			href: '/acc',
+			icon: IbmCloudAppId
 		}
 	];
 </script>
