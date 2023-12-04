@@ -21,16 +21,17 @@
 let rows = data.registros.map((item) => {
     let json = {};
     for (let key in item.json) {
-        json[key] = item.json[key].toString().toUpperCase();
+		
+        json[key] = item.json[key];
     }
     return {
-        id: item.id.toUpperCase(),
-        user: item.expand.user.name.toUpperCase() + ' ' + item.expand.user.apellido.toUpperCase(),
+        id: item.id,
+        user: item.expand.user.name + ' ' + item.expand.user.apellido,
         rol: 'ADMINISTRADOR',
         action: item.accion,
         date: item.created,
         JSON: json,
-        collection: item.collection === 'projects' ? 'PAQUETE' : item.collection.toUpperCase(),
+        collection: item.collection === 'projects' ? 'PAQUETE' : item.collection,
         created: new Date(item.created).toLocaleString(
             'es-AR',
 
@@ -43,7 +44,7 @@ let rows = data.registros.map((item) => {
                 minute: '2-digit',
                 second: '2-digit'
             }
-        ).toUpperCase()
+        )
     };
 });
 
@@ -67,6 +68,7 @@ let rows = data.registros.map((item) => {
 	<Row>
 		<Column>
 			<DataTable
+			class="uppercase"
 				{pageSize}
 				{page}
 				size="compact"
