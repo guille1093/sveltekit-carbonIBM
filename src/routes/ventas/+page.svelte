@@ -140,7 +140,7 @@
 		</Row>
 		<Row>
 			<Column>
-				<div class="overflow-hidden">
+				<div class="overflow-hidden uppercase">
 					<!-- svelte-ignore a11y-missing-attribute -->
 					<DataTable
 						zebra
