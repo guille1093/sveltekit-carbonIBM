@@ -503,6 +503,7 @@
 													size="small"
 													on:click={() => {
 														imprimirComp(pago, data.ventaExpanded);
+														window.location.reload();
 													}}
 												>
 													Imprimir comprobante</Button
