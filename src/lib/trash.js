@@ -578,7 +578,7 @@ export function imprimirComp(pago, venta) {
 												text: [
 													{ text: 'Cantidad de pasajeros: ', bold: true },
 													`${
-														venta.expand.pasajeros === undefined ? 1 : venta.expand.pasajeros.length
+														venta.expand.pasajeros === undefined ? 1 : venta.expand.pasajeros.length + 1
 													} \n`
 												]
 											},
