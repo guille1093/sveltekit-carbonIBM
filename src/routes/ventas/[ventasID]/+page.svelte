@@ -523,7 +523,7 @@
 		</Row>
 		<Row class="my-8">
 			<Column
-				><Tile class="">
+				><Tile>
 					<h3>Contrato</h3>
 					<p class="tracking-widest text-justify">
 						En la ciudad de <strong class="uppercase tracking-tight"

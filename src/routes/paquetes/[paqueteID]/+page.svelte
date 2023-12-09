@@ -3,10 +3,6 @@
 	import { slide } from 'svelte/transition';
 	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 	import {
-		StructuredList,
-		StructuredListBody,
-		StructuredListRow,
-		StructuredListCell,
 		Tile,
 		Grid,
 		Row,
@@ -32,6 +28,14 @@
 		ProgressBar,
 		Accordion,
 		AccordionItem
+	} from 'carbon-components-svelte';
+
+	import {
+		StructuredList,
+		StructuredListHead,
+		StructuredListRow,
+		StructuredListCell,
+		StructuredListBody
 	} from 'carbon-components-svelte';
 
 	import { enhance } from '$app/forms';
@@ -155,6 +159,31 @@
 			})
 		},
 		{
+			name: 'Chofer 1',
+			icon: 'bx-user',
+			value: data.paquetes.chofer1nombre
+		},
+		{
+			name: 'Chofer 2',
+			icon: 'bx-user',
+			value: data.paquetes.chofer2nombre
+		},
+		{
+			name: 'Dominio',
+			icon: 'bx-car',
+			value: data.paquetes.dominio
+		},
+		{
+			name: 'Interno',
+			icon: 'bx-car',
+			value: data.paquetes.interno
+		},
+		{
+			name: 'Pais destino',
+			icon: 'bx-flag',
+			value: data.paquetes.pais_destino
+		},
+		{
 			name: 'Observaciones',
 			icon: 'bx-notepad',
 			value: data.paquetes.descripcion
@@ -177,6 +206,12 @@
 	let fecharetorno = data.paquetes.fecharetorno;
 	let observaciones = data.paquetes.descripcion;
 	let pais_destino = data.paquetes.pais_destino;
+	let chofer1nombre = data.paquetes.chofer1nombre;
+	let chofer1dni = data.paquetes.chofer1dni;
+	let chofer2nombre = data.paquetes.chofer2nombre;
+	let chofer2dni = data.paquetes.chofer2dni;
+	let interno = data.paquetes.interno;
+	let dominio = data.paquetes.dominio;
 
 	let toast = false;
 
@@ -420,9 +455,6 @@
 	<Row class="justify-between p-4">
 		<h1>Paquete: {data.paquetes.nombre}</h1>
 
-		<pre>{JSON.stringify(data.paquetes.fechasalida, null, 2)}</pre>
-		<pre>{JSON.stringify(formatoFecha, null, 2)}</pre>
-
 		<ButtonSet class="mr-36 p-4">
 			<Button disabled size="small" on:click={() => (open2 = true)} icon={TrashCan} kind="danger"
 				>Eliminar</Button
@@ -442,28 +474,27 @@
 		<Column
 			><Tile>
 				<h2 class="">Información del paquete</h2>
+				<StructuredList condensed>
+					<StructuredListBody>
+						{#each items as item}
+							<StructuredListRow>
+								<StructuredListCell noWrap>
+									<li class="flex justify-between">
+										<div>
+											<!-- Icon -->
+											<i class="bx text-blue-600 {item.icon}" />
+											<!-- Name -->
+											<span>{item.name}:</span>
+										</div>
 
-				choferes y dominio {data.paquetes.chofer1nombre}
-				{data.paquetes.chofer1dni}
-				{data.paquetes.chofer2nombre}
-				{data.paquetes.chofer2dni}
-				{data.paquetes.dominio}
-
-				<ul class="mt-4">
-					{#each items as item}
-						<li class="flex space-x-3 space-y-2 justify-between">
-							<div>
-								<!-- Icon -->
-								<i class="bx text-blue-600 {item.icon}" />
-								<!-- Name -->
-								<span>{item.name}:</span>
-							</div>
-
-							<!-- Text -->
-							<span>{item.value}</span>
-						</li>
-					{/each}
-				</ul>
+										<!-- Text -->
+										<span>{item.value}</span>
+									</li>
+								</StructuredListCell>
+							</StructuredListRow>
+						{/each}
+					</StructuredListBody>
+				</StructuredList>
 			</Tile></Column
 		>
 		<Column>
@@ -659,12 +690,14 @@
 						id="chofer1nombre"
 						name="chofer1nombre"
 						placeholder="Ingrese el nombre del chofer 1"
+						bind:value={chofer1nombre}
 					/>
 					<NumberInput
 						id="chofer1dni"
 						min={1}
 						name="chofer1dni"
 						placeholder="Ingrese el dni del chofer 1"
+						bind:value={chofer1dni}
 					/>
 				</FormGroup>
 
@@ -673,18 +706,30 @@
 						id="chofer2nombre"
 						name="chofer2nombre"
 						placeholder="Ingrese el nombre del chofer 2"
+						bind:value={chofer2nombre}
 					/>
 					<NumberInput
 						id="chofer2dni"
 						min={1}
 						name="chofer2dni"
 						placeholder="Ingrese el dni del chofer 2"
+						bind:value={chofer2dni}
 					/>
 				</FormGroup>
 
 				<FormGroup legendText="Dominio del bus">
-					<TextInput id="interno" name="interno" placeholder="Ingrese el interno del bus" />
-					<TextInput id="dominio" name="dominio" placeholder="Ingrese el dominio del bus" />
+					<TextInput
+						id="interno"
+						name="interno"
+						placeholder="Ingrese el interno del bus"
+						bind:value={interno}
+					/>
+					<TextInput
+						id="dominio"
+						name="dominio"
+						placeholder="Ingrese el dominio del bus"
+						bind:value={dominio}
+					/>
 				</FormGroup>
 
 				<TextArea

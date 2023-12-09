@@ -19,6 +19,7 @@
 			const preview = document.getElementById('avatar-preview');
 			preview.src = src;
 		}
+
 	};
 
 	const submitUpdateProfile = () => {
@@ -36,6 +37,7 @@
 			loading = false;
 		};
 	};
+	
 </script>
 
 <div class="flex items-center flex-col md:w-1/2 w-full h-screen">
