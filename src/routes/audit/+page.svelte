@@ -14,36 +14,36 @@
 		NumberInput,
 		Pagination,
 		Header,
-        Tile,
+		Tile
 	} from 'carbon-components-svelte';
 
-//map reduce the data to a new array of objects
-let rows = data.registros.map((item) => {
-    return {
-        id: item.id,
-        user: item.usernas,
-        rol: 'ADMINISTRADOR',
-        action: item.accion,
-        date: item.created,
-        JSON: item.json,
-        collection: item.collection === 'projects' ? 'PAQUETE' : item.collection,
-        created: new Date(item.created).toLocaleString(
-            'es-AR',
+	//map reduce the data to a new array of objects
+	let rows = data.registros.map((item) => {
+		return {
+			id: item.id,
+			user: item.usernas,
+			rol: 'ADMINISTRADOR',
+			action: item.accion,
+			date: item.created,
+			JSON: item.json,
+			collection: item.collection === 'projects' ? 'PAQUETE' : item.collection,
+			created: new Date(item.created).toLocaleString(
+				'es-AR',
 
-            {
-                timeZone: 'America/Argentina/Buenos_Aires',
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            }
-        )
-    };
-});
+				{
+					timeZone: 'America/Argentina/Buenos_Aires',
+					day: '2-digit',
+					month: 'short',
+					year: 'numeric',
+					hour: '2-digit',
+					minute: '2-digit',
+					second: '2-digit'
+				}
+			)
+		};
+	});
 
-	let pageSize = 10;
+	let pageSize = 15;
 	let page = 1;
 
 	let filteredRowIds = [];
@@ -63,7 +63,7 @@ let rows = data.registros.map((item) => {
 	<Row>
 		<Column>
 			<DataTable
-			class="uppercase"
+				class="uppercase"
 				{pageSize}
 				{page}
 				size="compact"
@@ -78,42 +78,43 @@ let rows = data.registros.map((item) => {
 					{ key: 'action', value: 'ACCIÓN' },
 					{ key: 'created', value: 'FECHA' },
 					{ key: 'collection', value: 'TIPO REGISTRO' },
-                    { key: 'id', value: 'ID REGISTRO' },
+					{ key: 'id', value: 'ID REGISTRO' }
 				]}
 				{rows}
 			>
 				<svelte:fragment slot="expanded-row" let:row>
-                    <Grid>
-                        <Row>
-                            <Column>
-                                <Tile>
-<p>VALORES PREVIOS</p>
-                                <ul>
-                              {#each Object.keys(row.JSON) as key}
-                                        {#if key !== 'created' && key !== 'updated' && key !== 'collectionId' && key !== 'collectionName' && key !== 'id' && row.JSON[key] !== ''}
-                                            <li class="justify-between flex border-b-2 border-black"><strong>{key.toUpperCase()}:</strong><i>{row.JSON[key]}</i> </li>
-                                        {/if}
-                                    {/each}
-                                </ul>
-                                </Tile>
-                                
-                            </Column>
-                            <Column>
-                                <Tile >
-
-                         <ul>
-                            <p>VALORES ACTUALIZADOS</p>
-                                    {#each Object.keys(row.JSON) as key}
-                                        {#if key !== 'created' && key !== 'updated' && key !== 'collectionId' && key !== 'collectionName' && key !== 'id' && row.JSON[key] !== ''}
-                                            <li class="justify-between flex border-b-2 border-black"><strong>{key.toUpperCase()}:</strong><i>{row.JSON[key]}</i></li>
-                                        {/if}
-                                    {/each}
-                                </ul>
-                                </Tile>
-                                
-                            </Column>
-                        </Row>
-                    </Grid>
+					<Grid>
+						<Row>
+							<Column>
+								<Tile>
+									<p>VALORES PREVIOS</p>
+									<ul>
+										{#each Object.keys(row.JSON) as key}
+											{#if key !== 'created' && key !== 'updated' && key !== 'collectionId' && key !== 'collectionName' && key !== 'id' && row.JSON[key] !== ''}
+												<li class="justify-between flex border-b-2 border-black">
+													<strong>{key.toUpperCase()}:</strong><i>{row.JSON[key]}</i>
+												</li>
+											{/if}
+										{/each}
+									</ul>
+								</Tile>
+							</Column>
+							<Column>
+								<Tile>
+									<ul>
+										<p>VALORES ACTUALIZADOS</p>
+										{#each Object.keys(row.JSON) as key}
+											{#if key !== 'created' && key !== 'updated' && key !== 'collectionId' && key !== 'collectionName' && key !== 'id' && row.JSON[key] !== ''}
+												<li class="justify-between flex border-b-2 border-black">
+													<strong>{key.toUpperCase()}:</strong><i>{row.JSON[key]}</i>
+												</li>
+											{/if}
+										{/each}
+									</ul>
+								</Tile>
+							</Column>
+						</Row>
+					</Grid>
 				</svelte:fragment>
 
 				<svelte:fragment slot="cell-header" let:header>

@@ -20,9 +20,13 @@
 	import Logout from 'carbon-icons-svelte/lib/Logout.svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
-	import { FlightInternational } from 'carbon-icons-svelte';
-	import { Currency, ChartColumnTarget, ChangeCatalog, IbmCloudAppId } from 'carbon-icons-svelte';
-	import { Home } from 'carbon-icons-svelte';
+	import FlightInternational from 'carbon-icons-svelte/lib/FlightInternational.svelte';
+	import Hotel from 'carbon-icons-svelte/lib/Hotel.svelte';
+	import Currency from 'carbon-icons-svelte/lib/Currency.svelte';
+	import ChartColumnTarget from 'carbon-icons-svelte/lib/ChartColumnTarget.svelte';
+	import ChangeCatalog from 'carbon-icons-svelte/lib/ChangeCatalog.svelte';
+	import IbmCloudAppId from 'carbon-icons-svelte/lib/IbmCloudAppId.svelte';
+	import Home from 'carbon-icons-svelte/lib/Home.svelte';
 	import { getImageURL } from '$lib/utils';
 
 	export let data;
@@ -42,6 +46,11 @@
 			title: 'Paquetes',
 			href: '/paquetes',
 			icon: FlightInternational
+		},
+		{
+			title: 'Hoteles',
+			href: '/hotels',
+			icon: Hotel
 		},
 		{
 			title: 'Ventas',
@@ -124,55 +133,26 @@
 			</HeaderAction>
 		</HeaderUtilities>
 	</Header>
-	{#if !(size === 'sm')}
-		<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar">
-			<SideNavItems>
+	<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar">
+		<SideNavItems>
+			<SideNavLink
+				href="/"
+				text="Inicio"
+				icon={Home}
+				isSelected={$page.url.pathname === '/' ? true : false}
+			/>
+
+			{#each navigation as navItem}
 				<SideNavLink
-					href="/"
-					text="Inicio"
-					icon={Home}
-					isSelected={$page.url.pathname === '/' ? true : false}
+					text={navItem.title}
+					href={navItem.href}
+					isSelected={$page.url.pathname.includes(navItem.href.replace(/^\//, '')) ? true : false}
+					icon={navItem.icon}
 				/>
-
-				{#each navigation as navItem}
-					<SideNavLink
-						text={navItem.title}
-						href={navItem.href}
-						isSelected={$page.url.pathname.includes(navItem.href.replace(/^\//, '')) ? true : false}
-						icon={navItem.icon}
-					/>
-				{/each}
-			</SideNavItems>
-		</SideNav>
-	{/if}
-
+			{/each}
+		</SideNavItems>
+	</SideNav>
 	<Content>
 		<slot />
-		{#if size === 'sm'}
-			<div class="fixed bottom-10 bg-neutral-900 left-0 z-50 w-full">
-				<ContentSwitcher
-					size="sm"
-					selectedIndex={$page.url.pathname.includes('/')
-						? 0
-						: $page.url.pathname.includes('/clientes')
-						? 1
-						: $page.url.pathname.includes('/paquetes')
-						? 2
-						: $page.url.pathname.includes('/ventas')
-						? 3
-						: $page.url.pathname.includes('/reportes')
-						? 4
-						: undefined}
-				>
-					<Switch on:click={() => (window.location.href = `/`)}>Inicio</Switch>
-
-					{#each navigation as navItem}
-						<Switch on:click={() => (window.location.href = `${navItem.href}`)}>
-							{navItem.title}
-						</Switch>
-					{/each}
-				</ContentSwitcher>
-			</div>
-		{/if}
 	</Content>
 {/if}

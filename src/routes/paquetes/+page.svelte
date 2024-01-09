@@ -3,6 +3,7 @@
 
 	//IMPORTS
 	import { fly } from 'svelte/transition';
+	import { invalidateAll } from '$app/navigation';
 	import { slide } from 'svelte/transition';
 	import { Spanish } from 'flatpickr/dist/l10n/es.js';
 	import {
@@ -37,6 +38,7 @@
 
 	//EXPORTS
 	export let data;
+	export let form;
 
 	//VARIABLES REACTIVAS
 
@@ -58,7 +60,7 @@
 	/**
 	 * @type {HTMLFormElement}
 	 */
-	let form;
+	let createForm;
 	//FUNCIONES
 
 	const validateNombre = () => {
@@ -75,7 +77,7 @@
 	let open = false;
 
 	//DataTables
-	let rows = data.paquetes;
+	$: rows = data.paquetes;
 	let pageSize = 10;
 	let page = 1;
 	/**
@@ -88,7 +90,11 @@
 	const closeModals = () => {
 		open = false;
 		toast = false;
-		window.location.reload();
+		nombre = '';
+		precio = 1;
+		cant_dias = 1;
+		cant_noches = 1;
+		invalidateAll();
 	};
 
 	import Bus from 'carbon-pictograms-svelte/lib/Bus.svelte';
@@ -120,11 +126,10 @@
 					on:submit={() => {
 						open = true;
 						isFormValid = false;
-						console.log('submit');
 					}}
 					method="post"
 					action="?/create"
-					bind:this={form}
+					bind:this={createForm}
 					use:enhance={() => {
 						creating = true;
 						return async ({ update }) => {
@@ -133,6 +138,8 @@
 							toast = true;
 							nombre = '';
 							isValidNombre = true;
+							invalidateAll();
+							data.paquetes.push(form?.newPaquete);
 						};
 					}}
 				>
@@ -141,6 +148,7 @@
 							<!-- Contenido de la primera columna -->
 							<FormGroup legendText="Destino">
 								<TextInput
+									required
 									id="nombre"
 									bind:value={nombre}
 									name="nombre"
@@ -261,7 +269,7 @@
 				size="lg"
 				type="submit"
 				disabled={!isFormValid || creating}
-				on:click={() => form.requestSubmit()}>Crear</Button
+				on:click={() => createForm.requestSubmit()}>Crear</Button
 			>
 		</ModalFooter>
 	</ComposedModal>
