@@ -1,4 +1,3 @@
-/** @type {import('./$types').PageServerLoad} */
 import { redirect } from '@sveltejs/kit';
 
 /**
@@ -19,7 +18,6 @@ export async function load({ locals, params }) {
 			throw err;
 		}
 	};
-
 
 	const [hotel] = await Promise.all([
 		gethotel(),

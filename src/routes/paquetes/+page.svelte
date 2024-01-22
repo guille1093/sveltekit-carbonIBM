@@ -145,7 +145,6 @@
 				>
 					<div class="flex">
 						<div class="w-[50%] flex-grow p-4">
-							<!-- Contenido de la primera columna -->
 							<FormGroup legendText="Destino">
 								<TextInput
 									required
@@ -304,8 +303,6 @@
 							{ key: 'estado', value: 'Estado' }
 						]}
 						{rows}
-						{pageSize}
-						{page}
 					>
 						<!-- {Intl.NumberFormat('es-AR').format(header.value)} -->
 						<svelte:fragment slot="cell-header" let:header>

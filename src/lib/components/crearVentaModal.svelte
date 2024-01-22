@@ -340,14 +340,19 @@
 			</form>
 		{/if}
 	</ModalBody>
+
 	<ModalFooter>
-		<Button kind="secondary" size="lg" on:click={() => (open = false)}>Cancelar</Button>
-		<Button
-			id="modalSubmitButton"
-			size="lg"
-			type="submit"
-			disabled={!isFormValid || creating}
-			on:click={() => form.requestSubmit()}>Crear</Button
-		>
+		{#if toast}
+			<Button class="w-full" size="lg" on:click={() => (open = false)}>Aceptar</Button>
+		{:else}
+			<Button kind="secondary" size="lg" on:click={() => (open = false)}>Cancelar</Button>
+			<Button
+				id="modalSubmitButton"
+				size="lg"
+				type="submit"
+				disabled={!isFormValid || creating}
+				on:click={() => form.requestSubmit()}>Crear</Button
+			>
+		{/if}
 	</ModalFooter>
 </ComposedModal>

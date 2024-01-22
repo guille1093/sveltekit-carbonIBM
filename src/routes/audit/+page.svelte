@@ -16,16 +16,17 @@
 		Header,
 		Tile
 	} from 'carbon-components-svelte';
+	import DataSecurity from 'carbon-pictograms-svelte/lib/DataSecurity.svelte';
 
-	//map reduce the data to a new array of objects
 	let rows = data.registros.map((item) => {
 		return {
 			id: item.id,
-			user: item.usernas,
+			user: `${item.expand.user.name} ${item.expand.user.apellido}`,
 			rol: 'ADMINISTRADOR',
 			action: item.accion,
 			date: item.created,
 			JSON: item.json,
+			JSON2: item.json2,
 			collection: item.collection === 'projects' ? 'PAQUETE' : item.collection,
 			created: new Date(item.created).toLocaleString(
 				'es-AR',
@@ -53,6 +54,9 @@
 	<Row>
 		<Column>
 			<h1>Registros de auditoria</h1>
+		</Column>
+		<Column class="flex justify-end">
+			<DataSecurity />
 		</Column>
 	</Row>
 	<Row>
@@ -85,20 +89,23 @@
 				<svelte:fragment slot="expanded-row" let:row>
 					<Grid>
 						<Row>
-							<Column>
-								<Tile>
-									<p>VALORES PREVIOS</p>
-									<ul>
-										{#each Object.keys(row.JSON) as key}
-											{#if key !== 'created' && key !== 'updated' && key !== 'collectionId' && key !== 'collectionName' && key !== 'id' && row.JSON[key] !== ''}
-												<li class="justify-between flex border-b-2 border-black">
-													<strong>{key.toUpperCase()}:</strong><i>{row.JSON[key]}</i>
-												</li>
-											{/if}
-										{/each}
-									</ul>
-								</Tile>
-							</Column>
+							{#if row.action !== ('crear' || 'eliminar') && row.JSON2}
+								<Column>
+									<Tile>
+										<p>VALORES PREVIOS</p>
+										<ul>
+											{#each Object.keys(row.JSON2) as key}
+												{#if key !== 'created' && key !== 'updated' && key !== 'collectionId' && key !== 'collectionName' && key !== 'id' && row.JSON2[key] !== ''}
+													<li class="justify-between flex border-b-2 border-black">
+														<strong>{key.toUpperCase()}:</strong><i>{row.JSON2[key]}</i>
+													</li>
+												{/if}
+											{/each}
+										</ul>
+									</Tile>
+								</Column>
+							{/if}
+
 							<Column>
 								<Tile>
 									<ul>

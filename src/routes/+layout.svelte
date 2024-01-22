@@ -14,9 +14,11 @@
 		SkipToContent,
 		Content,
 		Button,
-		Breakpoint
+		Breakpoint,
+		Grid,
+		Row,
+		Column
 	} from 'carbon-components-svelte';
-	import { ContentSwitcher, Switch } from 'carbon-components-svelte';
 	import Logout from 'carbon-icons-svelte/lib/Logout.svelte';
 	import UserAvatarFilledAlt from 'carbon-icons-svelte/lib/UserAvatarFilledAlt.svelte';
 	import Group from 'carbon-icons-svelte/lib/Group.svelte';
@@ -27,6 +29,8 @@
 	import ChangeCatalog from 'carbon-icons-svelte/lib/ChangeCatalog.svelte';
 	import IbmCloudAppId from 'carbon-icons-svelte/lib/IbmCloudAppId.svelte';
 	import Home from 'carbon-icons-svelte/lib/Home.svelte';
+	import Notification from 'carbon-icons-svelte/lib/Notification.svelte';
+	import Lock_01 from 'carbon-pictograms-svelte/lib/Lock_01.svelte';
 	import { getImageURL } from '$lib/utils';
 
 	export let data;
@@ -72,7 +76,7 @@
 
 		{
 			title: 'Cuentas',
-			href: '/acc',
+			href: '/users',
 			icon: IbmCloudAppId
 		}
 	];
@@ -131,6 +135,14 @@
 					</div></HeaderPanelLinks
 				>
 			</HeaderAction>
+			<HeaderAction aria-label="Notificaciones" icon={Notification} closeIcon={Notification}>
+				<HeaderPanelLinks>
+					<HeaderPanelDivider>Notificaciones</HeaderPanelDivider>
+					<div class="w-full flex flex-col items-center justify-center">
+						Aún no posee notificaciones
+					</div></HeaderPanelLinks
+				>
+			</HeaderAction>
 		</HeaderUtilities>
 	</Header>
 	<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar">
@@ -154,5 +166,6 @@
 	</SideNav>
 	<Content>
 		<slot />
+		<!-- <pre><code>{JSON.stringify($page, null, 2)}</code></pre> -->
 	</Content>
 {/if}

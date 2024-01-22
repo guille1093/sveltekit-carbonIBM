@@ -79,9 +79,6 @@
 	};
 
 	const formatoFecha = new Intl.DateTimeFormat('es-ES', opciones).format(fecha);
-
-	console.log(formatoFecha);
-
 	const items = [
 		{
 			name: 'Destino',

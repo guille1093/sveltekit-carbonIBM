@@ -54,7 +54,7 @@
 		<div class="flex flex-row justify-between mb-4">
 			<h1>Hotel: {data.hotel.nombre}</h1>
 			<ButtonSet class="mr-36">
-				<Button disabled on:click={() => (open2 = true)} icon={TrashCan} kind="danger">Eliminar</Button>
+				<Button on:click={() => (open2 = true)} icon={TrashCan} kind="danger">Eliminar</Button>
 				<Button icon={Edit} on:click={() => (open = true)}>Editar</Button>
 			</ButtonSet>
 		</div>

@@ -26,6 +26,7 @@ export async function load({ locals }) {
 		};
 
 		const ventas = await getVentas();
+		console.log('ventas: ', ventas);
 
 		const ventasinf = ventas.map((/** @type {{ cliente: any; paquete: any; }} */ venta) => {
 			const cliente = clientes.find((c) => c.id === venta.cliente);
