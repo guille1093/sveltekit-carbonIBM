@@ -32,6 +32,7 @@
 	import Notification from 'carbon-icons-svelte/lib/Notification.svelte';
 	import Lock_01 from 'carbon-pictograms-svelte/lib/Lock_01.svelte';
 	import { getImageURL } from '$lib/utils';
+	import Notifications from '$lib/components/Notifications.svelte';
 
 	export let data;
 
@@ -135,14 +136,7 @@
 					</div></HeaderPanelLinks
 				>
 			</HeaderAction>
-			<HeaderAction aria-label="Notificaciones" icon={Notification} closeIcon={Notification}>
-				<HeaderPanelLinks>
-					<HeaderPanelDivider>Notificaciones</HeaderPanelDivider>
-					<div class="w-full flex flex-col items-center justify-center">
-						Aún no posee notificaciones
-					</div></HeaderPanelLinks
-				>
-			</HeaderAction>
+			<Notifications />
 		</HeaderUtilities>
 	</Header>
 	<SideNav bind:isOpen={isSideNavOpen} rail aria-hidden="false" ariaLabel="sidebar">

@@ -44,8 +44,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"nodemailer": "6.9.8",
 		"pdfmake": "^0.2.7",
 		"pocketbase": "^0.16.0",
+		"svelte-email": "^0.0.4",
 		"zod": "^3.21.4"
 	}
 }
