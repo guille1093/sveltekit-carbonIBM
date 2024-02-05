@@ -12,10 +12,9 @@ export async function POST() {
         destino: 'Brasil'
     }
 
-
     const options = {
         from: 'delvalleturismo@app.com',
-        to: 'marina_olivera@gmail.com',
+        to: 'marina_olivera@gmail.com, unman@email.com',
         subject: `Tu proximo viaje a ${htmlParams.destino} ya esta aqui 🤩`,
         html: publicidad(htmlParams)
     };

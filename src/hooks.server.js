@@ -1,9 +1,10 @@
 //@ts-nocheck
-import { redirect } from '@sveltejs/kit';
 import { pb } from '$lib/service/pb';
+import { redirect } from '@sveltejs/kit';
 
 export const handle = async ({ event, resolve }) => {
 	event.locals.pb = pb;
+	event.locals.pb.autoCancellation(false);
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 	const default_sys_props = await event.locals.pb.collection('sys_props').getOne('deflt_sys_props');
 	event.locals.default_sys_props = default_sys_props;

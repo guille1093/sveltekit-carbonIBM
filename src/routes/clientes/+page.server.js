@@ -15,7 +15,6 @@ export async function load({ locals }) {
 		};
 
 		const [clientes, nacionalidades] = await Promise.all([getClientes(), getNacionalidades()]);
-		console.log('clientes y nacionalidades cargados');
 		return {
 			clientes,
 			nacionalidades

@@ -1,4 +1,4 @@
-export const publicidad = ({ nombre, destino }) => (`
+export const publicidad = ({ cliente, paquete }) => `
     <html lang="es">
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,14 +110,14 @@ export const publicidad = ({ nombre, destino }) => (`
                                     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff; border: 1px solid #eaebed; border-radius: 16px; width: 100%;" width="100%">
                                         <tr>
                                             <td class="wrapper" style="font-family: Helvetica, sans-serif; font-size: 16px; vertical-align: top; box-sizing: border-box; padding: 24px;" valign="top">
-                                                <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">¡Hola ${nombre}!</p>
-                                                <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">Tenemos disponible un nuevo paquete con destino a ${destino}. ¡No te las pierdas!</p>
+                                                <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">¡Hola ${cliente.nombre}!</p>
+                                                <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">Tenemos disponible un nuevo paquete con destino a ${paquete.nombre}. ¡No te las pierdas!</p>
                                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; box-sizing: border-box; width: 100%; min-width: 100%;" width="100%">
                                                     <tbody>
                                                         <tr>
                                                             <td align="center" style="font-family: Helvetica, sans-serif; font-size: 16px; vertical-align: top; padding-bottom: 16px;" valign="top">
-                                                                <a href="http://tupagina.com/ofertas" target="_blank" style="border: solid 2px #ec0867; border-radius: 4px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; text-transform: capitalize; background-color: #ec0867; border-color: #ec0867; color: #ffffff;">
-                                                                Ver Ofertas
+                                                                <a href="http://127.0.0.1:8090/notificacion/?cliente=${cliente.id}&paquete=${paquete.id}" target="_blank" style="border: solid 2px #ec0867; border-radius: 4px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; background-color: #ec0867; border-color: #ec0830; color: #ffffff;">
+                                                                Quiero saber más 🤩
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -153,4 +153,4 @@ export const publicidad = ({ nombre, destino }) => (`
                         </tr>
                     </table>
                 </body>
-            </html>`);
+            </html>`;

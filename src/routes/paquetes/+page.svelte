@@ -85,8 +85,6 @@
 	 */
 	let filteredRowIds = [];
 
-	$: console.log('filteredRowIds', filteredRowIds);
-
 	const closeModals = () => {
 		open = false;
 		toast = false;
@@ -95,6 +93,22 @@
 		cant_dias = 1;
 		cant_noches = 1;
 		invalidateAll();
+	};
+
+	const showPreview = async (event) => {
+		const target = event.target;
+		const files = target.files;
+
+		if (files.length > 0) {
+			const src = URL.createObjectURL(files[0]);
+			const preview = document.getElementById('avatar-preview');
+
+			if (preview) {
+				const preview = document.getElementById('avatar-preview');
+				preview.src = src;
+				preview.style.display = 'block';
+			}
+		}
 	};
 
 	import Bus from 'carbon-pictograms-svelte/lib/Bus.svelte';
@@ -127,6 +141,7 @@
 						open = true;
 						isFormValid = false;
 					}}
+					enctype="multipart/form-data"
 					method="post"
 					action="?/create"
 					bind:this={createForm}
@@ -245,6 +260,12 @@
 							</FormGroup>
 						</div>
 					</div>
+
+					<!-- <img id="avatar-preview" class="hidden" alt="avatar" />
+
+					<FormGroup legendText="Imagen">
+						<input required type="file" name="thumbnail" on:change={showPreview} />
+					</FormGroup> -->
 
 					<!-- hotel -->
 					<FormGroup legendText="Hotel">

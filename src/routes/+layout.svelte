@@ -160,6 +160,5 @@
 	</SideNav>
 	<Content>
 		<slot />
-		<!-- <pre><code>{JSON.stringify($page, null, 2)}</code></pre> -->
 	</Content>
 {/if}

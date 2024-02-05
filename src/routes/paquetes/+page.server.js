@@ -1,21 +1,20 @@
-/** @type {import('./$types').PageServerLoad} */
+//@ts-nocheck
+
+import { sendMail } from '$lib/service/emailTemplates/publicidad_service.js';
 
 export async function load({ locals }) {
 	try {
 		const getpaquetes = async () => {
-			// @ts-ignore
 			return structuredClone(await locals.pb.collection('projects').getFullList(5000, {}));
 		};
 
 		const getNacionalidades = async () => {
-			// @ts-ignore
 			return structuredClone(
 				await locals.pb.collection('nacionalidades').getFullList(undefined, {})
 			);
 		};
 
 		const [paquetes, nacionalidades] = await Promise.all([getpaquetes(), getNacionalidades()]);
-		console.log('paquetes y nacionalidades cargados');
 		return {
 			paquetes,
 			nacionalidades
@@ -36,6 +35,8 @@ export const actions = {
 		const hotel = form.get('hotel') ?? '';
 		const transporte = form.get('transporte') ?? '';
 		const estado = form.get('estado') ?? '';
+		// const thumbnail = form.get('thumbnail');
+
 		// si fechasalida es un string vacio se le asigna la fecha actual
 		function getFormattedCurrentDate() {
 			const currentDate = new Date();
@@ -62,7 +63,7 @@ export const actions = {
 		const descripcion = form.get('obervaciones') ?? '';
 		const pais_destino = form.get('pais_destino') ?? '';
 
-		const data = {
+		let data = {
 			nombre,
 			precio,
 			cant_dias,
@@ -74,12 +75,24 @@ export const actions = {
 			fechasalida,
 			fecharetorno,
 			descripcion,
-			pais_destino
+			pais_destino,
 		};
 
+		// data = { ...data, thumbnail }
+
+		const clientesConEmail = await locals.pb.collection('clientes').getFullList({
+			filter: 'email != ""'
+		});
+
+
+
 		try {
-			// @ts-ignore
 			const newPaquete = await locals.pb.collection('projects').create(data);
+
+			clientesConEmail.forEach(async (cliente) => {
+				await sendMail({ cliente, paquete: await newPaquete });
+			});
+
 			return structuredClone(newPaquete);
 		} catch (err) {
 			console.log('Error: ', err);

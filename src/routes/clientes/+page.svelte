@@ -163,8 +163,6 @@
 	 */
 	let filteredRowIds = [];
 
-	$: console.log('filteredRowIds', filteredRowIds);
-
 	const closeModals = () => {
 		open = false;
 		toast = false;
