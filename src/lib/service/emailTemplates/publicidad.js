@@ -116,7 +116,7 @@ export const publicidad = ({ cliente, paquete }) => `
                                                     <tbody>
                                                         <tr>
                                                             <td align="center" style="font-family: Helvetica, sans-serif; font-size: 16px; vertical-align: top; padding-bottom: 16px;" valign="top">
-                                                                <a href="http://127.0.0.1:8090/notificacion/?cliente=${cliente.id}&paquete=${paquete.id}" target="_blank" style="border: solid 2px #ec0867; border-radius: 4px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; background-color: #ec0867; border-color: #ec0830; color: #ffffff;">
+                                                                <a href="https://pfsdev.pockethost.io/notificacion/?cliente=${cliente.id}&paquete=${paquete.id}" target="_blank" style="border: solid 2px #ec0867; border-radius: 4px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; background-color: #ec0867; border-color: #ec0830; color: #ffffff;">
                                                                 Quiero saber más 🤩
                                                                 </a>
                                                             </td>
