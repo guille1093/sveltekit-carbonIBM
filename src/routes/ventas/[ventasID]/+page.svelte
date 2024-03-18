@@ -179,12 +179,13 @@
 
 	if (data.ventaExpanded.expand.pagos != undefined) {
 		pagos = data.ventaExpanded.expand.pagos;
+
 		//una constante abonado que es la suma de los pagos
 		abonado = new Intl.NumberFormat('es-AR', {
 			style: 'currency',
 			currency: 'ARS'
 		}).format(data.ventaExpanded.expand.pagos.reduce((acc, pago) => acc + pago.valor, 0));
-
+ 
 		restante = new Intl.NumberFormat('es-AR', {
 			style: 'currency',
 			currency: 'ARS'

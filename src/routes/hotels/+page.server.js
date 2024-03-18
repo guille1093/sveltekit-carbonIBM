@@ -5,11 +5,7 @@ export async function load({ locals }) {
 	try {
 		const getHotels = async () => {
 			// @ts-ignore
-			return structuredClone(
-				await locals.pb
-					.collection('hotels')
-					.getFullList(undefined, {})
-			);
+			return structuredClone(await locals.pb.collection('hotels').getFullList(undefined, {}));
 		};
 		return {
 			hotels: await getHotels()
@@ -33,7 +29,7 @@ export const actions = {
 			direccion,
 			telefono,
 			email,
-			observaciones,
+			observaciones
 		};
 
 		try {

@@ -1,4 +1,3 @@
-
 /** @type {import('./$types').PageServerLoad} */
 import crypto from 'crypto';
 
@@ -6,29 +5,24 @@ export async function load({ locals }) {
 	//Obtener todas las ventas y expandir los pagos
 	try {
 		const getUsers = async () => {
-
 			return structuredClone(
 				// @ts-ignore
-				await locals.pb
-					.collection('users')
-					.getFullList(undefined, { expand: 'rol' })
+				await locals.pb.collection('users').getFullList(undefined, { expand: 'rol' })
 			);
 		};
 		const getRoles = async () => {
 			return structuredClone(
 				// @ts-ignore
-				await locals.pb
-					.collection('roles')
-					.getFullList()
+				await locals.pb.collection('roles').getFullList()
 			);
-		}
+		};
 		const users = (await getUsers()).map((user) => {
 			user.rol = user.expand.rol.name;
 			return user;
 		});
 		return {
 			users,
-			roles: await getRoles(),
+			roles: await getRoles()
 		};
 	} catch (err) {
 		console.log('Error: ', err);
@@ -59,7 +53,7 @@ export const actions = {
 			apellido: apellido,
 			dni: dni,
 			rol: rol,
-			observaciones: observaciones,
+			observaciones: observaciones
 		};
 		try {
 			// @ts-ignore
@@ -80,21 +74,20 @@ export const actions = {
 		const view_products = formData.get('view_products') ? true : false;
 		const view_users = formData.get('view_users') ? true : false;
 		const data = {
-			"name": name,
-			"view_users": view_users,
-			"view_audit": view_audit,
-			"view_clients": view_clients,
-			"view_products": view_products,
-			"view_sales": view_sales,
-			"view_reports": view_reports,
+			name: name,
+			view_users: view_users,
+			view_audit: view_audit,
+			view_clients: view_clients,
+			view_products: view_products,
+			view_sales: view_sales,
+			view_reports: view_reports
 		};
 		try {
 			// @ts-ignore
 			const updatedRol = structuredClone(await locals.pb.collection('roles').update(id, data));
 			return updatedRol;
-
 		} catch (err) {
 			console.log('Error: ', err);
 		}
-	},
+	}
 };

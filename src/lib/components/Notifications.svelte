@@ -3,25 +3,25 @@
 		HeaderAction,
 		HeaderPanelLinks,
 		HeaderPanelDivider,
-		ToastNotification,
 		ClickableTile,
 		Modal
 	} from 'carbon-components-svelte';
 	import Notification from 'carbon-icons-svelte/lib/Notification.svelte';
-	import NotificationNew from 'carbon-icons-svelte/lib/NotificationNew.svelte';
-	import { fly, slide } from 'svelte/transition';
 	import { onMount, onDestroy } from 'svelte';
 	import { pb } from '$lib/service/pb';
-	import CloseOutline from 'carbon-icons-svelte/lib/CloseOutline.svelte';
 	import Phone from 'carbon-icons-svelte/lib/Phone.svelte';
 	import Email from 'carbon-icons-svelte/lib/Email.svelte';
 
-	let icon = Notification;
+
+
+
+	import { notificationStore } from '$lib/stores/notifications';
+
 	let open = false;
 	let openModal = false;
 	let selectedNotification = null;
 
-	$: notifications = [];
+	let notifications = [];
 
 	onMount(async () => {
 		const records = await pb.collection('notificaciones').getList(1, 50, {
@@ -30,14 +30,27 @@
 		});
 		notifications = records.items;
 
+		console.log('NOTIFICACIONES WTF PORQUE ESTA VACIO ', notifications);
+
 		pb.collection('notificaciones').subscribe('*', async ({ action, record }) => {
 			if (action === 'create') {
-				record.isNew = true;
-				notifications.unshift(record);
-				icon = NotificationNew;
-				open = true;
+				//record.isNew = true;
+				//notifications.unshift(record);
+				//open = true;
+		const records = await pb.collection('notificaciones').getList(1, 50, {
+			sort: '-created',
+			expand: 'cliente , paquete'
+		});
+		notifications = records.items;
+
+				notificationStore.update(() => ({
+					title: 'Nueva notasdasdadsaificación',
+					subtitle: 'Hay unsdasdasda cliente interesado en un paquete!',
+					open: true
+				}));
 			}
 		});
+		
 	});
 
 	onDestroy(() => {
@@ -45,18 +58,8 @@
 	});
 </script>
 
-{#if open}
-	<div in:fly={{ y: 100 }} out:slide>
-		<ToastNotification
-			kind="info"
-			title="Nueva notificación"
-			subtitle="Hay un cliente interesado en un paquete!"
-			caption={new Date().toLocaleString()}
-			on:close={() => (open = false)}
-		/>
-	</div>
-{/if}
-<HeaderAction aria-label="Notificaciones" bind:icon closeIcon={CloseOutline}>
+
+<HeaderAction aria-label="Notificaciones" icon={Notification} >
 	<HeaderPanelLinks>
 		<HeaderPanelDivider>Notificaciones</HeaderPanelDivider>
 		<section class="h-[500px] overflow-scroll">
@@ -68,7 +71,6 @@
 						e.preventDefault();
 						notification.isNew = false;
 						openModal = true;
-						icon = Notification;
 						selectedNotification = notification;
 					}}
 				>

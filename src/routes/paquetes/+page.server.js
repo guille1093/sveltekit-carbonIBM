@@ -24,6 +24,7 @@ export async function load({ locals }) {
 	}
 }
 
+
 export const actions = {
 	create: async ({ request, locals }) => {
 		const form = await request.formData();
@@ -75,7 +76,7 @@ export const actions = {
 			fechasalida,
 			fecharetorno,
 			descripcion,
-			pais_destino,
+			pais_destino
 		};
 
 		// data = { ...data, thumbnail }
@@ -83,8 +84,6 @@ export const actions = {
 		const clientesConEmail = await locals.pb.collection('clientes').getFullList({
 			filter: 'email != ""'
 		});
-
-
 
 		try {
 			const newPaquete = await locals.pb.collection('projects').create(data);

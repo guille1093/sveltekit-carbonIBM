@@ -11,13 +11,12 @@
 		ToolbarContent,
 		ToolbarMenu,
 		ToolbarSearch,
-		Pagination,
+		Pagination
 	} from 'carbon-components-svelte';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { Grid, Row, Column } from 'carbon-components-svelte';
 	import NewFinancialCustomerExperiences from 'carbon-pictograms-svelte/lib/NewFinancialCustomerExperiences.svelte';
 	import CrearVentaModal from '$lib/components/crearVentaModal.svelte';
-
 
 	//VARIABLES Y CONSTANTES
 	let open = false;
@@ -30,8 +29,6 @@
 	 * @type {never[]}
 	 */
 	let filteredRowIds = [];
-
-
 </script>
 
 <main>

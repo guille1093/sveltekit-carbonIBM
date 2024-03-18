@@ -1,3 +1,4 @@
+//@ts-nocheck
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
 	//retonar todos los clientes y los paquetes
@@ -15,9 +16,7 @@ export async function load({ locals }) {
 		const [clientes, paquetes] = await Promise.all([getClientes(), getPaquetes()]);
 		console.log('clientes y paquetes cargados');
 
-		// Obtener las ventas
 		const getVentas = async () => {
-			// @ts-ignore
 			return structuredClone(
 				await locals.pb
 					.collection('ventas')
@@ -26,7 +25,6 @@ export async function load({ locals }) {
 		};
 
 		const ventas = await getVentas();
-		console.log('ventas: ', ventas);
 
 		const ventasinf = ventas.map((/** @type {{ cliente: any; paquete: any; }} */ venta) => {
 			const cliente = clientes.find((c) => c.id === venta.cliente);

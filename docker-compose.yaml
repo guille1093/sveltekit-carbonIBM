@@ -1,0 +1,39 @@
+# docker-compose.yml
+
+version: "3"
+
+services:
+  # external:
+    # container_name: external
+    # image: sveltekit
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    # user: "node"
+    # environment:
+    #   - TZ=America/Argentina/Buenos_Aires
+    #   - ORIGIN=http://localhost:3000
+    #   - PORT=3000
+    #   - HOST=0.0.0.0
+    # restart: unless-stopped
+    # ports:
+    #   - 3000:3000
+
+  pocketbase:
+    container_name: pocketbase
+    image: spectado/pocketbase
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./pb/pb_data:/pb_data
+      - ./pb/pb_hooks:/pb_hooks
+      - ./pb/pb_migrations:/pb_migrations
+
+  smtp:
+    container_name: smtp
+    image: marlonb/mailcrab:latest
+    restart: unless-stopped
+    ports:
+      - 1025:1025
+      - 1080:1080

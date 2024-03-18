@@ -37,7 +37,7 @@
 	const closeModals = () => {
 		open = false;
 		toast = false;
-		
+
 		window.location.reload();
 	};
 

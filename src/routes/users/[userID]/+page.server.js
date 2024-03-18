@@ -8,10 +8,11 @@ import { redirect } from '@sveltejs/kit';
 export async function load({ locals, params }) {
 	const userId = params.userID;
 
-
 	const getuser = async () => {
 		try {
-			const user = structuredClone(await locals.pb.collection('users').getOne(userId, { expand: 'rol' }));
+			const user = structuredClone(
+				await locals.pb.collection('users').getOne(userId, { expand: 'rol' })
+			);
 			return user;
 		} catch (err) {
 			console.log('Error al obtener el user: ', err);
@@ -22,19 +23,15 @@ export async function load({ locals, params }) {
 	const getRoles = async () => {
 		return structuredClone(
 			// @ts-ignore
-			await locals.pb
-				.collection('roles')
-				.getFullList()
+			await locals.pb.collection('roles').getFullList()
 		);
-	}
+	};
 
-	const [user] = await Promise.all([
-		getuser(),
-	]);
+	const [user] = await Promise.all([getuser()]);
 
 	return {
 		user,
-		roles: await getRoles(),
+		roles: await getRoles()
 	};
 }
 
@@ -42,17 +39,16 @@ export const actions = {
 	update: async ({ request, params, locals }) => {
 		const userId = params.userID;
 		const form = await request.formData();
-		const name = form.get('nombre').toString().toLocaleLowerCase()
-		const apellido = form.get('apellido').toString().toLocaleLowerCase()
+		const name = form.get('nombre').toString().toLocaleLowerCase();
+		const apellido = form.get('apellido').toString().toLocaleLowerCase();
 		const rol = form.get('rol');
 		const verified = form.get('verified');
 		console.log('form: ', form);
 		let data = {
-
 			name,
 			apellido,
 			rol,
-			verified: verified,
+			verified: verified
 		};
 		const resetPassword = form.get('resetPassword');
 		console.log('resetPassword: ', resetPassword);
@@ -62,14 +58,9 @@ export const actions = {
 			data = {
 				...data,
 				password: password,
-				passwordConfirm: password,
+				passwordConfirm: password
 			};
 		}
-
-
-
-
-
 
 		console.log('dataform: ', data);
 

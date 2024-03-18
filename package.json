@@ -44,6 +44,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"eventsource": "^2.0.2",
 		"nodemailer": "6.9.8",
 		"pdfmake": "^0.2.7",
 		"pocketbase": "^0.16.0",

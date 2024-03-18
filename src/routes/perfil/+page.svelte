@@ -13,13 +13,12 @@
 	const showPreview = (event) => {
 		const target = event.target;
 		const files = target.files;
-
+		
 		if (files.length > 0) {
 			const src = URL.createObjectURL(files[0]);
 			const preview = document.getElementById('avatar-preview');
 			preview.src = src;
 		}
-
 	};
 
 	const submitUpdateProfile = () => {
@@ -37,7 +36,6 @@
 			loading = false;
 		};
 	};
-	
 </script>
 
 <div class="flex items-center flex-col md:w-1/2 w-full h-screen">

@@ -1,0 +1,1 @@
+import{o as a,a2 as d}from"./scheduler.8d709755.js";import{w as r}from"./index.59ccb19b.js";const e=new Set,o=r(0),s=()=>o.set([...e].filter(t=>d(t)).length),l=t=>a(()=>{e.add(t);const n=t.subscribe(s);return()=>{n(),e.delete(t),s()}});o.subscribe(t=>{typeof document<"u"&&document.body.classList.toggle("bx--body--with-modal-open",t>0)});export{l as t};

@@ -1,13 +1,11 @@
-let venta = undefined;
+//@ts-nocheck
+import { sendManifestEmail } from '$lib/service/manifestService/manifest.service.js';
 
-/** @type {import('./$types').PageServerLoad} */
+let venta = undefined;
+//import { notificationStore } from '$lib/stores/notifications';
+
 export async function load({ locals, params }) {
-	/**
-	 * Obtiene una venta por su id
-	 * @param ventaId
-	 * @returns {Promise<*>}
-	 */
-	const getVenta = async (/** @type {string} */ ventaId) => {
+	const getVenta = async (ventaId) => {
 		const [ventaRaw, clientesRaw, paquetesRaw] = await Promise.all([
 			locals.pb.collection('ventas').getOne(ventaId),
 			locals.pb.collection('clientes').getFullList(undefined, {}),
@@ -67,15 +65,12 @@ export async function load({ locals, params }) {
 	);
 
 	venta = ventaExpanded;
-	console.log(venta);
 
 	return {
 		venta: getVenta(params.ventasID),
 		ventaExpanded
 	};
 }
-
-// This code creates a new Pago record and updates the Ventas record with the new Pago record ID and the new pagado value.
 
 export const actions = {
 	createPago: async ({ request, locals, params }) => {
@@ -139,16 +134,35 @@ async function createPago(locals, data) {
 }
 
 async function updateVentas(locals, params, recordID, NuevoTotalPagado) {
-	// if venta.expand.paquete.precio * venta.cant_personas === NuevoTotalPagado then estado = 'pagado'
 	let estado = 'EN CURSO';
 	let valor = venta.expand.paquete.precio * venta.cant_personas;
 
 	if (venta.expand.paquete.precio * venta.cant_personas === NuevoTotalPagado) {
 		estado = 'FINALIZADA';
 		valor = NuevoTotalPagado;
+
+		const ventas = await locals.pb.collection('ventas').getFullList(undefined, {
+			filter: `paquete = "${venta.paquete}" && estado = "FINALIZADA"`
+		}, { expand: 'cliente, pasajeros, pagos, paquete' });
+
+		const sumatoriaCantPersonas =
+			venta.cant_personas + ventas.reduce((sum, venta) => sum + venta.cant_personas, 0);
+		console.log('Sumatoria de cant_personas:', sumatoriaCantPersonas); 
+		if (sumatoriaCantPersonas > 30) { 
+			console.log('Venta con noti', venta.paquete);
+			const paquete = await locals.pb.collection('projects').getOne(venta.paquete);
+			sendManifestEmail({ paquete: paquete });
+			
+			
+			// notificationStore.update(() => ({ 
+			// 	title: 'Nueva notificación',
+			// 	subtitle: 'Ya hay mas 30 pasajeros confirmados. Manifiesto Disponible',
+			// 	open: true
+			// }))
+			
+		}
 	}
 
-	// update the sale
 	return await locals.pb.collection('ventas').update(params.ventasID, {
 		'pagos+': recordID,
 		estado: estado,

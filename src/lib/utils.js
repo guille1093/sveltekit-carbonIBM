@@ -7,5 +7,9 @@
  * @returns {string} The URL for the requested image.
  */
 export const getImageURL = (collectionId, recordId, fileName, size = '220x160') => {
-	return `https://pfsdev.pockethost.io/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
+	return `http://localhost:80/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
+};
+
+export const getCollection = async (collectionId, locals) => {
+	return structuredClone(await locals.pb.collection(collectionId).getFullList(undefined, {}));
 };

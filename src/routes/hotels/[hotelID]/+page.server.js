@@ -8,7 +8,6 @@ import { redirect } from '@sveltejs/kit';
 export async function load({ locals, params }) {
 	const hotelId = params.hotelID;
 
-
 	const gethotel = async () => {
 		try {
 			const hotel = structuredClone(await locals.pb.collection('hotels').getOne(hotelId));
@@ -19,9 +18,7 @@ export async function load({ locals, params }) {
 		}
 	};
 
-	const [hotel] = await Promise.all([
-		gethotel(),
-	]);
+	const [hotel] = await Promise.all([gethotel()]);
 
 	return {
 		hotel
@@ -39,14 +36,12 @@ export const actions = {
 		const observaciones = form.get('observaciones') ?? '';
 
 		const data = {
-			
 			nombre,
-			
-			
+
 			direccion,
 			telefono,
 			email,
-			observaciones,
+			observaciones
 		};
 
 		console.log('data: ', data);

@@ -2,11 +2,7 @@
 	//IMPORTS
 	import CreateModal from './CreateModal.svelte';
 	import DataTable from './DataTable.svelte';
-	import {
-		Grid,
-		Row,
-		Column
-	} from 'carbon-components-svelte';
+	import { Grid, Row, Column } from 'carbon-components-svelte';
 	import Apartment from 'carbon-pictograms-svelte/lib/Apartment.svelte';
 
 	//EXPORTS
@@ -14,7 +10,6 @@
 
 	//VARIABLES REACTIVAS
 	let open = false;
-	
 </script>
 
 <main>
