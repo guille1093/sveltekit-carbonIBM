@@ -4,7 +4,9 @@
 		HeaderPanelLinks,
 		HeaderPanelDivider,
 		ClickableTile,
-		Modal
+		Modal,
+		Checkbox,
+		TextArea
 	} from 'carbon-components-svelte';
 	import Notification from 'carbon-icons-svelte/lib/Notification.svelte';
 	import { onMount, onDestroy } from 'svelte';
@@ -138,5 +140,12 @@
 				{selectedNotification.expand.cliente.telefono}
 			</p>
 		</section>
+		<!-- marcar como leido -->
+<Checkbox labelText="Marcar como finalizado" />
+<TextArea labelText="Observaciones" placeholder="" />
+
+
+
+
 	{/if}
 </Modal>

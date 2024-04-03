@@ -276,6 +276,22 @@
 					}
 				]
 			},
+					{
+			text: `PÁGINA 1 DE 1`,
+			absolutePosition: {x:500, y:789},
+			fontSize: 8
+		},
+					{
+			text: `BORRADOR GENERADO EL ${new Date().toLocaleDateString('es-ES', {
+				day: '2-digit',
+				month: 'numeric',
+				year: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit',
+			})}`,
+			absolutePosition: {x:30, y:789},
+			fontSize: 8
+		},
 
 			{
 				text: `MANIFIESTO DE PASAJEROS Y TRIPULACIÓN`,
@@ -321,6 +337,7 @@
 				}
 			},
 
+
 			{
 				table: {
 					headerRows: 1,
@@ -342,8 +359,8 @@
 							// Agregar cada pasajero como una fila en la tabla
 							venta.pasajeros.forEach((pasajero) => {
 								rows.push([
-									{ text: rows.length + 1, fontSize: 10 }, // Tamaño de fuente de la celda
-									{ text: pasajero.apellido + ' ' + pasajero.nombre || '', fontSize: 10 },
+									{ text: rows.length + 1, fontSize: 8 }, // Tamaño de fuente de la celda
+									{ text: pasajero.apellido.toUpperCase() + ' ' + pasajero.nombre.toUpperCase() || '', fontSize: 8 },
 									{
 										text:
 											new Date(pasajero.fechanacimiento)
@@ -353,19 +370,19 @@
 													year: 'numeric'
 												})
 												.toUpperCase() || '',
-										fontSize: 10
+										fontSize: 8
 									},
-									{ text: pasajero.nacionalidad || '', fontSize: 10 },
-									{ text: pasajero.ocupacion || '', fontSize: 10 },
+									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 },
+									{ text: pasajero.ocupacion.toUpperCase() || '', fontSize: 8 },
 									{
 										text:
 											pasajero.sexo === 'MASCULINO'
 												? 'M'
 												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
-										fontSize: 10
+										fontSize: 8
 									},
-									{ text: pasajero.dni || '', fontSize: 10 },
-									{ text: pasajero.nacionalidad || '', fontSize: 10 }
+									{ text: pasajero.dni || '', fontSize: 8 },
+									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 }
 								]);
 							});
 							return rows;
