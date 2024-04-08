@@ -5,6 +5,59 @@
 	import { logob64 } from '$lib/logob64';
 	import { Printer } from 'carbon-icons-svelte';
 	import { onMount } from 'svelte';
+	export let data;
+	//fechas fix wtf
+	const fecha = new Date(data.paquetes.fechasalida);
+
+	// si fecha es menor a hoy, esta en curso
+	// si fecha es mayor a hoy, esta por venir
+	const status = fecha < new Date() ? 'FINAL' : 'BORRADOR';
+
+	const rows = data.ventas.reduce((rows, venta) => {
+							// Agregar cada pasajero como una fila en la tabla
+							venta.pasajeros.forEach((pasajero) => {
+								rows.push([
+									{ text: rows.length + 1, fontSize: 8 }, // Tamaño de fuente de la celda
+									{ text: pasajero.apellido.toUpperCase() + ' ' + pasajero.nombre.toUpperCase() || '', fontSize: 8 },
+									{
+										text:
+											new Date(pasajero.fechanacimiento)
+												.toLocaleDateString('es-ES', {
+													day: '2-digit',
+													month: '2-digit',
+													year: 'numeric'
+												})
+												.toUpperCase() || '',
+										fontSize: 8
+									},
+									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 },
+									{ text: pasajero.ocupacion.toUpperCase() || 'EMPLEADO', fontSize: 8 },
+									{
+										text:
+											pasajero.sexo === 'MASCULINO'
+												? 'M'
+												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
+										fontSize: 8
+									},
+									{ text: pasajero.dni || '', fontSize: 8 },
+									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 }
+								]);
+							});
+							return rows;
+						}, []);
+	rows.sort((a, b) => {
+		if (a[1].text < b[1].text) {
+			return -1;
+		}
+		if (a[1].text > b[1].text) {
+			return 1;
+		}
+		return 0;
+	});
+
+	rows.forEach((row, index) => {
+		row[0].text = index + 1;
+	});
 
 	const pdfFonts = {
 		Roboto: {
@@ -19,7 +72,7 @@
 	};
 
 	import pdfMake from 'pdfmake/build/pdfmake';
-	export let data;
+	
 
 
 	const docDefinition = {
@@ -60,6 +113,27 @@
 					}
 				]
 			},
+					{
+			text: `PÁGINA 1 DE 1`,
+			absolutePosition: {x:500, y:789},
+			fontSize: 8
+		},
+							{
+			text: `${status}`,
+			absolutePosition: {x:280, y:789},
+			fontSize: 10
+		},
+					{
+			text: `GENERADO EL ${new Date().toLocaleDateString('es-ES', {
+				day: '2-digit',
+				month: 'numeric',
+				year: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit',
+			})}`,
+			absolutePosition: {x:30, y:789},
+			fontSize: 8
+		},
 
 			{
 				text: `MANIFIESTO DE PASAJEROS Y TRIPULACIÓN`,
@@ -105,6 +179,7 @@
 				}
 			},
 
+
 			{
 				table: {
 					headerRows: 1,
@@ -122,38 +197,7 @@
 							{ text: 'PAIS RESIDENCIA', style: 'tableHeader' }
 						],
 						// Datos de los pasajeros
-						...data.ventas.reduce((rows, venta) => {
-							// Agregar cada pasajero como una fila en la tabla
-							venta.pasajeros.forEach((pasajero) => {
-								rows.push([
-									{ text: rows.length + 1, fontSize: 10 }, // Tamaño de fuente de la celda
-									{ text: pasajero.apellido + ' ' + pasajero.nombre || '', fontSize: 10 },
-									{
-										text:
-											new Date(pasajero.fechanacimiento)
-												.toLocaleDateString('es-ES', {
-													day: '2-digit',
-													month: '2-digit',
-													year: 'numeric'
-												})
-												.toUpperCase() || '',
-										fontSize: 10
-									},
-									{ text: pasajero.nacionalidad || '', fontSize: 10 },
-									{ text: pasajero.ocupacion || '', fontSize: 10 },
-									{
-										text:
-											pasajero.sexo === 'MASCULINO'
-												? 'M'
-												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
-										fontSize: 10
-									},
-									{ text: pasajero.dni || '', fontSize: 10 },
-									{ text: pasajero.nacionalidad || '', fontSize: 10 }
-								]);
-							});
-							return rows;
-						}, [])
+					    ...rows
 					]
 				}
 			}

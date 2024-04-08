@@ -3,21 +3,6 @@
 version: "3"
 
 services:
-  # external:
-    # container_name: external
-    # image: sveltekit
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
-    # user: "node"
-    # environment:
-    #   - TZ=America/Argentina/Buenos_Aires
-    #   - ORIGIN=http://localhost:3000
-    #   - PORT=3000
-    #   - HOST=0.0.0.0
-    # restart: unless-stopped
-    # ports:
-    #   - 3000:3000
 
   pocketbase:
     container_name: pocketbase
