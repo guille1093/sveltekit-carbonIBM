@@ -71,6 +71,58 @@
 	//fechas fix wtf
 	const fecha = new Date(data.paquetes.fechasalida);
 
+	// si fecha es menor a hoy, esta en curso
+	// si fecha es mayor a hoy, esta por venir
+	const status = fecha < new Date() ? 'FINAL' : 'BORRADOR';
+
+	const rows = data.ventas.reduce((rows, venta) => {
+							// Agregar cada pasajero como una fila en la tabla
+							venta.pasajeros.forEach((pasajero) => {
+								rows.push([
+									{ text: rows.length + 1, fontSize: 8 }, // Tamaño de fuente de la celda
+									{ text: pasajero.apellido.toUpperCase() + ' ' + pasajero.nombre.toUpperCase() || '', fontSize: 8 },
+									{
+										text:
+											new Date(pasajero.fechanacimiento)
+												.toLocaleDateString('es-ES', {
+													day: '2-digit',
+													month: '2-digit',
+													year: 'numeric'
+												})
+												.toUpperCase() || '',
+										fontSize: 8
+									},
+									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 },
+									{ text: pasajero.ocupacion.toUpperCase() || 'EMPLEADO', fontSize: 8 },
+									{
+										text:
+											pasajero.sexo === 'MASCULINO'
+												? 'M'
+												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
+										fontSize: 8
+									},
+									{ text: pasajero.dni || '', fontSize: 8 },
+									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 }
+								]);
+							});
+							return rows;
+						}, []);
+	rows.sort((a, b) => {
+		if (a[1].text < b[1].text) {
+			return -1;
+		}
+		if (a[1].text > b[1].text) {
+			return 1;
+		}
+		return 0;
+	});
+
+	rows.forEach((row, index) => {
+		row[0].text = index + 1;
+	});
+
+
+
 	const opciones = {
 		day: '2-digit',
 		month: 'short',
@@ -281,8 +333,13 @@
 			absolutePosition: {x:500, y:789},
 			fontSize: 8
 		},
+							{
+			text: `${status}`,
+			absolutePosition: {x:280, y:789},
+			fontSize: 10
+		},
 					{
-			text: `BORRADOR GENERADO EL ${new Date().toLocaleDateString('es-ES', {
+			text: `GENERADO EL ${new Date().toLocaleDateString('es-ES', {
 				day: '2-digit',
 				month: 'numeric',
 				year: 'numeric',
@@ -355,38 +412,7 @@
 							{ text: 'PAIS RESIDENCIA', style: 'tableHeader' }
 						],
 						// Datos de los pasajeros
-						...data.ventas.reduce((rows, venta) => {
-							// Agregar cada pasajero como una fila en la tabla
-							venta.pasajeros.forEach((pasajero) => {
-								rows.push([
-									{ text: rows.length + 1, fontSize: 8 }, // Tamaño de fuente de la celda
-									{ text: pasajero.apellido.toUpperCase() + ' ' + pasajero.nombre.toUpperCase() || '', fontSize: 8 },
-									{
-										text:
-											new Date(pasajero.fechanacimiento)
-												.toLocaleDateString('es-ES', {
-													day: '2-digit',
-													month: '2-digit',
-													year: 'numeric'
-												})
-												.toUpperCase() || '',
-										fontSize: 8
-									},
-									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 },
-									{ text: pasajero.ocupacion.toUpperCase() || '', fontSize: 8 },
-									{
-										text:
-											pasajero.sexo === 'MASCULINO'
-												? 'M'
-												: (pasajero.sexo === 'FEMENINO' ? 'F' : '') || '',
-										fontSize: 8
-									},
-									{ text: pasajero.dni || '', fontSize: 8 },
-									{ text: pasajero.nacionalidad.toUpperCase() || '', fontSize: 8 }
-								]);
-							});
-							return rows;
-						}, [])
+					    ...rows
 					]
 				}
 			}
@@ -473,7 +499,14 @@
 			<Button disabled size="small" on:click={() => (open2 = true)} icon={TrashCan} kind="danger"
 				>Eliminar</Button
 			>
-			<Button size="small" icon={Edit} on:click={() => (open = true)}>Editar</Button>
+			<Button
+				size="small"
+				icon={Edit}
+				disabled={status === 'FINAL'}
+				on:click={() => (open = true)}
+			>
+				Editar
+			</Button>
 			<Button
 				size="small"
 				kind="tertiary"

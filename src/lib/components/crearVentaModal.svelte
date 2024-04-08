@@ -66,7 +66,8 @@
 			/** @type {{ id: any; nombre: any; apellido: string; fechanacimiento: Date; dni: string; }} */ cliente
 		) => ({
 			id: cliente.id,
-			text: `${cliente.nombre} ${cliente.apellido} - ${cliente.dni}`
+			text: `${cliente.nombre} ${cliente.apellido} - ${cliente.dni}`,
+			fecha: cliente.fechanacimiento
 		})
 	);
 
@@ -134,12 +135,13 @@
 
 	$: invalid = getPersonasEnPaquete(paquete).includes(selectedId);
 	$: clientesFiltered = clientesItems.filter(
-		(/** @type {{ id: any; }} */ cliente) => !getPersonasEnPaquete(paquete).includes(cliente.id)
+		(cliente) => !getPersonasEnPaquete(paquete).includes(cliente.id) && cliente.id != 'enqogcwrk5re0ly'
 	);
 
-	$: acompañantes = clientesFiltered.filter(
+	$: acompañantes = [...clientesFiltered, { id: 'enqogcwrk5re0ly', text: 'EXEQUIEL BRITEZ - 42676224' }].filter(
 		(/** @type {{ id: any; }} */ cliente) => cliente.id !== selectedId
 	);
+	
 	$: isFormValid = !invalid;
 </script>
 

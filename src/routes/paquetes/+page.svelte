@@ -46,6 +46,25 @@
 	let precio = 1;
 	let cant_dias = 1;
 	let cant_noches = 1;
+	$: fechasalida = new Date().toLocaleDateString('es-ES', {
+		day: '2-digit',
+		month: '2-digit',
+		year: 'numeric'
+	});
+
+	$: fecharetorno = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toLocaleDateString('es-ES', {
+		day: '2-digit',
+		month: '2-digit',
+		year: 'numeric'
+	});
+
+	$: partesSalida = fechasalida.split("/");
+	$: fechaSalidaISO = new Date(parseInt(partesSalida[2]), parseInt(partesSalida[1]) - 1, parseInt(partesSalida[0]));
+
+	$: partesRetorno = fecharetorno.split("/");
+	$: fechaRetornoISO = new Date(parseInt(partesRetorno[2]), parseInt(partesRetorno[1]) - 1, parseInt(partesRetorno[0]));
+
+	$:recomendedDays = Math.ceil((fechaRetornoISO.getTime() - fechaSalidaISO.getTime()) / (1000 * 60 * 60 * 24));
 
 	//AUXILIARES
 	$: isValidNombre = false;
@@ -173,7 +192,6 @@
 									placeholder="Ingrese el destino"
 								/>
 							</FormGroup>
-
 							<FormGroup legendText="Precio">
 								<NumberInput
 									id="precio"
@@ -185,26 +203,26 @@
 									bind:value={precio}
 								/>
 							</FormGroup>
-
-							<FormGroup legendText="Cantidad de días">
+							<FormGroup legendText="Cantidad de días (MAX: {recomendedDays})">
 								<NumberInput
 									id="cant_dias"
-									min={1}
+									min={0}
+									max={recomendedDays}
 									name="cant_dias"
 									placeholder="Ingrese la cantidad de días"
 									bind:value={cant_dias}
-									invalidText="La cantidad de días debe ser mayor a 0"
+									invalidText="Valor fuera de rango"
 								/>
 							</FormGroup>
-
-							<FormGroup legendText="Cantidad de noches">
+							<FormGroup legendText="Cantidad de noches (MAX: {recomendedDays})">
 								<NumberInput
 									id="cant_noches"
-									min={1}
+									min={0}
+									max={recomendedDays}
 									name="cant_noches"
 									placeholder="Ingrese la cantidad de noches"
 									bind:value={cant_noches}
-									invalidText="La cantidad de noches debe ser mayor a 0"
+									invalidText="Valor fuera de rango"
 								/>
 							</FormGroup>
 						</div>
@@ -216,11 +234,12 @@
 									datePickerType="range"
 									dateFormat="d/m/Y"
 									locale={Spanish}
-									value={new Date().toISOString()}
+									bind:valueFrom={fechasalida}
+									bind:valueTo={fecharetorno}
 									on:change
 								>
 									<DatePickerInput placeholder="dd/mm/aaa" name="fechasalida" />
-									<DatePickerInput placeholder="dd/mm/aaa" name="fecharetorno" />
+									<DatePickerInput placeholder="dd/mm/aaa" name="fecharetorno"/>
 								</DatePicker>
 							</FormGroup>
 
@@ -269,7 +288,21 @@
 
 					<!-- hotel -->
 					<FormGroup legendText="Hotel">
-						<TextInput id="hotel" name="hotel" placeholder="Ingrese el hotel" />
+						<Select id="select-hotel" hideLabel name="hotel" selected="PENSION COMPLETA">
+							<SelectItem
+										disabled
+										hidden
+										value="Hotel Pensilvania"
+										text="Seleccione un Hotel"
+									/>
+									{#each data.hoteles as hotel}
+										<SelectItem
+											value={hotel.nombre}
+											text="{hotel.nombre} -- {hotel.direccion} {'⭐️'.repeat(Math.floor(Math.random() * 4) + 2)}"
+										/>
+										
+									{/each}
+						</Select>
 					</FormGroup>
 
 					<TextArea
@@ -412,35 +445,35 @@
 									{cell.value}
 								</a>
 							{:else if cell.key === 'estado'}
-								{#if cell.value === 'activo'}
-									<div class="flex justify-end">
-										<span
-											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-										>
-											{cell.value}
-										</span>
-									</div>
+								{#if new Date(row.fechasalida) < new Date()}
+									{#if new Date() >= new Date(row.fechasalida) && new Date() <= new Date(row.fecharetorno)}
+										<div class="flex justify-end">
+											<span class="px-2 inline-flex w-full justify-center text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+												EN CURSO
+											</span>
+										</div>
+									{:else}
+										<div class="flex justify-end">
+											<span class="px-2 inline-flex w-full justify-center text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+												FINALIZADO
+											</span>
+										</div>
+									{/if}
 								{:else if cell.value === 'NO DISPONIBLE'}
 									<div class="flex justify-end">
-										<span
-											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-										>
+										<span class="px-2 inline-flex w-full justify-center text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
 											{cell.value}
 										</span>
 									</div>
 								{:else if cell.value === 'DISPONIBLE'}
 									<div class="flex justify-end">
-										<span
-											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-										>
+										<span class="px-2 inline-flex w-full justify-center text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
 											{cell.value}
 										</span>
 									</div>
-								{:else if cell.value === 'finalizado'}
+								{:else if cell.value === 'FINALIZADO'}
 									<div class="flex justify-end">
-										<span
-											class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
-										>
+										<span class="px-2 inline-flex w-full justify-center text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
 											{cell.value}
 										</span>
 									</div>

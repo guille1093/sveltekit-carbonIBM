@@ -13,11 +13,13 @@ export async function load({ locals }) {
 				await locals.pb.collection('nacionalidades').getFullList(undefined, {})
 			);
 		};
+		const hoteles = structuredClone(await locals.pb.collection('hotels').getFullList());
 
 		const [paquetes, nacionalidades] = await Promise.all([getpaquetes(), getNacionalidades()]);
 		return {
 			paquetes,
-			nacionalidades
+			nacionalidades,
+			hoteles
 		};
 	} catch (err) {
 		console.log('Error: ', err);
