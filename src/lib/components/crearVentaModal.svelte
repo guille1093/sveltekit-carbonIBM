@@ -319,12 +319,12 @@
 									</div>
 									<div class="flex justify-between p-1">
 										<p>Precio por persona:</p>
-										<h5>${Intl.NumberFormat('es-AR').format(precioUnitario)}</h5>
+										<h5>${Intl.NumberFormat('es-AR').format(parseInt(precioUnitario))}</h5>
 									</div>
 									<div class="flex justify-between p-1 bg-blue-600">
 										<p>Total:</p>
 										<h5>
-											${Intl.NumberFormat('es-AR').format(precio)}
+											${Intl.NumberFormat('es-AR').format(parseInt(precio))}
 										</h5>
 									</div>
 								</Tile>

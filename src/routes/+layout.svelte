@@ -33,7 +33,7 @@
 	<Content class="z-0"> 
 		<slot />
 	</Content>
-	<button   
+	<!-- <button   
 		class="fixed bottom-4 right-4 z-50 p-4 rounded-full bg-primary text-white"
 		on:click={() =>
 			notificationStore.update(() => ({
@@ -56,5 +56,5 @@
 				d="M4 6h16M4 12h16m-7 6h7"
 			/>
 		</svg>
-	</button>
+	</button> -->
 {/if}
